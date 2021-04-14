@@ -1,0 +1,13 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+# Rider ignored files
+/modules.xml
+/projectSettingsUpdater.xml
+/contentModel.xml
+/.idea.XNews.iml
+# Datasource local storage ignored files
+/../../../../../../../../../../:\Boris\Программирование\Обучение\XNews\Backend\XNews\.idea\.idea.XNews\.idea/dataSources/
+/dataSources.local.xml
+# Editor-based HTTP Client requests
+/httpRequests/

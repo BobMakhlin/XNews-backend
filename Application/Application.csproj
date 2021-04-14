@@ -23,4 +23,13 @@
       <None Remove="Application.Persistence\**" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="CQRS\Posts\Commands" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Persistence\Domain\Domain.csproj" />
+      <ProjectReference Include="Application.Persistence\Application.Persistence.csproj" />
+    </ItemGroup>
+
 </Project>

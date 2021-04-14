@@ -1,6 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Application.CQRS.Posts.Models;
+using Application.CQRS.Posts.Queries;
 using Microsoft.AspNetCore.Mvc;
-using Presentation.Controllers;
 
 namespace Presentation.API.Controllers
 {
@@ -8,6 +10,11 @@ namespace Presentation.API.Controllers
     [Route("[controller]")]
     public class PostsController : MyBaseController
     {
-        
+        [HttpGet]
+        public async Task<IActionResult> GetAllPostsAsync()
+        {
+            IEnumerable<PostDto> posts = await Mediator.Send(new GetAllPostsQuery());
+            return Ok(posts);
+        }
     }
 }

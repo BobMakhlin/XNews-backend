@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Application.CQRS.Posts.Models;
 using Application.CQRS.Posts.Queries;
@@ -15,6 +16,19 @@ namespace Presentation.API.Controllers
         {
             IEnumerable<PostDto> posts = await Mediator.Send(new GetAllPostsQuery());
             return Ok(posts);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetPostAsync(Guid id)
+        {
+            PostDto post = await Mediator.Send(new GetPostByIdQuery() {PostId = id});
+
+            if (post == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(post);
         }
     }
 }

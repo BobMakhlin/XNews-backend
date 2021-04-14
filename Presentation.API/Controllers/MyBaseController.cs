@@ -17,6 +17,9 @@ namespace Presentation.API.Controllers
 
         #region Properties
 
+        /// <summary>
+        /// Retrieves the registered service of type <see cref="IMediator"/>.
+        /// </summary>
         protected IMediator Mediator =>
             _mediator ??= HttpContext.RequestServices.GetService<IMediator>();
 

@@ -18,6 +18,18 @@ namespace Presentation.API
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .ConfigureAppConfiguration((context, configBuilder) =>
+                {
+                    string environmentName = context.HostingEnvironment.EnvironmentName;
+
+                    configBuilder
+                        .AddJsonFile("appsettings.json", false, true)
+                        .AddJsonFile($"appsettings.{environmentName}.json", true, true)
+                        .AddJsonFile("appsettings.Persistence.json", false, true);
+
+                    configBuilder
+                        .AddEnvironmentVariables();
+                })
                 .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
     }
 }

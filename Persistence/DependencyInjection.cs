@@ -1,5 +1,9 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Application.Persistence.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Persistence.DataAccess;
+using Persistence.Options;
 
 namespace Persistence
 {
@@ -13,7 +17,25 @@ namespace Persistence
         /// <returns></returns>
         public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
         {
+            AddShopDbContext(services, configuration);
+            services.AddScoped<IXNewsDbContext>(provider => provider.GetService<XNewsDbContext>());
+
             return services;
+        }
+
+        /// <summary>
+        /// Registers type <see cref="XNewsDbContext"/> inside of <paramref name="services"/>.
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="configuration"></param>
+        private static void AddShopDbContext(IServiceCollection services, IConfiguration configuration)
+        {
+            string connectionString = configuration.GetConnectionString(PersistenceOptions.PrimaryDatabase);
+
+            services.AddDbContext<XNewsDbContext>
+            (
+                options => options.UseSqlServer(connectionString)
+            );
         }
     }
 }

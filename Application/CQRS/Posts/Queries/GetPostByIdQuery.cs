@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Common.Mappings.Extensions;
 using Application.CQRS.Posts.Models;
 using Application.Persistence.Interfaces;
 using AutoMapper;
@@ -38,9 +39,9 @@ namespace Application.CQRS.Posts.Queries
 
             public async Task<PostDto> Handle(GetPostByIdQuery request, CancellationToken cancellationToken)
             {
-                Post post = await _context.Post
-                    .FirstOrDefaultAsync(p => p.PostId == request.PostId, cancellationToken);
-                return _mapper.Map<PostDto>(post);
+                return await _context.Post
+                    .Where(p => p.PostId == request.PostId)
+                    .ProjectToSingleOrDefaultAsync<PostDto>(_mapper.ConfigurationProvider, cancellationToken);
             }
 
             #endregion

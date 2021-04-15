@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Common.Mappings.Extensions;
 using Application.CQRS.Posts.Models;
 using Application.Persistence.Interfaces;
 using AutoMapper;
@@ -36,8 +37,8 @@ namespace Application.CQRS.Posts.Queries
             public async Task<IEnumerable<PostDto>> Handle(GetAllPostsQuery request,
                 CancellationToken cancellationToken)
             {
-                List<Post> posts = await _context.Post.ToListAsync(cancellationToken);
-                return _mapper.Map<IEnumerable<PostDto>>(posts);
+                return await _context.Post.ProjectToListAsync<PostDto>(_mapper.ConfigurationProvider,
+                    cancellationToken);
             }
 
             #endregion

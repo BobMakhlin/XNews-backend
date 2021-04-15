@@ -38,5 +38,18 @@ namespace Presentation.API.Controllers
             Guid createdPostId = await Mediator.Send(request);
             return Ok(createdPostId);
         }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdatePostAsync(Guid id, [FromBody] UpdatePostCommand request)
+        {
+            if (id != request.PostId)
+            {
+                return BadRequest();
+            }
+            
+            await Mediator.Send(request);
+
+            return NoContent();
+        }
     }
 }

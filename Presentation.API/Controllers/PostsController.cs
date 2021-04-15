@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Application.CQRS.Posts.Commands;
 using Application.CQRS.Posts.Models;
 using Application.CQRS.Posts.Queries;
 using Microsoft.AspNetCore.Mvc;
@@ -29,6 +30,13 @@ namespace Presentation.API.Controllers
             }
 
             return Ok(post);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreatePostAsync([FromBody] CreatePostCommand request)
+        {
+            Guid createdPostId = await Mediator.Send(request);
+            return Ok(createdPostId);
         }
     }
 }

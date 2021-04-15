@@ -14,6 +14,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Persistence;
+using Presentation.API.Middlewares;
 
 namespace Presentation.API
 {
@@ -56,6 +57,8 @@ namespace Presentation.API
 
             app.UseAuthorization();
 
+            app.UseMiddleware<ExceptionHandlerMiddleware>();
+            
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }

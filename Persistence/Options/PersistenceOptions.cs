@@ -2,6 +2,7 @@
 {
     public static class PersistenceOptions
     {
-        public const string PrimaryDatabase = "XNewsDb";
+        public static readonly string PrimaryDatabase = "XNewsDb";
+        public static readonly string LoggingDatabase = "XNewsLoggingDb";
     }
 }

@@ -6,14 +6,23 @@
 
     <ItemGroup>
       <Compile Remove="Domain\**" />
+      <Compile Remove="Domain.Logging\obj\**" />
+      <Compile Remove="Persistence.Logging\**" />
+      <Compile Remove="Domain.Logging\**" />
     </ItemGroup>
 
     <ItemGroup>
       <EmbeddedResource Remove="Domain\**" />
+      <EmbeddedResource Remove="Domain.Logging\obj\**" />
+      <EmbeddedResource Remove="Persistence.Logging\**" />
+      <EmbeddedResource Remove="Domain.Logging\**" />
     </ItemGroup>
 
     <ItemGroup>
       <None Remove="Domain\**" />
+      <None Remove="Domain.Logging\obj\**" />
+      <None Remove="Persistence.Logging\**" />
+      <None Remove="Domain.Logging\**" />
     </ItemGroup>
 
     <ItemGroup>
@@ -29,6 +38,7 @@
     <ItemGroup>
       <ProjectReference Include="..\Application\Application.Persistence\Application.Persistence.csproj" />
       <ProjectReference Include="Domain\Domain.csproj" />
+      <ProjectReference Include="Persistence.Logging\Persistence.Logging.csproj" />
     </ItemGroup>
 
 </Project>

@@ -17,22 +17,39 @@ namespace Persistence
         /// <returns></returns>
         public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
         {
-            AddShopDbContext(services, configuration);
+            AddPrimaryDbContext(services, configuration);
+            AddLoggingDbContext(services, configuration);
+            
             services.AddScoped<IXNewsDbContext>(provider => provider.GetService<XNewsDbContext>());
 
             return services;
         }
 
         /// <summary>
-        /// Registers type <see cref="XNewsDbContext"/> inside of <paramref name="services"/>.
+        /// Registers primary <see cref="DbContext"/> inside of <paramref name="services"/>.
         /// </summary>
         /// <param name="services"></param>
         /// <param name="configuration"></param>
-        private static void AddShopDbContext(IServiceCollection services, IConfiguration configuration)
+        private static void AddPrimaryDbContext(IServiceCollection services, IConfiguration configuration)
         {
             string connectionString = configuration.GetConnectionString(PersistenceOptions.PrimaryDatabase);
 
             services.AddDbContext<XNewsDbContext>
+            (
+                options => options.UseSqlServer(connectionString)
+            );
+        }
+
+        /// <summary>
+        /// Registers logging <see cref="DbContext"/> inside of <paramref name="services"/>.
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="configuration"></param>
+        private static void AddLoggingDbContext(IServiceCollection services, IConfiguration configuration)
+        {
+            string connectionString = configuration.GetConnectionString(PersistenceOptions.LoggingDatabase);
+
+            services.AddDbContext<XNewsLoggingDbContext>
             (
                 options => options.UseSqlServer(connectionString)
             );

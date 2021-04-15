@@ -8,7 +8,7 @@ namespace Persistence.DataAccess
     {
         #region Constructors
 
-        public XNewsDbContext(DbContextOptions options) : base(options)
+        public XNewsDbContext(DbContextOptions<XNewsDbContext> options) : base(options)
         {
             Database.EnsureCreated();
         }

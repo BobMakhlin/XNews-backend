@@ -46,9 +46,16 @@ namespace Presentation.API.Controllers
             {
                 return BadRequest();
             }
-            
+
             await Mediator.Send(request);
 
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeletePostAsync(Guid id)
+        {
+            await Mediator.Send(new DeletePostCommand() {PostId = id});
             return NoContent();
         }
     }

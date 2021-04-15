@@ -38,6 +38,7 @@ namespace Presentation.API.Middlewares
             }
             catch (NotFoundException ex)
             {
+                _logger.LogWarning(ex, "The middleware caught an exception");
                 context.Response.StatusCode = StatusCodes.Status404NotFound;
             }
             catch (Exception ex)

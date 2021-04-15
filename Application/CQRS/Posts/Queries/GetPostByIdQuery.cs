@@ -41,7 +41,8 @@ namespace Application.CQRS.Posts.Queries
             {
                 return await _context.Post
                     .Where(p => p.PostId == request.PostId)
-                    .ProjectToSingleOrDefaultAsync<PostDto>(_mapper.ConfigurationProvider, cancellationToken);
+                    .ProjectToSingleOrDefaultAsync<PostDto>(_mapper.ConfigurationProvider, cancellationToken)
+                    .ConfigureAwait(false);
             }
 
             #endregion

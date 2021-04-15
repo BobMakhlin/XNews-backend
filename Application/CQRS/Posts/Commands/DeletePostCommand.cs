@@ -33,12 +33,18 @@ namespace Application.CQRS.Posts.Commands
 
             public async Task<Unit> Handle(DeletePostCommand request, CancellationToken cancellationToken)
             {
-                Post post = await _context.Post.FindAsync(request.PostId)
-                            ?? throw new NotFoundException();
+                Post post = await _context.Post
+                    .FindAsync(request.PostId)
+                    .ConfigureAwait(false);
+                if (post == null)
+                {
+                    throw new NotFoundException();
+                }
 
                 _context.Post.Remove(post);
-                await _context.SaveChangesAsync(cancellationToken);
-                
+                await _context.SaveChangesAsync(cancellationToken)
+                    .ConfigureAwait(false);
+
                 return Unit.Value;
             }
 

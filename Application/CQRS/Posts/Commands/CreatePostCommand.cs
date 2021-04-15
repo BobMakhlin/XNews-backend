@@ -34,7 +34,10 @@ namespace Application.CQRS.Posts.Commands
             public async Task<Guid> Handle(CreatePostCommand request, CancellationToken cancellationToken)
             {
                 Post post = ConvertToPost(request);
-                await CreatePostAsync(post, cancellationToken);
+                
+                await CreatePostAsync(post, cancellationToken)
+                    .ConfigureAwait(false);
+                
                 return post.PostId;
             }
 
@@ -58,8 +61,11 @@ namespace Application.CQRS.Posts.Commands
 
             private async Task CreatePostAsync(Post post, CancellationToken cancellationToken)
             {
-                await _context.Post.AddAsync(post, cancellationToken);
-                await _context.SaveChangesAsync(cancellationToken);
+                await _context.Post.AddAsync(post, cancellationToken)
+                    .ConfigureAwait(false);
+                
+                await _context.SaveChangesAsync(cancellationToken)
+                    .ConfigureAwait(false);
             }
 
             #endregion

@@ -37,8 +37,9 @@ namespace Application.CQRS.Posts.Queries
             public async Task<IEnumerable<PostDto>> Handle(GetAllPostsQuery request,
                 CancellationToken cancellationToken)
             {
-                return await _context.Post.ProjectToListAsync<PostDto>(_mapper.ConfigurationProvider,
-                    cancellationToken);
+                return await _context.Post
+                    .ProjectToListAsync<PostDto>(_mapper.ConfigurationProvider, cancellationToken)
+                    .ConfigureAwait(false);
             }
 
             #endregion

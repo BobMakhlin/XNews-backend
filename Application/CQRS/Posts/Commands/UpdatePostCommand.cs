@@ -30,24 +30,29 @@ namespace Application.CQRS.Posts.Commands
             }
 
             #endregion
-            
+
             #region IRequestHandler<UpdatePostCommand>
 
             public async Task<Unit> Handle(UpdatePostCommand request, CancellationToken cancellationToken)
             {
                 Post post = await _context.Post.FindAsync(request.PostId)
-                    ?? throw new NotFoundException();
+                    .ConfigureAwait(false);
+                if (post == null)
+                {
+                    throw new NotFoundException();
+                }
 
                 UpdatePostProperties(post, request);
-                await _context.SaveChangesAsync(cancellationToken);
-                
+                await _context.SaveChangesAsync(cancellationToken)
+                    .ConfigureAwait(false);
+
                 return Unit.Value;
             }
 
             #endregion
 
             #region Methods
-            
+
             /// <summary>
             /// Updates <paramref name="post"/> properties using the <paramref name="request"/> parameter.
             /// </summary>

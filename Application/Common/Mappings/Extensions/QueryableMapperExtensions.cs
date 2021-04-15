@@ -26,7 +26,8 @@ namespace Application.Common.Mappings.Extensions
         {
             return await query
                 .ProjectTo<TDestination>(provider)
-                .ToListAsync(cancellationToken);
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
         }
 
         /// <summary>
@@ -43,7 +44,8 @@ namespace Application.Common.Mappings.Extensions
         {
             return await query
                 .ProjectTo<TDestination>(provider)
-                .SingleOrDefaultAsync(cancellationToken);
+                .SingleOrDefaultAsync(cancellationToken)
+                .ConfigureAwait(false);
         }
     }
 }

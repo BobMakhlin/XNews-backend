@@ -74,5 +74,12 @@ namespace Presentation.API.Controllers
             await Mediator.Send(new AddCategoryToPostCommand {PostId = postId, CategoryId = categoryId});
             return NoContent();
         }
+        
+        [HttpDelete("{postId}/categories/{categoryId}")]
+        public async Task<IActionResult> DeleteCategoryOfPostAsync(Guid postId, Guid categoryId)
+        {
+            await Mediator.Send(new DeleteCategoryOfPostCommand {PostId = postId, CategoryId = categoryId});
+            return NoContent();
+        }
     }
 }

@@ -15,13 +15,13 @@ namespace Application.CQRS.Posts.Models
 
         #endregion
         
-        #region IMapFrom<Post>
-
-        void IMapFrom<Post>.MapUsingProfile(Profile profile)
-        {
-            profile.CreateMap<Post, PostDto>();
-        }
-
-        #endregion
+        // #region IMapFrom<Post>
+        //
+        // void IMapFrom<Post>.MapUsingProfile(Profile profile)
+        // {
+        //     profile.CreateMap<Post, PostDto>();
+        // }
+        //
+        // #endregion
     }
 }

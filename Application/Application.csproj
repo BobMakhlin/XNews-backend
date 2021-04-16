@@ -37,6 +37,8 @@
     <ItemGroup>
       <Folder Include="CQRS\Categories\Commands" />
       <Folder Include="CQRS\Categories\Queries" />
+      <Folder Include="CQRS\PostRates\Commands" />
+      <Folder Include="CQRS\PostRates\Queries" />
     </ItemGroup>
 
 </Project>

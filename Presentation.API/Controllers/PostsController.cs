@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Application.CQRS.Categories.Models;
 using Application.CQRS.Posts.Commands;
 using Application.CQRS.Posts.Models;
 using Application.CQRS.Posts.Queries;
@@ -22,7 +23,7 @@ namespace Presentation.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetPostAsync(Guid id)
         {
-            PostDto post = await Mediator.Send(new GetPostByIdQuery() {PostId = id});
+            PostDto post = await Mediator.Send(new GetPostByIdQuery {PostId = id});
 
             if (post == null)
             {
@@ -55,8 +56,15 @@ namespace Presentation.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePostAsync(Guid id)
         {
-            await Mediator.Send(new DeletePostCommand() {PostId = id});
+            await Mediator.Send(new DeletePostCommand {PostId = id});
             return NoContent();
+        }
+
+        [HttpGet("{postId}/categories")]
+        public async Task<IActionResult> GetCategoriesOfPost(Guid postId)
+        {
+            IEnumerable<CategoryDto> categories = await Mediator.Send(new GetAllCategoriesOfPostQuery {PostId = postId});
+            return Ok(categories);
         }
     }
 }

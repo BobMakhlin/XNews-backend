@@ -3,15 +3,14 @@ using Application.Common.Mappings.Interfaces;
 using AutoMapper;
 using Domain.Entities;
 
-namespace Application.CQRS.Posts.Models
+namespace Application.CQRS.Categories.Models
 {
-    public class PostDto : IMapFrom<Post>
+    public class CategoryDto : IMapFrom<Category>
     {
         #region Properties
 
-        public Guid PostId { get; set; }
+        public Guid CategoryId { get; set; }
         public string Title { get; set; }
-        public string Content { get; set; }
 
         #endregion
     }

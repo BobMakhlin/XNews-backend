@@ -61,10 +61,18 @@ namespace Presentation.API.Controllers
         }
 
         [HttpGet("{postId}/categories")]
-        public async Task<IActionResult> GetCategoriesOfPost(Guid postId)
+        public async Task<IActionResult> GetCategoriesOfPostAsync(Guid postId)
         {
-            IEnumerable<CategoryDto> categories = await Mediator.Send(new GetAllCategoriesOfPostQuery {PostId = postId});
+            IEnumerable<CategoryDto> categories =
+                await Mediator.Send(new GetAllCategoriesOfPostQuery {PostId = postId});
             return Ok(categories);
+        }
+
+        [HttpPost("{postId}/categories/{categoryId}")]
+        public async Task<IActionResult> AddCategoryToPostAsync(Guid postId, Guid categoryId)
+        {
+            await Mediator.Send(new AddCategoryToPostCommand {PostId = postId, CategoryId = categoryId});
+            return NoContent();
         }
     }
 }

@@ -1,9 +1,8 @@
-﻿using System;
-using AutoMapper;
+﻿using AutoMapper;
 
 namespace Application.Common.Mappings.Interfaces
 {
-    public interface IMappable
+    public interface IMapFrom<T>
     {
         /// <summary>
         /// Creates mapping using the given <paramref name="profile"/>.

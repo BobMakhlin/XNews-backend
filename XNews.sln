@@ -18,8 +18,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Persistence", "Persistence"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Persistence\Domain\Domain.csproj", "{F58E32CA-2D20-407E-84E8-1165294FAA7F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTests", "IntegrationTests\IntegrationTests.csproj", "{CBBE6D65-0965-4ED5-8325-E5788BAA40E0}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Logging", "Persistence\Domain.Logging\Domain.Logging.csproj", "{91CEA894-BF3A-4917-95E4-D86A1D49DAFC}"
 EndProject
 Global
@@ -60,10 +58,6 @@ Global
 		{F58E32CA-2D20-407E-84E8-1165294FAA7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F58E32CA-2D20-407E-84E8-1165294FAA7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F58E32CA-2D20-407E-84E8-1165294FAA7F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CBBE6D65-0965-4ED5-8325-E5788BAA40E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CBBE6D65-0965-4ED5-8325-E5788BAA40E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CBBE6D65-0965-4ED5-8325-E5788BAA40E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CBBE6D65-0965-4ED5-8325-E5788BAA40E0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{91CEA894-BF3A-4917-95E4-D86A1D49DAFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{91CEA894-BF3A-4917-95E4-D86A1D49DAFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{91CEA894-BF3A-4917-95E4-D86A1D49DAFC}.Release|Any CPU.ActiveCfg = Release|Any CPU

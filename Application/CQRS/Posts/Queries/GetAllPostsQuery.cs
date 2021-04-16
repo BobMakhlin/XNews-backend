@@ -1,13 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Application.Common.Mappings.Extensions;
+using Application.Common.Extensions;
 using Application.CQRS.Posts.Models;
 using Application.Persistence.Interfaces;
 using AutoMapper;
-using Domain.Entities;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace Application.CQRS.Posts.Queries
 {

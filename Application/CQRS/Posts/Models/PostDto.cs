@@ -5,7 +5,7 @@ using Domain.Entities;
 
 namespace Application.CQRS.Posts.Models
 {
-    public class PostDto : IMappable
+    public class PostDto : IMapFrom<Post>
     {
         #region Properties
 
@@ -15,9 +15,9 @@ namespace Application.CQRS.Posts.Models
 
         #endregion
         
-        #region IMappable
+        #region IMapFrom<Post>
 
-        public void MapUsingProfile(Profile profile)
+        void IMapFrom<Post>.MapUsingProfile(Profile profile)
         {
             profile.CreateMap<Post, PostDto>();
         }

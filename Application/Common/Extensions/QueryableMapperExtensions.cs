@@ -6,7 +6,7 @@ using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using IConfigurationProvider = AutoMapper.IConfigurationProvider;
 
-namespace Application.Common.Mappings.Extensions
+namespace Application.Common.Extensions
 {
     /// <summary>
     /// Contains extension-methods for type <see cref="IQueryable"/> that allow to work easier with AutoMapper.

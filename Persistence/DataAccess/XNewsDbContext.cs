@@ -111,8 +111,12 @@ namespace Persistence.DataAccess
             {
                 entity.ToTable("PostRate");
 
+                entity
+                    .Property(e => e.PostRateId)
+                    .HasDefaultValueSql("NEWID()");
+                
                 entity.HasIndex(e => e.PostId, "IX_PostRate_PostId");
-
+                
                 entity
                     .HasOne(d => d.Post)
                     .WithMany(p => p.PostRates)

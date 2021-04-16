@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Application.CQRS.Categories.Models;
+using Application.CQRS.Comments.Models;
 using Application.CQRS.PostRates.Models;
 using Application.CQRS.Posts.Commands;
 using Application.CQRS.Posts.Models;
@@ -75,19 +76,26 @@ namespace Presentation.API.Controllers
             await Mediator.Send(new AddCategoryToPostCommand {PostId = postId, CategoryId = categoryId});
             return NoContent();
         }
-        
+
         [HttpDelete("{postId}/categories/{categoryId}")]
         public async Task<IActionResult> DeleteCategoryOfPostAsync(Guid postId, Guid categoryId)
         {
             await Mediator.Send(new DeleteCategoryOfPostCommand {PostId = postId, CategoryId = categoryId});
             return NoContent();
         }
-        
+
         [HttpGet("{postId}/rates")]
         public async Task<IActionResult> GetRatesOfPostAsync(Guid postId)
         {
             IEnumerable<PostRateDto> rates = await Mediator.Send(new GetAllRatesOfPostQuery {PostId = postId});
             return Ok(rates);
+        }
+
+        [HttpGet("{postId}/comments")]
+        public async Task<IActionResult> GetCommentsOfPostAsync(Guid postId)
+        {
+            IEnumerable<CommentDto> comments = await Mediator.Send(new GetAllCommentsOfPostQuery {PostId = postId});
+            return Ok(comments);
         }
     }
 }

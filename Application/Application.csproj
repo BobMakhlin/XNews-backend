@@ -35,7 +35,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="CQRS\Categories\Commands" />
       <Folder Include="CQRS\Comments\Commands" />
       <Folder Include="CQRS\Comments\Queries" />
       <Folder Include="CQRS\PostRates\Queries" />

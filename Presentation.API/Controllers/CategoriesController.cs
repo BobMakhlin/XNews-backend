@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Application.CQRS.Categories.Commands;
 using Application.CQRS.Categories.Models;
 using Application.CQRS.Categories.Queries;
 using Microsoft.AspNetCore.Mvc;
@@ -29,6 +30,13 @@ namespace Presentation.API.Controllers
             }
             
             return Ok(categoryDto);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> PostCategoryAsync(CreateCategoryCommand request)
+        {
+            Guid createdCategoryId = await Mediator.Send(request);
+            return Ok(createdCategoryId);
         }
     }
 }

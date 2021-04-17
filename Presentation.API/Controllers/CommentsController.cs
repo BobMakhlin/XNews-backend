@@ -12,18 +12,31 @@ namespace Presentation.API.Controllers
     [Route("[controller]")]
     public class CommentsController : MyBaseController
     {
+        [HttpGet("{id}/rates")]
+        public async Task<IActionResult> GetRatesOfCommentAsync(Guid id)
+        {
+            IEnumerable<CommentRateDto> rates = await Mediator.Send(new GetRatesOfCommentQuery {CommentId = id});
+            return Ok(rates);
+        }
+        
         [HttpPost]
         public async Task<IActionResult> CreateCommentAsync(CreateCommentCommand request)
         {
             Guid createdCommentId = await Mediator.Send(request);
             return Ok(createdCommentId);
         }
-        
-        [HttpGet("{id}/rates")]
-        public async Task<IActionResult> GetRatesOfCommentAsync(Guid id)
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateCommentAsync(Guid id, UpdateCommentCommand request)
         {
-            IEnumerable<CommentRateDto> rates = await Mediator.Send(new GetRatesOfCommentQuery {CommentId = id});
-            return Ok(rates);
+            if (id != request.CommentId)
+            {
+                return BadRequest();
+            }
+            
+            await Mediator.Send(request);
+
+            return NoContent();
         }
     }
 }

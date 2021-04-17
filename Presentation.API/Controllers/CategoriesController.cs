@@ -38,5 +38,18 @@ namespace Presentation.API.Controllers
             Guid createdCategoryId = await Mediator.Send(request);
             return Ok(createdCategoryId);
         }
+        
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutCategoryAsync(Guid id, UpdateCategoryCommand request)
+        {
+            if (id != request.CategoryId)
+            {
+                return BadRequest();
+            }
+
+            await Mediator.Send(request);
+            
+            return NoContent();
+        } 
     }
 }

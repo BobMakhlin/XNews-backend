@@ -38,5 +38,12 @@ namespace Presentation.API.Controllers
 
             return NoContent();
         }
+        
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteCommentAsync(Guid id)
+        {
+            await Mediator.Send(new DeleteCommentCommand {CommentId = id});
+            return NoContent();
+        }
     }
 }

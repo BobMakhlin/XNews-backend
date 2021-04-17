@@ -15,5 +15,12 @@ namespace Presentation.API.Controllers
             Guid createdCommentRateId = await Mediator.Send(request);
             return Ok(createdCommentRateId);
         }
+        
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteCommentRateAsync(Guid id)
+        {
+            await Mediator.Send(new DeleteCommentRateCommand {CommentRateId = id});
+            return NoContent();
+        }
     }
 }

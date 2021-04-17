@@ -20,8 +20,8 @@ namespace Application.CQRS.Posts.Queries
         {
             #region Fields
 
-            private IXNewsDbContext _context;
-            private IMapper _mapper;
+            private readonly IXNewsDbContext _context;
+            private readonly IMapper _mapper;
 
             #endregion
 

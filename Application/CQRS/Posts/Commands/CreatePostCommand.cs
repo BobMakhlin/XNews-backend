@@ -16,7 +16,7 @@ namespace Application.CQRS.Posts.Commands
         {
             #region Fields
 
-            private IXNewsDbContext _context;
+            private readonly IXNewsDbContext _context;
 
             #endregion
 

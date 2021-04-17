@@ -17,7 +17,7 @@ namespace Application.CQRS.Categories.Commands
         {
             #region Fields
 
-            private IXNewsDbContext _context;
+            private readonly IXNewsDbContext _context;
 
             #endregion
             

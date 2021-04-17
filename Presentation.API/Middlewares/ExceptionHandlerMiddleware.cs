@@ -13,8 +13,8 @@ namespace Presentation.API.Middlewares
     {
         #region Fields
 
-        private RequestDelegate _next;
-        private ILogger<ExceptionHandlerMiddleware> _logger;
+        private readonly RequestDelegate _next;
+        private readonly ILogger<ExceptionHandlerMiddleware> _logger;
 
         #endregion
 

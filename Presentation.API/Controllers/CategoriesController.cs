@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Application.CQRS.Categories.Models;
 using Application.CQRS.Categories.Queries;
@@ -15,6 +16,19 @@ namespace Presentation.API.Controllers
         {
             IEnumerable<CategoryDto> categories = await Mediator.Send(new GetAllCategoriesQuery());
             return Ok(categories);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetCategoryAsync(Guid id)
+        {
+            CategoryDto categoryDto = await Mediator.Send(new GetCategoryByIdQuery {CategoryId = id});
+
+            if (categoryDto == null)
+            {
+                return NotFound();
+            }
+            
+            return Ok(categoryDto);
         }
     }
 }

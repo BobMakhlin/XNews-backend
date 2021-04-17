@@ -28,7 +28,7 @@ namespace Presentation.API.Controllers
             {
                 return NotFound();
             }
-            
+
             return Ok(categoryDto);
         }
 
@@ -38,7 +38,7 @@ namespace Presentation.API.Controllers
             Guid createdCategoryId = await Mediator.Send(request);
             return Ok(createdCategoryId);
         }
-        
+
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCategoryAsync(Guid id, UpdateCategoryCommand request)
         {
@@ -48,8 +48,15 @@ namespace Presentation.API.Controllers
             }
 
             await Mediator.Send(request);
-            
+
             return NoContent();
-        } 
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteCategoryAsync(Guid id)
+        {
+            await Mediator.Send(new DeleteCategoryCommand {CategoryId = id});
+            return NoContent();
+        }
     }
 }

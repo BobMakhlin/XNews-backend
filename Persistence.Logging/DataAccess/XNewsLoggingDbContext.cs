@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Logging.DataAccess
 {
-    public sealed class XNewsLoggingDbContext : DbContext
+    internal sealed class XNewsLoggingDbContext : DbContext
     {
         #region Constructors
 

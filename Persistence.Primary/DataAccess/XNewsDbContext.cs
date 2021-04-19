@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Primary.DataAccess
 {
-    public sealed class XNewsDbContext : DbContext, IXNewsDbContext
+    internal sealed class XNewsDbContext : DbContext, IXNewsDbContext
     {
         #region Constructors
 

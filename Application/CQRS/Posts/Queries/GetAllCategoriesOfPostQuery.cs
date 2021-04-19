@@ -9,7 +9,6 @@ using Application.CQRS.Categories.Models;
 using Application.CQRS.Posts.Models;
 using Application.Persistence.Interfaces;
 using AutoMapper;
-using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 

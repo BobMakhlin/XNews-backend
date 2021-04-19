@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace Domain.Entities
+namespace Domain.Primary.Entities
 {
     public partial class Comment
     {

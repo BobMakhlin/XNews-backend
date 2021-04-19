@@ -5,8 +5,9 @@ using Application.CQRS.Categories.Commands;
 using Application.CQRS.Categories.Models;
 using Application.CQRS.Categories.Queries;
 using Microsoft.AspNetCore.Mvc;
+using Presentation.API.Controllers.Abstraction;
 
-namespace Presentation.API.Controllers
+namespace Presentation.API.Controllers.Realisation
 {
     [ApiController]
     [Route("[controller]")]

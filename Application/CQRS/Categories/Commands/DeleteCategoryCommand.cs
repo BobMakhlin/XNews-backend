@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Application.Common.Exceptions;
 using Application.Persistence.Interfaces;
-using Domain.Entities;
+using Domain.Primary.Entities;
 using MediatR;
 
 namespace Application.CQRS.Categories.Commands

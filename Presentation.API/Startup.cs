@@ -1,19 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Application;
-using Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using Persistence;
+using Persistence.Logging;
+using Persistence.Primary;
 using Presentation.API.Middlewares;
 
 namespace Presentation.API
@@ -38,7 +31,7 @@ namespace Presentation.API
 
             services.AddApplication();
             services.AddPersistence(Configuration);
-            services.AddInfrastructure();
+            services.AddPersistenceLogging(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

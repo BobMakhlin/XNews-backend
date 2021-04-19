@@ -1,7 +1,7 @@
 ﻿
 using System;
 using Application.Common.Mappings.Interfaces;
-using Domain.Entities;
+using Domain.Primary.Entities;
 
 namespace Application.CQRS.CommentRates.Models
 {

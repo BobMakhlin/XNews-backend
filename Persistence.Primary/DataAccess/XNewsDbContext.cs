@@ -1,8 +1,8 @@
 ﻿using Application.Persistence.Interfaces;
-using Domain.Entities;
+using Domain.Primary.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Persistence.DataAccess
+namespace Persistence.Primary.DataAccess
 {
     public sealed class XNewsDbContext : DbContext, IXNewsDbContext
     {

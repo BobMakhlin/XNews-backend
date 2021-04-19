@@ -5,8 +5,9 @@ using Application.CQRS.CommentRates.Models;
 using Application.CQRS.Comments.Commands;
 using Application.CQRS.Comments.Queries;
 using Microsoft.AspNetCore.Mvc;
+using Presentation.API.Controllers.Abstraction;
 
-namespace Presentation.API.Controllers
+namespace Presentation.API.Controllers.Realisation
 {
     [ApiController]
     [Route("[controller]")]

@@ -2,8 +2,9 @@
 using System.Threading.Tasks;
 using Application.CQRS.PostRates.Commands;
 using Microsoft.AspNetCore.Mvc;
+using Presentation.API.Controllers.Abstraction;
 
-namespace Presentation.API.Controllers
+namespace Presentation.API.Controllers.Realisation
 {
     [ApiController]
     [Route("[controller]")]

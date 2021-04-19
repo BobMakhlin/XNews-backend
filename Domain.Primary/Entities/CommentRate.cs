@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace Domain.Entities
+namespace Domain.Primary.Entities
 {
     public partial class CommentRate
     {

@@ -8,8 +8,9 @@ using Application.CQRS.Posts.Commands;
 using Application.CQRS.Posts.Models;
 using Application.CQRS.Posts.Queries;
 using Microsoft.AspNetCore.Mvc;
+using Presentation.API.Controllers.Abstraction;
 
-namespace Presentation.API.Controllers
+namespace Presentation.API.Controllers.Realisation
 {
     [ApiController]
     [Route("[controller]")]

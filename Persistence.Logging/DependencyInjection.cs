@@ -1,45 +1,26 @@
-﻿using Application.Persistence.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Persistence.DataAccess;
-using Persistence.Options;
+using Persistence.Logging.DataAccess;
+using Persistence.Logging.Options;
 
-namespace Persistence
+namespace Persistence.Logging
 {
     public static class DependencyInjection
     {
         /// <summary>
-        /// Registers persistence-layer services.
+        /// Registers persistence-layer logging services.
         /// </summary>
         /// <param name="services"></param>
         /// <param name="configuration"></param>
         /// <returns></returns>
-        public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddPersistenceLogging(this IServiceCollection services, IConfiguration configuration)
         {
-            AddPrimaryDbContext(services, configuration);
             AddLoggingDbContext(services, configuration);
             
-            services.AddScoped<IXNewsDbContext>(provider => provider.GetService<XNewsDbContext>());
-
             return services;
         }
-
-        /// <summary>
-        /// Registers primary <see cref="DbContext"/> inside of <paramref name="services"/>.
-        /// </summary>
-        /// <param name="services"></param>
-        /// <param name="configuration"></param>
-        private static void AddPrimaryDbContext(IServiceCollection services, IConfiguration configuration)
-        {
-            string connectionString = configuration.GetConnectionString(PersistenceOptions.PrimaryDatabase);
-
-            services.AddDbContext<XNewsDbContext>
-            (
-                options => options.UseSqlServer(connectionString)
-            );
-        }
-
+        
         /// <summary>
         /// Registers logging <see cref="DbContext"/> inside of <paramref name="services"/>.
         /// </summary>

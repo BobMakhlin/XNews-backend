@@ -9,34 +9,11 @@
       <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
       <PackageReference Include="MediatR" Version="9.0.0" />
       <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.5" />
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Remove="Application.Persistence\**" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <EmbeddedResource Remove="Application.Persistence\**" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Remove="Application.Persistence\**" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\Persistence\Domain\Domain.csproj" />
-      <ProjectReference Include="Application.Persistence\Application.Persistence.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Reference Include="Microsoft.Extensions.Configuration, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">
-        <HintPath>C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\5.0.0\ref\net5.0\Microsoft.Extensions.Configuration.dll</HintPath>
-      </Reference>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="CQRS\CommentRates\Queries" />
-      <Folder Include="CQRS\PostRates\Queries" />
+      <ProjectReference Include="..\Application.Persistence\Application.Persistence.csproj" />
     </ItemGroup>
 
 </Project>

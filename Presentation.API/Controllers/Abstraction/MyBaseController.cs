@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Presentation.API.Controllers
+namespace Presentation.API.Controllers.Abstraction
 {
     /// <summary>
     /// Represents a base type for all controllers.

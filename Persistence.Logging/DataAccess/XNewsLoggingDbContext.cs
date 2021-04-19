@@ -1,7 +1,7 @@
 ﻿using Domain.Logging.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Persistence.DataAccess
+namespace Persistence.Logging.DataAccess
 {
     public sealed class XNewsLoggingDbContext : DbContext
     {

@@ -1,4 +1,5 @@
-﻿using Domain.Logging.Entities;
+﻿using System.Reflection;
+using Domain.Logging.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Logging.DataAccess
@@ -26,34 +27,7 @@ namespace Persistence.Logging.DataAccess
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<ApplicationLog>(entity =>
-            {
-                entity
-                    .Property(log => log.ApplicationLogId)
-                    .ValueGeneratedOnAdd();
-
-                entity
-                    .Property(log => log.MachineName)
-                    .HasMaxLength(50)
-                    .IsRequired();
-
-                entity
-                    .Property(log => log.LoggedAt)
-                    .IsRequired();
-
-                entity
-                    .Property(log => log.Level)
-                    .HasMaxLength(50)
-                    .IsRequired();
-                
-                entity
-                    .Property(log => log.Message)
-                    .IsRequired();
-
-                entity
-                    .Property(log => log.Logger)
-                    .HasMaxLength(250);
-            });
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
 
         #endregion

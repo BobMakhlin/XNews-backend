@@ -1,4 +1,6 @@
+using System.Threading.Tasks;
 using Application;
+using Application.Persistence.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -39,6 +41,9 @@ namespace Presentation.API
         {
             if (env.IsDevelopment())
             {
+                SeedDatabaseAsync(app)
+                    .GetAwaiter().GetResult();
+                
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Presentation.API v1"));
@@ -51,8 +56,16 @@ namespace Presentation.API
             app.UseAuthorization();
 
             app.UseMiddleware<ExceptionHandlerMiddleware>();
-            
+
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+        }
+
+        private async Task SeedDatabaseAsync(IApplicationBuilder app)
+        {
+            using IServiceScope scope = app.ApplicationServices.CreateScope();
+            
+            IDbSeeder seeder = scope.ServiceProvider.GetRequiredService<IDbSeeder>();
+            await seeder.SeedAsync();
         }
     }
 }

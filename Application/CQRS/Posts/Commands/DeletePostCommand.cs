@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Common.Exceptions;
 using Application.Persistence.Interfaces;
 using Domain.Primary.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.CQRS.Posts.Commands
 {
@@ -34,18 +36,51 @@ namespace Application.CQRS.Posts.Commands
             public async Task<Unit> Handle(DeletePostCommand request, CancellationToken cancellationToken)
             {
                 Post post = await _context.Post
-                    .FindAsync(request.PostId)
-                    .ConfigureAwait(false);
-                if (post == null)
-                {
-                    throw new NotFoundException();
-                }
+                                .Include(p => p.PostRates)
+                                .Include(p => p.Comments)
+                                .SingleOrDefaultAsync(p => p.PostId == request.PostId, cancellationToken)
+                                .ConfigureAwait(false)
+                            ?? throw new NotFoundException();
 
-                _context.Post.Remove(post);
+                ThrowIfPostCannotBeRemove(post);
+                
+                MarkPostForRemove(post);
                 await _context.SaveChangesAsync(cancellationToken)
                     .ConfigureAwait(false);
 
                 return Unit.Value;
+            }
+
+            #endregion
+
+            #region Methods
+
+            /// <summary>
+            /// Marks <paramref name="post"/> and its <see cref="Post.PostRates"/> for remove.
+            /// They will be removed from database when <see cref="DbContext.SaveChanges()"/> is called.
+            /// </summary>
+            /// <param name="post"></param>
+            private void MarkPostForRemove(Post post)
+            {
+                foreach (var postRate in post.PostRates)
+                {
+                    _context.PostRate.Remove(postRate);
+                }
+                
+                _context.Post.Remove(post);
+            }
+
+            /// <summary>
+            /// If the given <paramref name="post"/> cannot be removed, throws an exception.
+            /// </summary>
+            /// <param name="post"></param>
+            /// <exception cref="InvalidOperationException">Post has some <see cref="Post.Comments"/></exception>
+            private void ThrowIfPostCannotBeRemove(Post post)
+            {
+                if (post.Comments.Any())
+                {
+                    throw new InvalidOperationException("Can't remove post that has comments");
+                }
             }
 
             #endregion

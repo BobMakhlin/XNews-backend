@@ -59,8 +59,15 @@ namespace Presentation.API.Controllers.Realisation
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePostAsync(Guid id)
         {
-            await Mediator.Send(new DeletePostCommand {PostId = id});
-            return NoContent();
+            try
+            {
+                await Mediator.Send(new DeletePostCommand {PostId = id});
+                return NoContent();
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet("{postId}/categories")]

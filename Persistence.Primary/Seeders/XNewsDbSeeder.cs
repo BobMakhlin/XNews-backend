@@ -45,8 +45,8 @@ namespace Persistence.Primary.Seeders
                 return;
             }
 
-            List<Category> categories = GetCategories();
-            List<Post> posts = GetPosts();
+            IEnumerable<Category> categories = GetCategories(20);
+            IEnumerable<Post> posts = GetPosts(100);
 
             await _newsDbContext.Category.AddRangeAsync(categories, cancellationToken)
                 .ConfigureAwait(false);
@@ -76,40 +76,34 @@ namespace Persistence.Primary.Seeders
             return postsDbSetEmpty && categoriesDbSetEmpty;
         }
 
-        private List<Category> GetCategories()
+        /// <summary>
+        /// Creates the specified <paramref name="count"/> of categories.
+        /// </summary>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        private IEnumerable<Category> GetCategories(int count)
         {
-            return new()
+            for (int i = 0; i < count; i++)
             {
-                new() {Title = "Fun"},
-                new() {Title = "Mars"},
-                new() {Title = "Musk"}
-            };
+                yield return new() {Title = $"Category {i}"};
+            }
         }
 
-        private List<Post> GetPosts()
+        /// <summary>
+        /// Creates the specified <paramref name="count"/> of posts.
+        /// </summary>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        private IEnumerable<Post> GetPosts(int count)
         {
-            return new()
+            for (int i = 0; i < count; i++)
             {
-                new()
+                yield return new()
                 {
-                    Title = "Elon Musk went to Mars",
-                    Content = "We are on Mars today!",
-                    PostRates = new List<PostRate>
-                    {
-                        new() {Rate = 1}, 
-                        new() {Rate = 1}
-                    }
-                },
-                new()
-                {
-                    Title = "Play basketball with the president",
-                    Content = "Something here...",
-                    PostRates = new List<PostRate>
-                    {
-                        new() {Rate = 1}
-                    }
-                }
-            };
+                    Title = $"Post {i}",
+                    Content = $"Post {i} content..."
+                };
+            }
         }
 
         #endregion

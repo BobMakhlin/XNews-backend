@@ -24,7 +24,7 @@ namespace Presentation.API.Controllers.Realisation
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetPostAsync(Guid id)
+        public async Task<IActionResult> GetPostAsync([FromRoute] Guid id)
         {
             PostDto post = await Mediator.Send(new GetPostByIdQuery {PostId = id});
 
@@ -44,7 +44,7 @@ namespace Presentation.API.Controllers.Realisation
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdatePostAsync(Guid id, [FromBody] UpdatePostCommand request)
+        public async Task<IActionResult> UpdatePostAsync([FromRoute] Guid id, [FromBody] UpdatePostCommand request)
         {
             if (id != request.PostId)
             {
@@ -57,7 +57,7 @@ namespace Presentation.API.Controllers.Realisation
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePostAsync(Guid id)
+        public async Task<IActionResult> DeletePostAsync([FromRoute] Guid id)
         {
             try
             {
@@ -71,7 +71,7 @@ namespace Presentation.API.Controllers.Realisation
         }
 
         [HttpGet("{postId}/categories")]
-        public async Task<IActionResult> GetCategoriesOfPostAsync(Guid postId)
+        public async Task<IActionResult> GetCategoriesOfPostAsync([FromRoute] Guid postId)
         {
             IEnumerable<CategoryDto> categories =
                 await Mediator.Send(new GetAllCategoriesOfPostQuery {PostId = postId});
@@ -79,28 +79,28 @@ namespace Presentation.API.Controllers.Realisation
         }
 
         [HttpPost("{postId}/categories/{categoryId}")]
-        public async Task<IActionResult> AddCategoryToPostAsync(Guid postId, Guid categoryId)
+        public async Task<IActionResult> AddCategoryToPostAsync([FromRoute] Guid postId, [FromRoute] Guid categoryId)
         {
             await Mediator.Send(new AddCategoryToPostCommand {PostId = postId, CategoryId = categoryId});
             return NoContent();
         }
 
         [HttpDelete("{postId}/categories/{categoryId}")]
-        public async Task<IActionResult> DeleteCategoryOfPostAsync(Guid postId, Guid categoryId)
+        public async Task<IActionResult> DeleteCategoryOfPostAsync([FromRoute] Guid postId, [FromRoute] Guid categoryId)
         {
             await Mediator.Send(new DeleteCategoryOfPostCommand {PostId = postId, CategoryId = categoryId});
             return NoContent();
         }
 
         [HttpGet("{postId}/rates")]
-        public async Task<IActionResult> GetRatesOfPostAsync(Guid postId)
+        public async Task<IActionResult> GetRatesOfPostAsync([FromRoute] Guid postId)
         {
             IEnumerable<PostRateDto> rates = await Mediator.Send(new GetAllRatesOfPostQuery {PostId = postId});
             return Ok(rates);
         }
 
         [HttpGet("{postId}/comments")]
-        public async Task<IActionResult> GetCommentsOfPostAsync(Guid postId)
+        public async Task<IActionResult> GetCommentsOfPostAsync([FromRoute] Guid postId)
         {
             IEnumerable<CommentDto> comments = await Mediator.Send(new GetAllCommentsOfPostQuery {PostId = postId});
             return Ok(comments);

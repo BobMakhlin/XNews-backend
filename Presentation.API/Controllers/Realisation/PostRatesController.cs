@@ -11,7 +11,7 @@ namespace Presentation.API.Controllers.Realisation
     public class PostRatesController : MyBaseController
     {
         [HttpPost]
-        public async Task<IActionResult> CreatePostRateAsync(CreatePostRateCommand request)
+        public async Task<IActionResult> CreatePostRateAsync([FromBody] CreatePostRateCommand request)
         {
             Guid createdPostRateId = await Mediator.Send(request);
             return Ok(createdPostRateId);

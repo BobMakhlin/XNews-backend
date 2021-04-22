@@ -11,14 +11,14 @@ namespace Presentation.API.Controllers.Realisation
     public class CommentRateController : MyBaseController
     {
         [HttpPost]
-        public async Task<IActionResult> CreateCommentRate(CreateCommentRateCommand request)
+        public async Task<IActionResult> CreateCommentRate([FromBody] CreateCommentRateCommand request)
         {
             Guid createdCommentRateId = await Mediator.Send(request);
             return Ok(createdCommentRateId);
         }
         
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCommentRateAsync(Guid id)
+        public async Task<IActionResult> DeleteCommentRateAsync([FromRoute] Guid id)
         {
             await Mediator.Send(new DeleteCommentRateCommand {CommentRateId = id});
             return NoContent();

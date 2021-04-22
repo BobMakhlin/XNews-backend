@@ -14,21 +14,21 @@ namespace Presentation.API.Controllers.Realisation
     public class CommentsController : MyBaseController
     {
         [HttpGet("{id}/rates")]
-        public async Task<IActionResult> GetRatesOfCommentAsync(Guid id)
+        public async Task<IActionResult> GetRatesOfCommentAsync([FromRoute] Guid id)
         {
             IEnumerable<CommentRateDto> rates = await Mediator.Send(new GetRatesOfCommentQuery {CommentId = id});
             return Ok(rates);
         }
         
         [HttpPost]
-        public async Task<IActionResult> CreateCommentAsync(CreateCommentCommand request)
+        public async Task<IActionResult> CreateCommentAsync([FromBody] CreateCommentCommand request)
         {
             Guid createdCommentId = await Mediator.Send(request);
             return Ok(createdCommentId);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCommentAsync(Guid id, UpdateCommentCommand request)
+        public async Task<IActionResult> UpdateCommentAsync([FromRoute] Guid id, [FromBody] UpdateCommentCommand request)
         {
             if (id != request.CommentId)
             {
@@ -41,7 +41,7 @@ namespace Presentation.API.Controllers.Realisation
         }
         
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCommentAsync(Guid id)
+        public async Task<IActionResult> DeleteCommentAsync([FromRoute] Guid id)
         {
             await Mediator.Send(new DeleteCommentCommand {CommentId = id});
             return NoContent();

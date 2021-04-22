@@ -21,7 +21,7 @@ namespace Presentation.API.Controllers.Realisation
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetCategoryAsync(Guid id)
+        public async Task<IActionResult> GetCategoryAsync([FromRoute] Guid id)
         {
             CategoryDto categoryDto = await Mediator.Send(new GetCategoryByIdQuery {CategoryId = id});
 
@@ -34,14 +34,14 @@ namespace Presentation.API.Controllers.Realisation
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostCategoryAsync(CreateCategoryCommand request)
+        public async Task<IActionResult> PostCategoryAsync([FromBody] CreateCategoryCommand request)
         {
             Guid createdCategoryId = await Mediator.Send(request);
             return Ok(createdCategoryId);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCategoryAsync(Guid id, UpdateCategoryCommand request)
+        public async Task<IActionResult> PutCategoryAsync([FromRoute] Guid id, [FromBody] UpdateCategoryCommand request)
         {
             if (id != request.CategoryId)
             {
@@ -54,7 +54,7 @@ namespace Presentation.API.Controllers.Realisation
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCategoryAsync(Guid id)
+        public async Task<IActionResult> DeleteCategoryAsync([FromRoute] Guid id)
         {
             await Mediator.Send(new DeleteCategoryCommand {CategoryId = id});
             return NoContent();

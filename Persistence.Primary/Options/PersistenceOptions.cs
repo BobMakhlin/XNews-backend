@@ -1,4 +1,4 @@
-﻿namespace Persistence.Options
+﻿namespace Persistence.Primary.Options
 {
     public static class PersistenceOptions
     {

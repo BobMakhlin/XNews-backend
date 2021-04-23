@@ -2,8 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Persistence.Options;
 using Persistence.Primary.DataAccess;
+using Persistence.Primary.Options;
 using Persistence.Primary.Seeders;
 
 namespace Persistence.Primary

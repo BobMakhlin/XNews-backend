@@ -7,6 +7,7 @@ using Application.CQRS.PostRates.Models;
 using Application.CQRS.Posts.Commands;
 using Application.CQRS.Posts.Models;
 using Application.CQRS.Posts.Queries;
+using Application.Pagination.Common.Models.PagedList;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.API.Controllers.Abstraction;
 
@@ -17,10 +18,17 @@ namespace Presentation.API.Controllers.Realisation
     public class PostsController : MyBaseController
     {
         [HttpGet]
-        public async Task<IActionResult> GetAllPostsAsync()
+        public async Task<IActionResult> GetAllPostsAsync([FromQuery] GetAllPostsQuery request)
         {
-            IEnumerable<PostDto> posts = await Mediator.Send(new GetAllPostsQuery());
-            return Ok(posts);
+            try
+            {
+                IPagedList<PostDto> posts = await Mediator.Send(request);
+                return Ok(posts);
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet("{id}")]

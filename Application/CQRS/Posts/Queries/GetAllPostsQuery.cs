@@ -1,17 +1,30 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Application.Common.Extensions;
 using Application.CQRS.Posts.Models;
+using Application.Pagination.Common.Models;
+using Application.Pagination.Common.Models.PagedList;
+using Application.Pagination.Extensions;
+using Application.Pagination.Options;
 using Application.Persistence.Interfaces;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using MediatR;
 
 namespace Application.CQRS.Posts.Queries
 {
-    public class GetAllPostsQuery : IRequest<IEnumerable<PostDto>>
+    public class GetAllPostsQuery : IRequest<IPagedList<PostDto>>, IPaginationRequest
     {
-        public class Handler : IRequestHandler<GetAllPostsQuery, IEnumerable<PostDto>>
+        #region IPaginationRequest
+
+        public int PageNumber { get; set; } = PaginationOptions.DefaultPageNumber;
+        public int PageSize { get; set; } = PaginationOptions.DefaultPageSize;
+
+        #endregion
+
+        #region Classes
+
+        public class Handler : IRequestHandler<GetAllPostsQuery, IPagedList<PostDto>>
         {
             #region Fields
 
@@ -32,15 +45,19 @@ namespace Application.CQRS.Posts.Queries
 
             #region IRequestHandler<GetAllPostsQuery, IEnumerable<PostDto>>
 
-            public async Task<IEnumerable<PostDto>> Handle(GetAllPostsQuery request,
+            public async Task<IPagedList<PostDto>> Handle(GetAllPostsQuery request,
                 CancellationToken cancellationToken)
             {
                 return await _context.Post
-                    .ProjectToListAsync<PostDto>(_mapper.ConfigurationProvider, cancellationToken)
+                    .OrderBy(p => p.PostId)
+                    .ProjectTo<PostDto>(_mapper.ConfigurationProvider, cancellationToken)
+                    .ProjectToPagedListAsync(request, cancellationToken)
                     .ConfigureAwait(false);
             }
 
             #endregion
         }
+
+        #endregion
     }
 }

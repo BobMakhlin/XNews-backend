@@ -4,7 +4,7 @@
 
 namespace Domain.Primary.Entities
 {
-    public partial class CommentRate
+    public class CommentRate
     {
         public Guid CommentRateId { get; set; }
         public double Rate { get; set; }

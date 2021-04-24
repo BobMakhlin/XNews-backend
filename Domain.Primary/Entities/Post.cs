@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Domain.Primary.Entities
 {
-    public partial class Post
+    public class Post
     {
         public Post()
         {

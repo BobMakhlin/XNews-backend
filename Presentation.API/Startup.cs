@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Persistence.Logging;
 using Persistence.Primary;
+using Presentation.API.Extensions;
 using Presentation.API.Middlewares;
 
 namespace Presentation.API
@@ -51,12 +52,7 @@ namespace Presentation.API
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Presentation.API v1"));
             }
 
-            app.UseCors(options =>
-            {
-                options.AllowAnyOrigin();
-                options.AllowAnyHeader();
-                options.AllowAnyMethod();
-            });
+            app.UseCors(Configuration);
             
             app.UseHttpsRedirection();
 

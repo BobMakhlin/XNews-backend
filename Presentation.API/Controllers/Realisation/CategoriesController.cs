@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Application.CQRS.Categories.Commands;
 using Application.CQRS.Categories.Models;
 using Application.CQRS.Categories.Queries;
+using Application.Pagination.Common.Models.PagedList;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.API.Controllers.Abstraction;
 
@@ -14,10 +15,17 @@ namespace Presentation.API.Controllers.Realisation
     public class CategoriesController : MyBaseController
     {
         [HttpGet]
-        public async Task<IActionResult> GetAllCategoriesAsync()
+        public async Task<IActionResult> GetAllCategoriesAsync([FromQuery] GetAllCategoriesQuery request)
         {
-            IEnumerable<CategoryDto> categories = await Mediator.Send(new GetAllCategoriesQuery());
-            return Ok(categories);
+            try
+            {
+                IPagedList<CategoryDto> categories = await Mediator.Send(request);
+                return Ok(categories);
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet("{id}")]

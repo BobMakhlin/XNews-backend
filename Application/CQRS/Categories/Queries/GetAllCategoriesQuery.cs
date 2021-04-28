@@ -1,18 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Common.Extensions;
 using Application.CQRS.Categories.Models;
+using Application.Pagination.Common.Models;
+using Application.Pagination.Common.Models.PagedList;
+using Application.Pagination.Extensions;
+using Application.Pagination.Options;
 using Application.Persistence.Interfaces;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using MediatR;
 
 namespace Application.CQRS.Categories.Queries
 {
-    public class GetAllCategoriesQuery : IRequest<IEnumerable<CategoryDto>>
+    public class GetAllCategoriesQuery : IRequest<IPagedList<CategoryDto>>, IPaginationRequest
     {
-        public class Handler : IRequestHandler<GetAllCategoriesQuery, IEnumerable<CategoryDto>>
+        #region IPaginationRequest
+
+        public int PageNumber { get; set; } = PaginationOptions.DefaultPageNumber;
+        public int PageSize { get; set; } = PaginationOptions.DefaultPageSize;
+
+        #endregion
+
+        #region Classes
+
+        public class Handler : IRequestHandler<GetAllCategoriesQuery, IPagedList<CategoryDto>>
         {
             #region Fields
 
@@ -31,17 +46,21 @@ namespace Application.CQRS.Categories.Queries
 
             #endregion
 
-            #region IRequestHandler<GetAllCategoriesQuery, IEnumerable<CategoryDto>>
+            #region IRequestHandler<GetAllCategoriesQuery, IPagedList<CategoryDto>>
 
-            public async Task<IEnumerable<CategoryDto>> Handle(GetAllCategoriesQuery request,
+            public async Task<IPagedList<CategoryDto>> Handle(GetAllCategoriesQuery request,
                 CancellationToken cancellationToken)
             {
                 return await _context.Category
-                    .ProjectToListAsync<CategoryDto>(_mapper.ConfigurationProvider, cancellationToken)
+                    .OrderBy(c => c.CategoryId)
+                    .ProjectTo<CategoryDto>(_mapper.ConfigurationProvider, cancellationToken)
+                    .ProjectToPagedListAsync(request, cancellationToken)
                     .ConfigureAwait(false);
             }
 
             #endregion
         }
+
+        #endregion
     }
 }

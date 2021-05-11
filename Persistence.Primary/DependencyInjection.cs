@@ -21,6 +21,7 @@ namespace Persistence.Primary
             AddPrimaryDbContext(services, configuration);
             
             services.AddScoped<IXNewsDbContext>(provider => provider.GetService<XNewsDbContext>());
+            services.AddScoped<IXNewsDbContextExtended>(provider => provider.GetService<XNewsDbContext>());
             services.AddScoped<IDbSeeder, XNewsDbSeeder>();
 
             return services;

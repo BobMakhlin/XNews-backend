@@ -1,11 +1,13 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Linq;
+using System.Reflection;
 using Application.Persistence.Interfaces;
 using Domain.Primary.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Primary.DataAccess
 {
-    internal sealed class XNewsDbContext : DbContext, IXNewsDbContext
+    internal sealed class XNewsDbContext : DbContext, IXNewsDbContext, IXNewsDbContextExtended
     {
         #region Constructors
 
@@ -15,13 +17,26 @@ namespace Persistence.Primary.DataAccess
 
         #endregion
 
-        #region Properties
+        #region IXNewsDbContext
 
         public DbSet<Category> Category { get; set; }
         public DbSet<Comment> Comment { get; set; }
         public DbSet<CommentRate> CommentRate { get; set; }
         public DbSet<Post> Post { get; set; }
         public DbSet<PostRate> PostRate { get; set; }
+        
+        #endregion
+
+        #region IXNewsDbContextExtended
+
+        public IQueryable<Comment> GetPostComments(Guid postId, int pageNumber, int pageSize)
+        {
+            return Comment.FromSqlInterpolated
+            (@$"
+                SELECT CommentId, Content, PostId, ParentCommentId 
+                FROM dbo.fn_PostCommentHierarchy({postId}, {pageNumber}, {pageSize})
+            ");
+        }
 
         #endregion
 

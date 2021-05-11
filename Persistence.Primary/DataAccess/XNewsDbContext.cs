@@ -11,7 +11,6 @@ namespace Persistence.Primary.DataAccess
 
         public XNewsDbContext(DbContextOptions<XNewsDbContext> options) : base(options)
         {
-            Database.EnsureCreated();
         }
 
         #endregion

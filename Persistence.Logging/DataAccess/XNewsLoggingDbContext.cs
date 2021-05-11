@@ -10,7 +10,6 @@ namespace Persistence.Logging.DataAccess
 
         public XNewsLoggingDbContext(DbContextOptions<XNewsLoggingDbContext> options) : base(options)
         {
-            Database.EnsureCreated();
         }
 
         #endregion

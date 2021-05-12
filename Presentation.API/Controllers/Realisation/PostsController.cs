@@ -106,26 +106,5 @@ namespace Presentation.API.Controllers.Realisation
             IEnumerable<PostRateDto> rates = await Mediator.Send(new GetAllRatesOfPostQuery {PostId = postId});
             return Ok(rates);
         }
-
-        [HttpGet("{postId}/comments")]
-        public async Task<IActionResult> GetCommentsOfPostAsync([FromRoute] Guid postId, [FromQuery] int pageNumber,
-            [FromQuery] int pageSize)
-        {
-            try
-            {
-                var query = new GetAllCommentsOfPostQuery
-                {
-                    PostId = postId,
-                    PageNumber = pageNumber,
-                    PageSize = pageSize
-                };
-                IPagedList<CommentDto> comments = await Mediator.Send(query);
-                return Ok(comments);
-            }
-            catch (ArgumentOutOfRangeException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
     }
 }

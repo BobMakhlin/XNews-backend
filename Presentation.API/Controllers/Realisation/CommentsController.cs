@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Application.CQRS.CommentRates.Models;
 using Application.CQRS.Comments.Commands;
+using Application.CQRS.Comments.Models;
 using Application.CQRS.Comments.Queries;
-using Microsoft.AspNetCore.Mvc;
+using Application.CQRS.Posts.Queries;
+using Application.Pagination.Common.Models.PagedList;
 using Presentation.API.Controllers.Abstraction;
 
 namespace Presentation.API.Controllers.Realisation
@@ -13,6 +16,20 @@ namespace Presentation.API.Controllers.Realisation
     [Route("[controller]")]
     public class CommentsController : MyBaseController
     {
+        [HttpGet("of/post")]
+        public async Task<IActionResult> GetCommentsOfPostAsync([FromQuery] GetAllCommentsOfPostQuery request)
+        {
+            try
+            {
+                IPagedList<CommentDto> comments = await Mediator.Send(request);
+                return Ok(comments);
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        
         [HttpGet("{id}/rates")]
         public async Task<IActionResult> GetRatesOfCommentAsync([FromRoute] Guid id)
         {

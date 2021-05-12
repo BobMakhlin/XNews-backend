@@ -18,8 +18,8 @@ namespace Domain.Primary.Entities
         public string Title { get; set; }
         public string Content { get; set; }
 
-        public virtual ICollection<Category> Categories { get; set; }
-        public virtual ICollection<Comment> Comments { get; set; }
-        public virtual ICollection<PostRate> PostRates { get; set; }
+        public ICollection<Category> Categories { get; set; }
+        public ICollection<Comment> Comments { get; set; }
+        public ICollection<PostRate> PostRates { get; set; }
     }
 }

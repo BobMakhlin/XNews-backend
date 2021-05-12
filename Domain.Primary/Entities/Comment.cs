@@ -17,12 +17,12 @@ namespace Domain.Primary.Entities
         public string Content { get; set; }
 
         public Guid PostId { get; set; }
-        public virtual Post Post { get; set; }
+        public Post Post { get; set; }
         
         public Guid? ParentCommentId { get; set; }
-        public virtual Comment ParentComment { get; set; }
+        public Comment ParentComment { get; set; }
         
-        public virtual ICollection<CommentRate> CommentRates { get; set; }
-        public virtual ICollection<Comment> InverseParentComment { get; set; }
+        public ICollection<CommentRate> CommentRates { get; set; }
+        public ICollection<Comment> InverseParentComment { get; set; }
     }
 }

@@ -10,6 +10,6 @@ namespace Domain.Primary.Entities
         public double Rate { get; set; }
 
         public Guid CommentId { get; set; }
-        public virtual Comment Comment { get; set; }
+        public Comment Comment { get; set; }
     }
 }

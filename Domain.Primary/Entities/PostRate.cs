@@ -10,6 +10,6 @@ namespace Domain.Primary.Entities
         public double Rate { get; set; }
 
         public Guid PostId { get; set; }
-        public virtual Post Post { get; set; }
+        public Post Post { get; set; }
     }
 }

@@ -3,15 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Application.Common.Extensions;
-using Application.CQRS.Comments.Models;
-using Application.Persistence.Interfaces;
 using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
+using Application.Common.Extensions;
+using Application.CQRS.Comments.Models;
+using Application.Pagination.Common.Models;
+using Application.Pagination.Common.Models.PagedList;
+using Application.Pagination.Options;
+using Application.Persistence.Interfaces;
 
 namespace Application.CQRS.Posts.Queries
 {
-    public class GetAllCommentsOfPostQuery : IRequest<IEnumerable<CommentDto>>
+    public class GetAllCommentsOfPostQuery : IRequest<IPagedList<CommentDto>>, IPaginationRequest
     {
         #region Properties
 
@@ -19,20 +23,27 @@ namespace Application.CQRS.Posts.Queries
 
         #endregion
 
+        #region IPaginationRequest
+
+        public int PageNumber { get; set; } = PaginationOptions.DefaultPageNumber;
+        public int PageSize { get; set; } = PaginationOptions.DefaultPageSize;
+
+        #endregion
+
         #region Classes
 
-        public class Handler : IRequestHandler<GetAllCommentsOfPostQuery, IEnumerable<CommentDto>>
+        public class Handler : IRequestHandler<GetAllCommentsOfPostQuery, IPagedList<CommentDto>>
         {
             #region Fields
 
-            private readonly IXNewsDbContext _context;
+            private readonly IXNewsDbContextExtended _context;
             private readonly IMapper _mapper;
 
             #endregion
 
             #region Constructors
 
-            public Handler(IXNewsDbContext context, IMapper mapper)
+            public Handler(IXNewsDbContextExtended context, IMapper mapper)
             {
                 _context = context;
                 _mapper = mapper;
@@ -40,22 +51,63 @@ namespace Application.CQRS.Posts.Queries
 
             #endregion
 
-            #region IRequestHandler<GetAllCommentsOfPostQuery, IEnumerable<CommentDto>>
+            #region IRequestHandler<GetAllCommentsOfPostQuery, IPagedList<CommentDto>>
 
-            public async Task<IEnumerable<CommentDto>> Handle(GetAllCommentsOfPostQuery request,
+            public async Task<IPagedList<CommentDto>> Handle(GetAllCommentsOfPostQuery request,
                 CancellationToken cancellationToken)
             {
-                List<CommentDto> commentsOfPost = await _context.Comment
-                    .Where(c => c.PostId == request.PostId)
-                    .ProjectToListAsync<CommentDto>(_mapper.ConfigurationProvider, cancellationToken)
+                int rootCommentsCount = await GetRootCommentsCountOfPostAsync(request.PostId, cancellationToken)
                     .ConfigureAwait(false);
 
-                return CreateCommentHierarchyFromFlatList(commentsOfPost);
+                IEnumerable<CommentDto> commentHierarchy = await GetCommentHierarchyOfPostAsync(request.PostId,
+                        request.PageNumber, request.PageSize, cancellationToken)
+                    .ConfigureAwait(false);
+
+                IPaginationRequest paginationRequest = request;
+                return PagedList<CommentDto>.CreateFromExistingPage(commentHierarchy, rootCommentsCount,
+                    paginationRequest);
             }
 
             #endregion
 
             #region Methods
+
+            /// <summary>
+            /// Returns count of root comments of a post with the specified <paramref name="postId"/>.
+            /// Root comment is a comment, that doesn't have a parent comment
+            /// (its property <see cref="CommentDto.ParentCommentId"/> is equal to <see langword="null"/>).
+            /// </summary>
+            /// <param name="postId"></param>
+            /// <param name="cancellationToken"></param>
+            /// <returns></returns>
+            private async Task<int> GetRootCommentsCountOfPostAsync(Guid postId, CancellationToken cancellationToken)
+            {
+                return await _context.Comment
+                    .Where(c => c.PostId == postId && c.ParentCommentId == null)
+                    .CountAsync(cancellationToken)
+                    .ConfigureAwait(false);
+            }
+
+            /// <summary>
+            /// Returns the comment hierarchy of a post with the specified <paramref name="postId"/>,
+            /// paginated according to <paramref name="pageNumber"/> and <paramref name="pageSize"/>.
+            /// </summary>
+            /// <param name="postId"></param>
+            /// <param name="pageNumber"></param>
+            /// <param name="pageSize"></param>
+            /// <param name="cancellationToken"></param>
+            /// <returns></returns>
+            private async Task<IEnumerable<CommentDto>> GetCommentHierarchyOfPostAsync(Guid postId, int pageNumber,
+                int pageSize, CancellationToken cancellationToken)
+            {
+                List<CommentDto> commentFlatList = await _context
+                    .GetPostComments(postId, pageNumber, pageSize)
+                    .ProjectToListAsync<CommentDto>(_mapper.ConfigurationProvider, cancellationToken)
+                    .ConfigureAwait(false);
+
+                IEnumerable<CommentDto> commentHierarchy = CreateCommentHierarchyFromFlatList(commentFlatList);
+                return commentHierarchy;
+            }
 
             /// <summary>
             /// Creates hierarchy of comments based on the given <paramref name="commentFlatList"/>.

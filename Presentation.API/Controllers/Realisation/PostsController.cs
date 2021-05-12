@@ -108,15 +108,18 @@ namespace Presentation.API.Controllers.Realisation
         }
 
         [HttpGet("{postId}/comments")]
-        public async Task<IActionResult> GetCommentsOfPostAsync([FromRoute] Guid postId)
+        public async Task<IActionResult> GetCommentsOfPostAsync([FromRoute] Guid postId, [FromQuery] int pageNumber,
+            [FromQuery] int pageSize)
         {
             try
             {
                 var query = new GetAllCommentsOfPostQuery
                 {
-                    PostId = postId
+                    PostId = postId,
+                    PageNumber = pageNumber,
+                    PageSize = pageSize
                 };
-                IEnumerable<CommentDto> comments = await Mediator.Send(query);
+                IPagedList<CommentDto> comments = await Mediator.Send(query);
                 return Ok(comments);
             }
             catch (ArgumentOutOfRangeException ex)

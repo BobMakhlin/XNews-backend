@@ -40,6 +40,6 @@ namespace Application.Pagination.Extensions
         /// <returns></returns>
         public static async Task<IPagedList<T>> ProjectToPagedListAsync<T>(this IQueryable<T> query,
             IPaginationRequest paginationRequest, CancellationToken cancellationToken = default)
-            => await PagedList<T>.CreateAsync(query, paginationRequest, cancellationToken);
+            => await PagedList<T>.CreateFromQueryAsync(query, paginationRequest, cancellationToken);
     }
 }

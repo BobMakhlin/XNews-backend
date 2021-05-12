@@ -15,7 +15,7 @@ namespace Application.Pagination.Common.Models.PagedList
 
         /// <summary>
         /// Creates an instance of type <see cref="PagedList{T}"/>.
-        /// To create it outside of this class, use static method <see cref="PagedList{T}.CreateAsync"/>.
+        /// To create it outside of this class, use one of static factory methods.
         /// </summary>
         private PagedList()
         {
@@ -37,14 +37,15 @@ namespace Application.Pagination.Common.Models.PagedList
         #region Methods
 
         /// <summary>
-        /// Creates an instance of type <see cref="PagedList{T}"/> based on <paramref name="query"/>
-        /// and according to <paramref name="paginationRequest"/>.
+        /// A static factory method, that paginates the given <paramref name="query"/>
+        /// according to <paramref name="paginationRequest"/> and creates an instance of type <see cref="PagedList{T}"/>.
         /// </summary>
         /// <param name="query"></param>
         /// <param name="paginationRequest"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public static async Task<PagedList<T>> CreateAsync(IQueryable<T> query, IPaginationRequest paginationRequest,
+        public static async Task<PagedList<T>> CreateFromQueryAsync(IQueryable<T> query,
+            IPaginationRequest paginationRequest,
             CancellationToken cancellationToken = default)
         {
             ThrowIfPaginationRequestIsInvalid(paginationRequest);
@@ -59,7 +60,7 @@ namespace Application.Pagination.Common.Models.PagedList
 
             int totalPagesCount = GetTotalPagesCount(totalItemsCount, paginationRequest.PageSize);
 
-            return new PagedList<T>
+            return new()
             {
                 TotalItemsCount = totalItemsCount,
                 TotalPagesCount = totalPagesCount,
@@ -67,6 +68,32 @@ namespace Application.Pagination.Common.Models.PagedList
                 HasNextPage = paginationRequest.PageNumber < totalPagesCount,
                 CurrentPageNumber = paginationRequest.PageNumber,
                 CurrentPageItems = currentPageItems
+            };
+        }
+
+        /// <summary>
+        /// A static factory method, that creates an instance of type <see cref="PagedList{T}"/>,
+        /// based on the given parameters.
+        /// </summary>
+        /// <param name="pageItems"></param>
+        /// <param name="totalItemsCount"></param>
+        /// <param name="paginationRequest"></param>
+        /// <returns></returns>
+        public static PagedList<T> CreateFromExistingPage(IEnumerable<T> pageItems, int totalItemsCount,
+            IPaginationRequest paginationRequest)
+        {
+            ThrowIfPaginationRequestIsInvalid(paginationRequest);
+            
+            int totalPagesCount = GetTotalPagesCount(totalItemsCount, paginationRequest.PageSize);
+
+            return new()
+            {
+                TotalItemsCount = totalItemsCount,
+                TotalPagesCount = totalPagesCount,
+                HasPreviousPage = paginationRequest.PageNumber > 1,
+                HasNextPage = paginationRequest.PageNumber < totalPagesCount,
+                CurrentPageNumber = paginationRequest.PageNumber,
+                CurrentPageItems = pageItems
             };
         }
 

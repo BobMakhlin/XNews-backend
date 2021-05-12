@@ -10,10 +10,10 @@ namespace Persistence.Primary.Configurations
         {
             builder
                 .ToTable("Comment");
-                
+
             builder
                 .Property(e => e.CommentId)
-                .HasDefaultValueSql("NEWID()");
+                .ValueGeneratedOnAdd();
 
             builder
                 .HasIndex(e => e.ParentCommentId, "IX_Comment_ParentCommentId");

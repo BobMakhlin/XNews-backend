@@ -13,7 +13,7 @@ namespace Persistence.Primary.Configurations
 
             builder
                 .Property(e => e.PostRateId)
-                .HasDefaultValueSql("NEWID()");
+                .ValueGeneratedOnAdd();
                 
             builder
                 .HasIndex(e => e.PostId, "IX_PostRate_PostId");

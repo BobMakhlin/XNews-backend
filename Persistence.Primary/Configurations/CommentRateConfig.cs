@@ -13,7 +13,7 @@ namespace Persistence.Primary.Configurations
                 
             builder
                 .Property(e => e.CommentRateId)
-                .HasDefaultValueSql("NEWID()");
+                .ValueGeneratedOnAdd();
 
             builder
                 .HasIndex(e => e.CommentId, "IX_CommentRate_CommentId");

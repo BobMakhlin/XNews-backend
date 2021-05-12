@@ -13,7 +13,7 @@ namespace Persistence.Primary.Configurations
 
             builder
                 .Property(e => e.CategoryId)
-                .HasDefaultValueSql("NEWID()");
+                .ValueGeneratedOnAdd();
                 
             builder
                 .HasIndex(e => e.Title, "UQ_Category")

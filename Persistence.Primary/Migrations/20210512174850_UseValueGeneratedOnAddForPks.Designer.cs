@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence.Primary.DataAccess;
 
 namespace Persistence.Primary.Migrations
 {
     [DbContext(typeof(XNewsDbContext))]
-    partial class XNewsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210512174850_UseValueGeneratedOnAddForPks")]
+    partial class UseValueGeneratedOnAddForPks
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -13,7 +13,7 @@ namespace Persistence.Primary.Configurations
 
             builder
                 .Property(e => e.PostId)
-                .HasDefaultValueSql("NEWID()");
+                .ValueGeneratedOnAdd();
 
             builder
                 .Property(e => e.Content)

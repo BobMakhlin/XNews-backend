@@ -23,7 +23,7 @@ namespace Application.CQRS.Comments.Queries
             private readonly IMapper _mapper;
 
             #endregion
-            
+
             #region Constructors
 
             public Handler(IXNewsDbContext context, IMapper mapper)
@@ -33,15 +33,14 @@ namespace Application.CQRS.Comments.Queries
             }
 
             #endregion
-            
+
             #region IRequestHandler<GetRatesOfCommentQuery, IEnumerable<CommentRateDto>>
 
-            public async Task<IEnumerable<CommentRateDto>> Handle(GetRatesOfCommentQuery request, CancellationToken cancellationToken)
+            public async Task<IEnumerable<CommentRateDto>> Handle(GetRatesOfCommentQuery request,
+                CancellationToken cancellationToken)
             {
-                return await _context.Comment
-                    .Where(c => c.CommentId == request.CommentId)
-                    .Take(1)
-                    .SelectMany(c => c.CommentRates)
+                return await _context.CommentRate
+                    .Where(cr => cr.CommentId == request.CommentId)
                     .ProjectToListAsync<CommentRateDto>(_mapper.ConfigurationProvider, cancellationToken)
                     .ConfigureAwait(false);
             }

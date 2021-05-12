@@ -36,12 +36,11 @@ namespace Application.CQRS.Posts.Queries
             
             #region IRequestHandler<GetAllRatesOfPostQuery, IEnumerable<PostRateDto>>
 
-            public async Task<IEnumerable<PostRateDto>> Handle(GetAllRatesOfPostQuery request, CancellationToken cancellationToken)
+            public async Task<IEnumerable<PostRateDto>> Handle(GetAllRatesOfPostQuery request,
+                CancellationToken cancellationToken)
             {
-                return await _context.Post
-                    .Where(p => p.PostId == request.PostId)
-                    .Take(1)
-                    .SelectMany(p => p.PostRates)
+                return await _context.PostRate
+                    .Where(pr => pr.PostId == request.PostId)
                     .ProjectToListAsync<PostRateDto>(_mapper.ConfigurationProvider, cancellationToken)
                     .ConfigureAwait(false);
             }

@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Application;
 using Application.Persistence.Interfaces;
+using Application.Validation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -35,6 +36,7 @@ namespace Presentation.API
             });
 
             services.AddApplication();
+            services.AddApplicationValidation();
             services.AddPersistence(Configuration);
             services.AddPersistenceLogging(Configuration);
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Application.Common.Exceptions;
+using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
@@ -35,6 +36,12 @@ namespace Presentation.API.Middlewares
             try
             {
                 await _next.Invoke(context);
+            }
+            catch (ValidationException ex)
+            {
+                context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                context.Response.ContentType = "text/plain";
+                await context.Response.WriteAsync(ex.Message);
             }
             catch (NotFoundException ex)
             {

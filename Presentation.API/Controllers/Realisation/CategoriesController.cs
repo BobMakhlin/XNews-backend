@@ -17,15 +17,8 @@ namespace Presentation.API.Controllers.Realisation
         [HttpGet]
         public async Task<IActionResult> GetAllCategoriesAsync([FromQuery] GetAllCategoriesQuery request)
         {
-            try
-            {
-                IPagedList<CategoryDto> categories = await Mediator.Send(request);
-                return Ok(categories);
-            }
-            catch (ArgumentOutOfRangeException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            IPagedList<CategoryDto> categories = await Mediator.Send(request);
+            return Ok(categories);
         }
 
         [HttpGet("{id}")]

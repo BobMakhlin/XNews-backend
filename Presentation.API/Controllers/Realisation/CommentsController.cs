@@ -19,24 +19,17 @@ namespace Presentation.API.Controllers.Realisation
         [HttpGet("of/post")]
         public async Task<IActionResult> GetCommentsOfPostAsync([FromQuery] GetAllCommentsOfPostQuery request)
         {
-            try
-            {
-                IPagedList<CommentDto> comments = await Mediator.Send(request);
-                return Ok(comments);
-            }
-            catch (ArgumentOutOfRangeException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            IPagedList<CommentDto> comments = await Mediator.Send(request);
+            return Ok(comments);
         }
-        
+
         [HttpGet("{id}/rates")]
         public async Task<IActionResult> GetRatesOfCommentAsync([FromRoute] Guid id)
         {
             IEnumerable<CommentRateDto> rates = await Mediator.Send(new GetRatesOfCommentQuery {CommentId = id});
             return Ok(rates);
         }
-        
+
         [HttpPost]
         public async Task<IActionResult> CreateCommentAsync([FromBody] CreateCommentCommand request)
         {
@@ -45,18 +38,19 @@ namespace Presentation.API.Controllers.Realisation
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCommentAsync([FromRoute] Guid id, [FromBody] UpdateCommentCommand request)
+        public async Task<IActionResult> UpdateCommentAsync([FromRoute] Guid id,
+            [FromBody] UpdateCommentCommand request)
         {
             if (id != request.CommentId)
             {
                 return BadRequest();
             }
-            
+
             await Mediator.Send(request);
 
             return NoContent();
         }
-        
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCommentAsync([FromRoute] Guid id)
         {

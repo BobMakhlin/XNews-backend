@@ -20,15 +20,8 @@ namespace Presentation.API.Controllers.Realisation
         [HttpGet]
         public async Task<IActionResult> GetAllPostsAsync([FromQuery] GetAllPostsQuery request)
         {
-            try
-            {
-                IPagedList<PostDto> posts = await Mediator.Send(request);
-                return Ok(posts);
-            }
-            catch (ArgumentOutOfRangeException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            IPagedList<PostDto> posts = await Mediator.Send(request);
+            return Ok(posts);
         }
 
         [HttpGet("{id}")]

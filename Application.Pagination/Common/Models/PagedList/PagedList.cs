@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Pagination.Extensions;
-using Application.Pagination.Options;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Pagination.Common.Models.PagedList
@@ -48,8 +47,6 @@ namespace Application.Pagination.Common.Models.PagedList
             IPaginationRequest paginationRequest,
             CancellationToken cancellationToken = default)
         {
-            ThrowIfPaginationRequestIsInvalid(paginationRequest);
-
             List<T> currentPageItems = await query
                 .Paginate(paginationRequest)
                 .ToListAsync(cancellationToken)
@@ -82,8 +79,6 @@ namespace Application.Pagination.Common.Models.PagedList
         public static PagedList<T> CreateFromExistingPage(IEnumerable<T> pageItems, int totalItemsCount,
             IPaginationRequest paginationRequest)
         {
-            ThrowIfPaginationRequestIsInvalid(paginationRequest);
-            
             int totalPagesCount = GetTotalPagesCount(totalItemsCount, paginationRequest.PageSize);
 
             return new()
@@ -95,42 +90,6 @@ namespace Application.Pagination.Common.Models.PagedList
                 CurrentPageNumber = paginationRequest.PageNumber,
                 CurrentPageItems = pageItems
             };
-        }
-
-        /// <summary>
-        /// If <paramref name="request"/> is invalid, throws an exception.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <exception cref="System.ArgumentOutOfRangeException">
-        /// If property <see cref="IPaginationRequest.PageNumber"/> is less than 1.
-        /// </exception>
-        /// <exception cref="System.ArgumentOutOfRangeException">
-        /// If property <see cref="IPaginationRequest.PageSize"/> is less than 1.
-        /// </exception>
-        /// <exception cref="System.ArgumentOutOfRangeException">
-        /// If property <see cref="IPaginationRequest.PageSize"/> is more than maximum allowed size.
-        /// </exception>
-        private static void ThrowIfPaginationRequestIsInvalid(IPaginationRequest request)
-        {
-            if (request.PageNumber < 1)
-            {
-                throw new ArgumentOutOfRangeException(nameof(request),
-                    $"{nameof(request.PageNumber)} property is less than 1");
-            }
-
-            if (request.PageSize < 1)
-            {
-                throw new ArgumentOutOfRangeException(nameof(request),
-                    $"{nameof(request.PageSize)} property is less than 1");
-            }
-
-            int maxPageSize = PaginationOptions.MaxPageSize;
-            if (request.PageSize > maxPageSize)
-            {
-                string message = $"The requested page size is {request.PageSize}, " +
-                                 $"while maximum page size is {maxPageSize}";
-                throw new ArgumentOutOfRangeException(nameof(request), message);
-            }
         }
 
         private static int GetTotalPagesCount(int totalItemsCount, int pageSize)

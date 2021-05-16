@@ -10,7 +10,7 @@ namespace Application.Validation.Validators.CQRS.CommentRates.Commands
         public CreateCommentRateCommandValidator()
         {
             RuleFor(c => c.Rate)
-                .In(CommentRateValidationIOptions.NegativeRate, CommentRateValidationIOptions.PositiveRate);
+                .In(CommentRateValidationOptions.NegativeRate, CommentRateValidationOptions.PositiveRate);
         }
     }
 }

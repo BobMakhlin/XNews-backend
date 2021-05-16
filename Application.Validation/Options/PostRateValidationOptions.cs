@@ -3,7 +3,7 @@ namespace Application.Validation.Options
     /// <summary>
     /// Contains <see langword="static readonly"/> fields, used to validate a post rate.
     /// </summary>
-    public static class PostRateValidationOptions
+    internal static class PostRateValidationOptions
     {
         /// <summary>
         /// Determines the value of a negative rate (i.e., dislike).

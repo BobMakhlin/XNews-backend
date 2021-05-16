@@ -3,7 +3,7 @@ namespace Application.Validation.Options
     /// <summary>
     /// Contains <see langword="static readonly"/> fields, used to validate a comment.
     /// </summary>
-    public static class CommentValidationOptions
+    internal static class CommentValidationOptions
     {
         /// <summary>
         /// Determines the minimum count of letters in content of comment.

@@ -3,7 +3,7 @@ namespace Application.Validation.Options
     /// <summary>
     /// Contains <see langword="static readonly"/> fields, used to validate a comment rate.
     /// </summary>
-    public static class CommentRateValidationOptions
+    internal static class CommentRateValidationOptions
     {
         /// <summary>
         /// Determines the value of a negative rate (i.e., dislike).

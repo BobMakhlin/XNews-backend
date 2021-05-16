@@ -10,7 +10,6 @@ using Application.Common.Extensions;
 using Application.CQRS.Comments.Models;
 using Application.Pagination.Common.Models;
 using Application.Pagination.Common.Models.PagedList;
-using Application.Pagination.Options;
 using Application.Persistence.Interfaces;
 
 namespace Application.CQRS.Posts.Queries
@@ -25,8 +24,8 @@ namespace Application.CQRS.Posts.Queries
 
         #region IPaginationRequest
 
-        public int PageNumber { get; set; } = PaginationOptions.DefaultPageNumber;
-        public int PageSize { get; set; } = PaginationOptions.DefaultPageSize;
+        public int PageNumber { get; set; }
+        public int PageSize { get; set; }
 
         #endregion
 

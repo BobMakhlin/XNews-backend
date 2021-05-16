@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Application.Common.Extensions;
 using Application.CQRS.Categories.Models;
 using Application.Pagination.Common.Models;
 using Application.Pagination.Common.Models.PagedList;
 using Application.Pagination.Extensions;
-using Application.Pagination.Options;
 using Application.Persistence.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -20,8 +16,8 @@ namespace Application.CQRS.Categories.Queries
     {
         #region IPaginationRequest
 
-        public int PageNumber { get; set; } = PaginationOptions.DefaultPageNumber;
-        public int PageSize { get; set; } = PaginationOptions.DefaultPageSize;
+        public int PageNumber { get; set; }
+        public int PageSize { get; set; }
 
         #endregion
 

@@ -5,7 +5,6 @@ using Application.CQRS.Posts.Models;
 using Application.Pagination.Common.Models;
 using Application.Pagination.Common.Models.PagedList;
 using Application.Pagination.Extensions;
-using Application.Pagination.Options;
 using Application.Persistence.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -17,8 +16,8 @@ namespace Application.CQRS.Posts.Queries
     {
         #region IPaginationRequest
 
-        public int PageNumber { get; set; } = PaginationOptions.DefaultPageNumber;
-        public int PageSize { get; set; } = PaginationOptions.DefaultPageSize;
+        public int PageNumber { get; set; }
+        public int PageSize { get; set; }
 
         #endregion
 

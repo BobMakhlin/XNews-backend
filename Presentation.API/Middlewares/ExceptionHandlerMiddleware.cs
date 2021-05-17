@@ -15,16 +15,14 @@ namespace Presentation.API.Middlewares
         #region Fields
 
         private readonly RequestDelegate _next;
-        private readonly ILogger<ExceptionHandlerMiddleware> _logger;
 
         #endregion
 
         #region Constructors
 
-        public ExceptionHandlerMiddleware(RequestDelegate next, ILogger<ExceptionHandlerMiddleware> logger)
+        public ExceptionHandlerMiddleware(RequestDelegate next)
         {
             _next = next;
-            _logger = logger;
         }
 
         #endregion
@@ -39,20 +37,54 @@ namespace Presentation.API.Middlewares
             }
             catch (ValidationException ex)
             {
-                context.Response.StatusCode = StatusCodes.Status400BadRequest;
-                context.Response.ContentType = "text/plain";
-                await context.Response.WriteAsync(ex.Message);
+                await HandleValidationExceptionAsync(ex, context);
             }
             catch (NotFoundException ex)
             {
-                _logger.LogWarning(ex, "The middleware caught an exception");
-                context.Response.StatusCode = StatusCodes.Status404NotFound;
+                HandleNotFoundException(ex, context);
             }
             catch (Exception ex)
             {
-                _logger.LogWarning(ex, "The middleware caught an exception");
-                context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+                HandleUnexpectedException(ex, context);
             }
+        }
+
+        /// <summary>
+        /// Handles the <paramref name="exception"/> of type <see cref="ValidationException"/> by setting a
+        /// response to a client, using the given <paramref name="context"/>.
+        /// </summary>
+        /// <param name="exception">Exception to be handled</param>
+        /// <param name="context">Used to set the response to a client</param>
+        /// <returns></returns>
+        private async Task HandleValidationExceptionAsync(ValidationException exception, HttpContext context)
+        {
+            context.Response.StatusCode = StatusCodes.Status400BadRequest;
+            context.Response.ContentType = "text/plain";
+            await context.Response.WriteAsync(exception.Message);
+        }
+
+        /// <summary>
+        /// Handles the <paramref name="exception"/> of type <see cref="NotFoundException"/> by setting a
+        /// response to a client, using the given <paramref name="context"/>.
+        /// </summary>
+        /// <param name="exception">Exception to be handled</param>
+        /// <param name="context">Used to set the response to a client</param>
+        /// <returns></returns>
+        private void HandleNotFoundException(NotFoundException exception, HttpContext context)
+        {
+            context.Response.StatusCode = StatusCodes.Status404NotFound;
+        }
+
+        /// <summary>
+        /// Handles the specified <paramref name="unexpectedException"/> by setting a
+        /// response to a client, using the given <paramref name="context"/>.
+        /// </summary>
+        /// <param name="unexpectedException">Exception to be handled</param>
+        /// <param name="context">Used to set the response to a client</param>
+        /// <returns></returns>
+        private void HandleUnexpectedException(Exception unexpectedException, HttpContext context)
+        {
+            context.Response.StatusCode = StatusCodes.Status500InternalServerError;
         }
         
         #endregion

@@ -15,14 +15,16 @@ namespace Presentation.API.Middlewares
         #region Fields
 
         private readonly RequestDelegate _next;
+        private readonly ILogger<ExceptionHandlerMiddleware> _logger;
 
         #endregion
 
         #region Constructors
 
-        public ExceptionHandlerMiddleware(RequestDelegate next)
+        public ExceptionHandlerMiddleware(RequestDelegate next, ILogger<ExceptionHandlerMiddleware> logger)
         {
             _next = next;
+            _logger = logger;
         }
 
         #endregion
@@ -84,6 +86,8 @@ namespace Presentation.API.Middlewares
         /// <returns></returns>
         private void HandleUnexpectedException(Exception unexpectedException, HttpContext context)
         {
+            _logger.LogError(unexpectedException, "Unexpected exception caught");
+            
             context.Response.StatusCode = StatusCodes.Status500InternalServerError;
         }
         

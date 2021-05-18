@@ -36,13 +36,12 @@ namespace Application.CQRS.Posts.Commands
             public async Task<Unit> Handle(DeletePostCommand request, CancellationToken cancellationToken)
             {
                 Post post = await _context.Post
-                                .Include(p => p.PostRates)
                                 .Include(p => p.Comments)
                                 .SingleOrDefaultAsync(p => p.PostId == request.PostId, cancellationToken)
                                 .ConfigureAwait(false)
                             ?? throw new NotFoundException();
 
-                ThrowIfPostCannotBeRemove(post);
+                ThrowIfPostCannotBeRemoved(post);
                 
                 MarkPostForRemove(post);
                 await _context.SaveChangesAsync(cancellationToken)
@@ -56,17 +55,12 @@ namespace Application.CQRS.Posts.Commands
             #region Methods
 
             /// <summary>
-            /// Marks <paramref name="post"/> and its <see cref="Post.PostRates"/> for remove.
+            /// Marks <paramref name="post"/> for remove.
             /// They will be removed from database when <see cref="DbContext.SaveChanges()"/> is called.
             /// </summary>
             /// <param name="post"></param>
             private void MarkPostForRemove(Post post)
             {
-                foreach (var postRate in post.PostRates)
-                {
-                    _context.PostRate.Remove(postRate);
-                }
-                
                 _context.Post.Remove(post);
             }
 
@@ -75,7 +69,7 @@ namespace Application.CQRS.Posts.Commands
             /// </summary>
             /// <param name="post"></param>
             /// <exception cref="InvalidOperationException">Post has some <see cref="Post.Comments"/></exception>
-            private void ThrowIfPostCannotBeRemove(Post post)
+            private void ThrowIfPostCannotBeRemoved(Post post)
             {
                 if (post.Comments.Any())
                 {

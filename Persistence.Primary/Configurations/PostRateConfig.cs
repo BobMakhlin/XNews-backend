@@ -22,7 +22,6 @@ namespace Persistence.Primary.Configurations
                 .HasOne(d => d.Post)
                 .WithMany(p => p.PostRates)
                 .HasForeignKey(d => d.PostId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_PostRate_PostId");
         }
     }

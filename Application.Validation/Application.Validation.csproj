@@ -16,6 +16,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Application.Validation.Tools\Application.Validation.Tools.csproj" />
       <ProjectReference Include="..\Application\Application.csproj" />
     </ItemGroup>
 

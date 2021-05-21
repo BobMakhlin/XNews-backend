@@ -33,7 +33,8 @@ namespace Application.Validation.Tools.Helpers
         {
             return !await dbSet
                 .Select(getColumnSelector)
-                .AnyAsync(column => column.Equals(newValue), cancellationToken);
+                .AnyAsync(column => column.Equals(newValue), cancellationToken)
+                .ConfigureAwait(false);
         }
     }
 }

@@ -41,8 +41,6 @@ namespace Application.CQRS.Posts.Commands
                                 .ConfigureAwait(false)
                             ?? throw new NotFoundException();
 
-                ThrowIfPostCannotBeRemoved(post);
-                
                 MarkPostForRemove(post);
                 await _context.SaveChangesAsync(cancellationToken)
                     .ConfigureAwait(false);
@@ -62,19 +60,6 @@ namespace Application.CQRS.Posts.Commands
             private void MarkPostForRemove(Post post)
             {
                 _context.Post.Remove(post);
-            }
-
-            /// <summary>
-            /// If the given <paramref name="post"/> cannot be removed, throws an exception.
-            /// </summary>
-            /// <param name="post"></param>
-            /// <exception cref="InvalidOperationException">Post has some <see cref="Post.Comments"/></exception>
-            private void ThrowIfPostCannotBeRemoved(Post post)
-            {
-                if (post.Comments.Any())
-                {
-                    throw new InvalidOperationException("Can't remove post that has comments");
-                }
             }
 
             #endregion

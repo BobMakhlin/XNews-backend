@@ -1,6 +1,9 @@
 using System;
 using System.Linq;
+using System.Linq.Expressions;
+using Application.Validation.Tools.Helpers;
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Validation.Tools.Extensions
 {
@@ -30,6 +33,7 @@ namespace Application.Validation.Tools.Extensions
             {
                 throw new ArgumentNullException(nameof(validValues));
             }
+
             if (validValues.Length == 0)
             {
                 throw new ArgumentException("Provide at least one valid value", nameof(validValues));
@@ -39,6 +43,43 @@ namespace Application.Validation.Tools.Extensions
             return ruleBuilder
                 .Must(validValues.Contains)
                 .WithMessage($"{{PropertyName}} must be one of these values: {validValuesString}");
+        }
+
+
+        /// <summary>
+        /// Defines a 'unique inside of DbSet' validator on the current rule builder.
+        /// Validation will fail if the value of the property is not unique within the column
+        /// of the given <paramref name="dbSet"/>.
+        /// The column is specified by <paramref name="getColumnSelector"/>.
+        /// </summary>
+        /// <param name="ruleBuilder"></param>
+        /// <param name="dbSet"></param>
+        /// <param name="getColumnSelector">
+        /// Determines the column, with which we will compare the value of the property.
+        /// </param>
+        /// <typeparam name="TObject">
+        /// Type of object being validated
+        /// </typeparam>
+        /// <typeparam name="TProperty">
+        /// Type of property being validated
+        /// </typeparam>
+        /// <typeparam name="TEntity">
+        /// Type of entity, with which <paramref name="dbSet"/> operates
+        /// </typeparam>
+        /// <returns></returns>
+        public static IRuleBuilderOptions<TObject, TProperty> UniqueInsideOfDbSetColumn<TObject, TProperty, TEntity>(
+            this IRuleBuilder<TObject, TProperty> ruleBuilder,
+            DbSet<TEntity> dbSet, Expression<Func<TEntity, TProperty>> getColumnSelector)
+            where TObject : class
+            where TEntity : class
+        {
+            return ruleBuilder
+                .MustAsync
+                (
+                    (newTitle, token) => EfCoreValidationHelpers.IsValueUniqueInsideOfDbSetColumnAsync
+                        (dbSet, getColumnSelector, newTitle, token)
+                )
+                .WithMessage("{PropertyName} must be unique");
         }
     }
 }

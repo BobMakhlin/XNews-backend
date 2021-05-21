@@ -7,11 +7,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Validation.Tools.Helpers
 {
-    public static class EfCoreValidationHelpers
+    internal static class EfCoreValidationHelpers
     {
         /// <summary>
-        /// Determines whether the specified <paramref name="newValue"/> is unique inside of
-        /// the given <paramref name="dbSet"/>.
+        /// Determines whether the specified <paramref name="newValue"/> is unique within the
+        /// column of the given <paramref name="dbSet"/>.
+        /// Column is specified by the parameter <paramref name="getColumnSelector"/>.
         /// </summary>
         /// <param name="dbSet"></param>
         /// <param name="getColumnSelector">
@@ -24,7 +25,7 @@ namespace Application.Validation.Tools.Helpers
         /// <typeparam name="TEntity"></typeparam>
         /// <typeparam name="TColumn"></typeparam>
         /// <returns></returns>
-        public static async Task<bool> IsColumnUniqueInsideOfDbSetAsync<TEntity, TColumn>(DbSet<TEntity> dbSet,
+        public static async Task<bool> IsValueUniqueInsideOfDbSetColumnAsync<TEntity, TColumn>(DbSet<TEntity> dbSet,
             Expression<Func<TEntity, TColumn>> getColumnSelector,
             TColumn newValue,
             CancellationToken cancellationToken)

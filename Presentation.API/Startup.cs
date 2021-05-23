@@ -51,9 +51,6 @@ namespace Presentation.API
         {
             if (env.IsDevelopment())
             {
-                SeedDatabaseAsync(app)
-                    .GetAwaiter().GetResult();
-
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Presentation.API v1"));

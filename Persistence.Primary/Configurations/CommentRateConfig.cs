@@ -19,6 +19,11 @@ namespace Persistence.Primary.Configurations
                 .HasIndex(e => e.CommentId, "IX_CommentRate_CommentId");
                 
             builder
+                .Property(e => e.UserId)
+                .IsRequired()
+                .HasMaxLength(450);
+            
+            builder
                 .HasOne(d => d.Comment)
                 .WithMany(p => p.CommentRates)
                 .HasForeignKey(d => d.CommentId)

@@ -27,6 +27,11 @@ namespace Persistence.Primary.Configurations
                 .HasMaxLength(320);
 
             builder
+                .Property(e => e.UserId)
+                .IsRequired()
+                .HasMaxLength(450);
+
+            builder
                 .HasOne(d => d.ParentComment)
                 .WithMany(p => p.InverseParentComment)
                 .HasForeignKey(d => d.ParentCommentId)

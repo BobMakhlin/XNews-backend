@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using Application;
 using Application.Persistence.Interfaces;
 using Application.Validation;
+using Infrastructure.Identity;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -28,7 +29,7 @@ namespace Presentation.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
-        
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -37,8 +38,12 @@ namespace Presentation.API
 
             services.AddApplication();
             services.AddApplicationValidation();
+
             services.AddPersistence(Configuration);
             services.AddPersistenceLogging(Configuration);
+
+            services.AddIdentityDbContext(Configuration);
+            services.AddIdentitySystem();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,17 +53,19 @@ namespace Presentation.API
             {
                 SeedDatabaseAsync(app)
                     .GetAwaiter().GetResult();
-                
+
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Presentation.API v1"));
             }
 
             app.UseCors(Configuration);
-            
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

@@ -1,4 +1,5 @@
 
+using Application.Identity.Models;
 using Infrastructure.Identity.DataAccess;
 using Infrastructure.Identity.Options;
 using Microsoft.AspNetCore.Identity;
@@ -36,7 +37,7 @@ namespace Infrastructure.Identity
         public static IServiceCollection AddIdentitySystem(this IServiceCollection services)
         {
             services
-                .AddIdentity<IdentityUser, IdentityRole>()
+                .AddIdentity<ApplicationUser, ApplicationRole>()
                 .AddEntityFrameworkStores<XNewsIdentityDbContext>();
 
             return services;

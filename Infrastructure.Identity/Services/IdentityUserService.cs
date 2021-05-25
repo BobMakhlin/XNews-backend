@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading.Tasks;
 using Application.Identity.Interfaces;
 using Microsoft.AspNetCore.Identity;
@@ -28,6 +29,8 @@ namespace Infrastructure.Identity.Services
 
         #region IIdentityUserService<TUser>
 
+        public IQueryable<TUser> Users => _userManager.Users;
+        
         public async Task<TUser> FindByIdAsync(string userId)
         {
             return await _userManager.FindByIdAsync(userId)

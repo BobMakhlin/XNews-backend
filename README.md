@@ -8,7 +8,7 @@
 
 *   `dotnet ef database update --project=Persistence.Primary --startup-project=Presentation.API --context=XNewsDbContext`
 *   `dotnet ef database update --project=Persistence.Logging --startup-project=Presentation.API --context=XNewsLoggingDbContext`
-
+*   `dotnet ef database update --project=Infrastructure.Identity --startup-project=Presentation.API --context=XNewsIdentityDbContext`
 
 ## License
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FBobMakhlin%2FXNews-backend.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FBobMakhlin%2FXNews-backend?ref=badge_large)

@@ -17,5 +17,12 @@ namespace Presentation.API.Controllers.Realisation
             IPagedList<UserDto> users = await Mediator.Send(query);
             return Ok(users);
         }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetUserByIdAsync([FromRoute] string id)
+        {
+            UserDto user = await Mediator.Send(new GetUserByIdQuery {UserId = id});
+            return Ok(user);
+        }
     }
 }

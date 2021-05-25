@@ -13,6 +13,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Application.Identity\Application.Identity.csproj" />
       <ProjectReference Include="..\Application.Pagination\Application.Pagination.csproj" />
       <ProjectReference Include="..\Application.Persistence\Application.Persistence.csproj" />
     </ItemGroup>

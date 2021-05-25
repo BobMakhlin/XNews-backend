@@ -1,8 +1,8 @@
-
+using Application.Identity.Interfaces;
 using Application.Identity.Models;
 using Infrastructure.Identity.DataAccess;
 using Infrastructure.Identity.Options;
-using Microsoft.AspNetCore.Identity;
+using Infrastructure.Identity.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -39,6 +39,9 @@ namespace Infrastructure.Identity
             services
                 .AddIdentity<ApplicationUser, ApplicationRole>()
                 .AddEntityFrameworkStores<XNewsIdentityDbContext>();
+
+            services
+                .AddScoped<IIdentityUserService<ApplicationUser>, IdentityUserService<ApplicationUser>>();
 
             return services;
         }

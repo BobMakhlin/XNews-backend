@@ -4,14 +4,16 @@ using Infrastructure.Identity.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Identity.Migrations
 {
     [DbContext(typeof(XNewsIdentityDbContext))]
-    partial class XNewsIdentityDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210527051309_Add_IntermediateEntity_Between_UserAndRoleEntities")]
+    partial class Add_IntermediateEntity_Between_UserAndRoleEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

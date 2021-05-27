@@ -39,6 +39,22 @@ namespace Infrastructure.Identity.Services
                 .ConfigureAwait(false);
         }
 
+        public async Task<IEnumerable<ApplicationRole>> GetRolesOfUserAsync(string userId)
+        {
+            IQueryable<ApplicationUser> joinUserRolesQuery = _userManager.Users
+                .Include(au => au.UserRoles)
+                .ThenInclude(aur => aur.Role);
+
+            IQueryable<ApplicationRole> getRolesOfUserQuery = joinUserRolesQuery
+                .Where(au => au.Id == userId)
+                .SelectMany(au => au.UserRoles)
+                .Select(aur => aur.Role);
+
+            return await getRolesOfUserQuery
+                .ToListAsync()
+                .ConfigureAwait(false);
+        }
+
         #endregion
     }
 }

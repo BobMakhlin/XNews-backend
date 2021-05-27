@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using Application.CQRS.Roles.Models;
 using Application.CQRS.Users.Models;
 using Application.CQRS.Users.Queries;
 using Application.Pagination.Common.Models.PagedList;
@@ -23,6 +25,13 @@ namespace Presentation.API.Controllers.Realisation
         {
             UserDto user = await Mediator.Send(new GetUserByIdQuery {UserId = id});
             return Ok(user);
+        }
+
+        [HttpGet("{id}/roles")]
+        public async Task<IActionResult> GetRolesOfUserAsync([FromRoute] string id)
+        {
+            IEnumerable<RoleDto> userRoles = await Mediator.Send(new GetRolesOfUserQuery {UserId = id});
+            return Ok(userRoles);
         }
     }
 }

@@ -23,5 +23,12 @@ namespace Application.Identity.Interfaces
         /// <param name="userId"></param>
         /// <returns></returns>
         Task<TUser> FindByIdAsync(string userId);
+
+        /// <summary>
+        /// Finds roles of a user with the specified <paramref name="userId"/>.
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        Task<IEnumerable<TRole>> GetRolesOfUserAsync(string userId);
     }
 }

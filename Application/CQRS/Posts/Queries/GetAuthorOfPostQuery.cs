@@ -22,14 +22,14 @@ namespace Application.CQRS.Posts.Queries
             #region Fields
 
             private readonly IXNewsDbContext _context;
-            private readonly IIdentityUserService<ApplicationUser> _userService;
+            private readonly IIdentityUserService<ApplicationUser, ApplicationRole> _userService;
             private readonly IMapper _mapper;
 
             #endregion
 
             #region Constructors
 
-            public Handler(IIdentityUserService<ApplicationUser> userService, IXNewsDbContext context, IMapper mapper)
+            public Handler(IIdentityUserService<ApplicationUser, ApplicationRole> userService, IXNewsDbContext context, IMapper mapper)
             {
                 _userService = userService;
                 _context = context;

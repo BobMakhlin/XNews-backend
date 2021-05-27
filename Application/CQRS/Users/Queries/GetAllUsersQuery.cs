@@ -28,14 +28,14 @@ namespace Application.CQRS.Users.Queries
         {
             #region Fields
 
-            private readonly IIdentityUserService<ApplicationUser> _userService;
+            private readonly IIdentityUserService<ApplicationUser, ApplicationRole> _userService;
             private readonly IMapper _mapper;
 
             #endregion
 
             #region Constructors
 
-            public Handler(IIdentityUserService<ApplicationUser> userService, IMapper mapper)
+            public Handler(IIdentityUserService<ApplicationUser, ApplicationRole> userService, IMapper mapper)
             {
                 _userService = userService;
                 _mapper = mapper;

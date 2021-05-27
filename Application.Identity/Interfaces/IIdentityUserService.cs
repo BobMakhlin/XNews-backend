@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
@@ -5,10 +6,11 @@ using Microsoft.AspNetCore.Identity;
 namespace Application.Identity.Interfaces
 {
     /// <summary>
-    /// Provides API to interact with the user storage.
+    /// Provides API to interact with user storage and user roles.
     /// </summary>
-    /// <typeparam name="TUser"></typeparam>
-    public interface IIdentityUserService<TUser> where TUser : IdentityUser
+    public interface IIdentityUserService<TUser, TRole>
+        where TUser : IdentityUser
+        where TRole : IdentityRole
     {
         /// <summary>
         /// Returns a query to get all users.

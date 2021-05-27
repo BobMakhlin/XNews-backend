@@ -43,7 +43,11 @@ namespace Infrastructure.Identity
                 .AddDefaultTokenProviders();
 
             services
-                .AddScoped<IIdentityUserService<ApplicationUser>, IdentityUserService<ApplicationUser>>();
+                .AddScoped
+                <
+                    IIdentityUserService<ApplicationUser, ApplicationRole>,
+                    IdentityUserService
+                >();
 
             return services;
         }

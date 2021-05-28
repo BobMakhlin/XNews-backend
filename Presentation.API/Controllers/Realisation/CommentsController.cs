@@ -7,6 +7,7 @@ using Application.CQRS.Comments.Commands;
 using Application.CQRS.Comments.Models;
 using Application.CQRS.Comments.Queries;
 using Application.CQRS.Posts.Queries;
+using Application.CQRS.Users.Queries;
 using Application.Pagination.Common.Models.PagedList;
 using Presentation.API.Controllers.Abstraction;
 
@@ -21,6 +22,13 @@ namespace Presentation.API.Controllers.Realisation
         {
             IPagedList<CommentDto> comments = await Mediator.Send(request);
             return Ok(comments);
+        }
+        
+        [HttpGet("of/user")]
+        public async Task<IActionResult> GetCommentsOfUserAsync([FromQuery] GetCommentsOfUserQuery request)
+        {
+            IPagedList<CommentDto> userComments = await Mediator.Send(request);
+            return Ok(userComments);
         }
 
         [HttpGet("{id}/rates")]

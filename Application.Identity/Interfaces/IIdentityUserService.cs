@@ -9,8 +9,6 @@ namespace Application.Identity.Interfaces
     /// Provides API to interact with user storage and user roles.
     /// </summary>
     public interface IIdentityUserService<TUser, TRole>
-        where TUser : IdentityUser
-        where TRole : IdentityRole
     {
         /// <summary>
         /// Returns a query to get all users.

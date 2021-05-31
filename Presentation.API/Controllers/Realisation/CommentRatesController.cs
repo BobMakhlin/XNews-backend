@@ -8,7 +8,7 @@ namespace Presentation.API.Controllers.Realisation
 {
     [ApiController]
     [Route("[controller]")]
-    public class CommentRateController : MyBaseController
+    public class CommentRatesController : MyBaseController
     {
         [HttpPost]
         public async Task<IActionResult> CreateCommentRate([FromBody] CreateCommentRateCommand request)

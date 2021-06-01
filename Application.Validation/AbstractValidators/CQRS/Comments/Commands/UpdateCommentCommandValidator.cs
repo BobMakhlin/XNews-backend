@@ -8,6 +8,9 @@ namespace Application.Validation.AbstractValidators.CQRS.Comments.Commands
     {
         public UpdateCommentCommandValidator()
         {
+            RuleFor(c => c.CommentId)
+                .NotEmpty();
+            
             RuleFor(c => c.Content)
                 .NotEmpty()
                 .Length(CommentValidationOptions.ContentMinLength, CommentValidationOptions.ContentMaxLength);

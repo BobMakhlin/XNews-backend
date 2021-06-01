@@ -10,6 +10,9 @@ namespace Application.Validation.AbstractValidators.CQRS.Post.Commands
     {
         public UpdatePostCommandValidator(IXNewsDbContext context)
         {
+            RuleFor(c => c.PostId)
+                .NotEmpty();
+            
             RuleFor(c => c.Content)
                 .NotEmpty()
                 .Length(PostValidationOptions.ContentMinLength, PostValidationOptions.ContentMaxLength);

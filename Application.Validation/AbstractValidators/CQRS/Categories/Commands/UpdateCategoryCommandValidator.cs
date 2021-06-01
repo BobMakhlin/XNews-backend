@@ -2,7 +2,6 @@ using Application.CQRS.Categories.Commands;
 using Application.Persistence.Interfaces;
 using Application.Validation.Options;
 using Application.Validation.Tools.Extensions;
-using Application.Validation.Tools.Helpers;
 using FluentValidation;
 
 namespace Application.Validation.AbstractValidators.CQRS.Categories.Commands
@@ -11,6 +10,9 @@ namespace Application.Validation.AbstractValidators.CQRS.Categories.Commands
     {
         public UpdateCategoryCommandValidator(IXNewsDbContext context)
         {
+            RuleFor(c => c.CategoryId)
+                .NotEmpty();
+
             RuleFor(c => c.Title)
                 .NotEmpty()
                 .Length(CategoryValidationOptions.TitleMinLength, CategoryValidationOptions.TitleMaxLength)

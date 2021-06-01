@@ -3,6 +3,4 @@ obj/
 /packages/
 riderModule.iml
 /_ReSharper.Caches/
-/.idea/.idea.XNews/.idea/vcs.xml
-/.idea/.idea.XNews/.idea/encodings.xml
-/.idea/.idea.XNews/.idea/indexLayout.xml
+/.idea/

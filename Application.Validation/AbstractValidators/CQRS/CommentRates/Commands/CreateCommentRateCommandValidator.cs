@@ -9,6 +9,9 @@ namespace Application.Validation.AbstractValidators.CQRS.CommentRates.Commands
     {
         public CreateCommentRateCommandValidator()
         {
+            RuleFor(c => c.CommentId)
+                .NotEmpty();
+            
             RuleFor(c => c.Rate)
                 .In(CommentRateValidationOptions.NegativeRate, CommentRateValidationOptions.PositiveRate);
         }

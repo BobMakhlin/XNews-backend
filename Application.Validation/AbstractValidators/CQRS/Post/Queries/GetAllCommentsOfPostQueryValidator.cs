@@ -9,6 +9,9 @@ namespace Application.Validation.AbstractValidators.CQRS.Post.Queries
         public GetAllCommentsOfPostQueryValidator()
         {
             Include(new PaginationRequestValidator());
+
+            RuleFor(q => q.PostId)
+                .NotEmpty();
         }
     }
 }

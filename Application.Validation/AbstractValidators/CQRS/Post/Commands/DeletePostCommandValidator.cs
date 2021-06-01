@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Validation.AbstractValidators.CQRS.Post.Commands
 {
-    public class DeletePostCommandHandler : AbstractValidator<DeletePostCommand>
+    public class DeletePostCommandValidator : AbstractValidator<DeletePostCommand>
     {
         #region Fields
 
@@ -19,11 +19,12 @@ namespace Application.Validation.AbstractValidators.CQRS.Post.Commands
         
         #region Constructors
 
-        public DeletePostCommandHandler(IXNewsDbContext context)
+        public DeletePostCommandValidator(IXNewsDbContext context)
         {
             _context = context;
-
+            
             RuleFor(c => c.PostId)
+                .NotEmpty()
                 .MustAsync(HaveNoCommentsAsync)
                 .WithMessage("Cannot remove post, that has comments");
         }

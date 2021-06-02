@@ -2,37 +2,39 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "App", "App", "{CA52E199-37DB-4385-9AEC-A9B62847D506}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{DF5AEFEE-DCF3-48E6-9958-8A1482327CA2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "src\Application\Application.csproj", "{DF5AEFEE-DCF3-48E6-9958-8A1482327CA2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Persistence", "Application.Persistence\Application.Persistence.csproj", "{94B66C18-69BE-4D43-B71D-81E7E57C571F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Persistence", "src\Application.Persistence\Application.Persistence.csproj", "{94B66C18-69BE-4D43-B71D-81E7E57C571F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Persistence", "Persistence", "{E3FA0E91-2C89-4B4F-93AE-BBB415BDA5D4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{14956870-9353-4F17-B2DD-497F461A4CC1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence.Primary", "Persistence.Primary\Persistence.Primary.csproj", "{A8391358-BEA9-4C8D-A3FC-66588AF8EA03}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence.Primary", "src\Persistence.Primary\Persistence.Primary.csproj", "{A8391358-BEA9-4C8D-A3FC-66588AF8EA03}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Primary", "Domain.Primary\Domain.Primary.csproj", "{DBC2F4D1-4D00-4D1F-A78C-39CE068EA92F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Primary", "src\Domain.Primary\Domain.Primary.csproj", "{DBC2F4D1-4D00-4D1F-A78C-39CE068EA92F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Logging", "Domain.Logging\Domain.Logging.csproj", "{8C00296E-EE75-40F6-87F7-96D7806309D0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Logging", "src\Domain.Logging\Domain.Logging.csproj", "{8C00296E-EE75-40F6-87F7-96D7806309D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Presentation.API", "Presentation.API\Presentation.API.csproj", "{BDA069F1-98D4-4336-8D15-FD74668C9B82}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Presentation.API", "src\Presentation.API\Presentation.API.csproj", "{BDA069F1-98D4-4336-8D15-FD74668C9B82}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence.Logging", "Persistence.Logging\Persistence.Logging.csproj", "{517A86E4-6E1A-4450-B92F-ABA879BF5066}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence.Logging", "src\Persistence.Logging\Persistence.Logging.csproj", "{517A86E4-6E1A-4450-B92F-ABA879BF5066}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Pagination", "Application.Pagination\Application.Pagination.csproj", "{4011268B-172E-4C01-9267-7B9E7AE3883C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Pagination", "src\Application.Pagination\Application.Pagination.csproj", "{4011268B-172E-4C01-9267-7B9E7AE3883C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{1F6C20D9-68B3-4885-9E43-7F4306514669}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Validation", "Application.Validation\Application.Validation.csproj", "{F86DE5D0-6FD9-4A89-89ED-D640EEB42C27}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Validation", "src\Application.Validation\Application.Validation.csproj", "{F86DE5D0-6FD9-4A89-89ED-D640EEB42C27}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Validation", "Validation", "{E34F16D7-7097-4AC6-B746-E79399AFAF7A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Validation.Tools", "Application.Validation.Tools\Application.Validation.Tools.csproj", "{1C68F591-CA84-40A7-9303-F63D206F7A05}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Validation.Tools", "src\Application.Validation.Tools\Application.Validation.Tools.csproj", "{1C68F591-CA84-40A7-9303-F63D206F7A05}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{5A1313F0-8559-4C22-A5CF-0024767D35A2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{A7F5D974-91A0-4621-A94F-A9ECC1A416F4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{9EA148F2-17DD-44A1-BB7E-29FD37FF9D29}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +55,10 @@ Global
 		{94B66C18-69BE-4D43-B71D-81E7E57C571F} = {5A1313F0-8559-4C22-A5CF-0024767D35A2}
 		{4011268B-172E-4C01-9267-7B9E7AE3883C} = {5A1313F0-8559-4C22-A5CF-0024767D35A2}
 		{E3FA0E91-2C89-4B4F-93AE-BBB415BDA5D4} = {A7F5D974-91A0-4621-A94F-A9ECC1A416F4}
+		{CA52E199-37DB-4385-9AEC-A9B62847D506} = {9EA148F2-17DD-44A1-BB7E-29FD37FF9D29}
+		{1F6C20D9-68B3-4885-9E43-7F4306514669} = {9EA148F2-17DD-44A1-BB7E-29FD37FF9D29}
+		{A7F5D974-91A0-4621-A94F-A9ECC1A416F4} = {9EA148F2-17DD-44A1-BB7E-29FD37FF9D29}
+		{14956870-9353-4F17-B2DD-497F461A4CC1} = {9EA148F2-17DD-44A1-BB7E-29FD37FF9D29}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{DF5AEFEE-DCF3-48E6-9958-8A1482327CA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU

@@ -6,9 +6,8 @@
 1.  Set connection strings inside of `appsettings.Persistence.json` or set them using [user-secrets](https://docs.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-5.0\&tabs=windows#enable-secret-storage).
 2.  Run migrations:
 
-*   `dotnet ef database update --project=Persistence.Primary --startup-project=Presentation.API --context=XNewsDbContext`
-*   `dotnet ef database update --project=Persistence.Logging --startup-project=Presentation.API --context=XNewsLoggingDbContext`
-
+*   `dotnet ef database update --project="src/Persistence.Primary" --startup-project="src/Presentation.API" --context=XNewsDbContext`
+*   `dotnet ef database update --project="src/Persistence.Logging" --startup-project="src/Presentation.API" --context=XNewsLoggingDbContext`
 
 ## License
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FBobMakhlin%2FXNews-backend.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FBobMakhlin%2FXNews-backend?ref=badge_large)

@@ -1,6 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Common.Exceptions;
+using Application.Common.Extensions;
 using Application.Identity.Interfaces;
 using Application.Identity.Models;
 using Application.Identity.Results;
@@ -47,13 +48,9 @@ namespace Application.CQRS.Users.Commands
                 IIdentityResult identityResult = await _userPasswordService
                     .CreateUserWithPasswordAsync(user, request.Password)
                     .ConfigureAwait(false);
+                identityResult.ThrowIfFailed();
 
-                if (!identityResult.Succeeded)
-                {
-                    throw new IdentityException(identityResult.Errors);
-                }
-                
-                return user.Id;
+               return user.Id;
             }
 
             #endregion

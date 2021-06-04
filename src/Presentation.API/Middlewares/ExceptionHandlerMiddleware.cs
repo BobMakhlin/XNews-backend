@@ -45,6 +45,10 @@ namespace Presentation.API.Middlewares
             {
                 HandleNotFoundException(ex, context);
             }
+            catch (IdentityException ex)
+            {
+                await HandleIdentityExceptionAsync(ex, context);
+            }
             catch (Exception ex)
             {
                 HandleUnexpectedException(ex, context);
@@ -75,6 +79,13 @@ namespace Presentation.API.Middlewares
         private void HandleNotFoundException(NotFoundException exception, HttpContext context)
         {
             context.Response.StatusCode = StatusCodes.Status404NotFound;
+        }
+
+        private async Task HandleIdentityExceptionAsync(IdentityException exception, HttpContext context)
+        {
+            context.Response.StatusCode = StatusCodes.Status400BadRequest;
+            context.Response.ContentType = "text/plain";
+            await context.Response.WriteAsync(exception.Message);
         }
 
         /// <summary>

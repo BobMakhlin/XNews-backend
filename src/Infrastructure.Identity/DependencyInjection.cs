@@ -45,6 +45,7 @@ namespace Infrastructure.Identity
             services.AddScoped<IIdentityStorage<ApplicationUser>, ApplicationUserStorage>();
             services.AddScoped<IIdentityStorage<ApplicationRole>, ApplicationRoleStorage>();
             services.AddScoped<IUserPasswordService<ApplicationUser, string>, ApplicationUserPasswordService>();
+            services.AddScoped<IUserRoleService<ApplicationUser, ApplicationRole>, UserRoleService>();
 
             return services;
         }

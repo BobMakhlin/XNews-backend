@@ -15,5 +15,18 @@ namespace Presentation.API.Controllers.Realisation
             string userId = await Mediator.Send(request);
             return Ok(userId);
         }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutUserAsync([FromRoute] string id, [FromBody] UpdateUserCommand request)
+        {
+            if (id != request.UserId)
+            {
+                return BadRequest();
+            }
+            
+            await Mediator.Send(request);
+            
+            return NoContent();
+        }
     }
 }

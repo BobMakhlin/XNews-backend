@@ -1,5 +1,8 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using Application.CQRS.Roles.Models;
 using Application.CQRS.Users.Commands;
+using Application.CQRS.Users.Queries;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.API.Controllers.Abstraction;
 
@@ -34,6 +37,13 @@ namespace Presentation.API.Controllers.Realisation
         {
             await Mediator.Send(new DeleteUserCommand {UserId = id});
             return NoContent();
+        }
+
+        [HttpGet("{id}/roles")]
+        public async Task<IActionResult> GetRolesOfUserAsync([FromRoute] string id)
+        {
+            IEnumerable<RoleDto> rolesOfUser = await Mediator.Send(new GetRolesOfUserQuery {UserId = id});
+            return Ok(rolesOfUser);
         }
     }
 }

@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Identity.Interfaces;
@@ -30,7 +29,7 @@ namespace Infrastructure.Identity.Services
 
         #region IUserRoleService<ApplicationUser, ApplicationRole>
 
-        public IEnumerable<ApplicationRole> GetUserRoles(ApplicationUser user)
+        public IQueryable<ApplicationRole> GetUserRoles(ApplicationUser user)
         {
             return _roleManager.Roles
                 .Where

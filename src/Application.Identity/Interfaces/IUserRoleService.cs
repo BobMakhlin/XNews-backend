@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Application.Identity.Results;
 
@@ -12,7 +12,7 @@ namespace Application.Identity.Interfaces
         /// <summary>
         /// Returns a collection of roles of the specified <paramref name="user"/>.
         /// </summary>
-        IEnumerable<TRole> GetUserRoles(TUser user);
+        IQueryable<TRole> GetUserRoles(TUser user);
 
         /// <summary>
         /// Adds the specified <paramref name="role"/> to a <paramref name="user"/>.

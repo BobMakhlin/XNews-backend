@@ -13,6 +13,7 @@ namespace Application.CQRS.Posts.Commands
         public Guid PostId { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }
+        public string UserId { get; set; }
 
         public class Handler : IRequestHandler<UpdatePostCommand>
         {
@@ -62,6 +63,7 @@ namespace Application.CQRS.Posts.Commands
             {
                 post.Title = request.Title;
                 post.Content = request.Content;
+                post.UserId = request.UserId;
             }
 
             #endregion

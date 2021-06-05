@@ -21,6 +21,9 @@ namespace Application.Validation.AbstractValidators.CQRS.Post.Commands
                 .NotEmpty()
                 .Length(PostValidationOptions.TitleMinLength, PostValidationOptions.TitleMaxLength)
                 .UniqueInsideOfDbSetColumn(context.Post, p => p.Title);
+
+            RuleFor(c => c.UserId)
+                .NotEmpty();
         }
     }
 }

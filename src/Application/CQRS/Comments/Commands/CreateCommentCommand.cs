@@ -12,6 +12,7 @@ namespace Application.CQRS.Comments.Commands
         public string Content { get; set; }
         public Guid PostId { get; set; }
         public Guid? ParentCommentId { get; set; }
+        public string UserId { get; set; }
 
         public class Handler : IRequestHandler<CreateCommentCommand, Guid>
         {
@@ -57,7 +58,8 @@ namespace Application.CQRS.Comments.Commands
                 {
                     Content = command.Content,
                     PostId = command.PostId,
-                    ParentCommentId = command.ParentCommentId
+                    ParentCommentId = command.ParentCommentId,
+                    UserId = command.UserId
                 };
             }
 

@@ -1,4 +1,4 @@
-using Application.CQRS.Users.Commands;
+using Application.CQRS.Users.Commands.UserRole;
 using FluentValidation;
 
 namespace Application.Validation.AbstractValidators.CQRS.Users.Commands

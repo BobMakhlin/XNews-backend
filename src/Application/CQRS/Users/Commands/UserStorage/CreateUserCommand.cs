@@ -1,13 +1,12 @@
 using System.Threading;
 using System.Threading.Tasks;
-using Application.Common.Exceptions;
 using Application.Common.Extensions;
 using Application.Identity.Interfaces;
 using Application.Identity.Models;
 using Application.Identity.Results;
 using MediatR;
 
-namespace Application.CQRS.Users.Commands
+namespace Application.CQRS.Users.Commands.UserStorage
 {
     public class CreateUserCommand : IRequest<string>
     {

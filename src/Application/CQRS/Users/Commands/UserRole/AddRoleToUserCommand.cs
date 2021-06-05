@@ -7,43 +7,45 @@ using Application.Identity.Models;
 using Application.Identity.Results;
 using MediatR;
 
-namespace Application.CQRS.Users.Commands
+namespace Application.CQRS.Users.Commands.UserRole
 {
-    public class ChangeUserPasswordCommand : IRequest
+    public class AddRoleToUserCommand : IRequest
     {
         #region Properties
 
         public string UserId { get; set; }
-        public string CurrentPassword { get; set; }
-        public string NewPassword { get; set; }
+        public string RoleId { get; set; }
 
         #endregion
 
         #region Classes
 
-        public class Handler : IRequestHandler<ChangeUserPasswordCommand>
+        public class Handler : IRequestHandler<AddRoleToUserCommand>
         {
             #region Fields
 
             private readonly IIdentityStorage<ApplicationUser, string> _userStorage;
-            private readonly IUserPasswordService<ApplicationUser, string> _userPasswordService;
+            private readonly IIdentityStorage<ApplicationRole, string> _roleStorage;
+            private readonly IUserRoleService<ApplicationUser, ApplicationRole> _userRoleService;
 
             #endregion
 
             #region Constructors
 
             public Handler(IIdentityStorage<ApplicationUser, string> userStorage,
-                IUserPasswordService<ApplicationUser, string> userPasswordService)
+                IIdentityStorage<ApplicationRole, string> roleStorage,
+                IUserRoleService<ApplicationUser, ApplicationRole> userRoleService)
             {
                 _userStorage = userStorage;
-                _userPasswordService = userPasswordService;
+                _roleStorage = roleStorage;
+                _userRoleService = userRoleService;
             }
 
             #endregion
 
-            #region IRequestHandler<ChangeUserPasswordCommand>
+            #region IRequestHandler<AddRoleToUserCommand>
 
-            public async Task<Unit> Handle(ChangeUserPasswordCommand request, CancellationToken cancellationToken)
+            public async Task<Unit> Handle(AddRoleToUserCommand request, CancellationToken cancellationToken)
             {
                 ApplicationUser user = await _userStorage.FindByIdAsync(request.UserId)
                     .ConfigureAwait(false);
@@ -52,8 +54,14 @@ namespace Application.CQRS.Users.Commands
                     throw new NotFoundException();
                 }
 
-                IIdentityResult identityResult = await _userPasswordService
-                    .ChangeUserPasswordAsync(user, request.CurrentPassword, request.NewPassword)
+                ApplicationRole role = await _roleStorage.FindByIdAsync(request.RoleId)
+                    .ConfigureAwait(false);
+                if (role == null)
+                {
+                    throw new NotFoundException();
+                }
+
+                IIdentityResult identityResult = await _userRoleService.AddUserToRoleAsync(user, role)
                     .ConfigureAwait(false);
                 identityResult.ThrowIfFailed();
 

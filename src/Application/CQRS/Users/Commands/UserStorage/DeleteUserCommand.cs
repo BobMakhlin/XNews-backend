@@ -7,7 +7,7 @@ using Application.Identity.Models;
 using Application.Identity.Results;
 using MediatR;
 
-namespace Application.CQRS.Users.Commands
+namespace Application.CQRS.Users.Commands.UserStorage
 {
     public class DeleteUserCommand : IRequest
     {

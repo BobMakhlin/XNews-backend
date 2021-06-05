@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Application.CQRS.Roles.Models;
-using Application.CQRS.Users.Commands;
+using Application.CQRS.Users.Commands.UserPassword;
+using Application.CQRS.Users.Commands.UserRole;
+using Application.CQRS.Users.Commands.UserStorage;
 using Application.CQRS.Users.Queries;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.API.Controllers.Abstraction;

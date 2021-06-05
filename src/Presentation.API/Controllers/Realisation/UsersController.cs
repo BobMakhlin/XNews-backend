@@ -59,5 +59,12 @@ namespace Presentation.API.Controllers.Realisation
             await Mediator.Send(new DeleteRoleOfUserCommand {UserId = userId, RoleId = roleId});
             return NoContent();
         }
+
+        [HttpPost("change-password")]
+        public async Task<IActionResult> ChangeUserPassword([FromBody] ChangeUserPasswordCommand request)
+        {
+            await Mediator.Send(request);
+            return NoContent();
+        }
     }
 }

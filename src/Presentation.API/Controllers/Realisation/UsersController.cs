@@ -28,5 +28,12 @@ namespace Presentation.API.Controllers.Realisation
             
             return NoContent();
         }
+        
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteUserAsync([FromRoute] string id)
+        {
+            await Mediator.Send(new DeleteUserCommand {UserId = id});
+            return NoContent();
+        }
     }
 }

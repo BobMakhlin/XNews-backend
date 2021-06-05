@@ -38,6 +38,15 @@ namespace Infrastructure.Identity.Services
                 );
         }
 
+        public IQueryable<ApplicationUser> GetRoleUsers(ApplicationRole role)
+        {
+            return _userManager.Users
+                .Where
+                (
+                    user => user.UserRoles.Any(userRole => userRole.RoleId == role.Id)
+                );
+        }
+
         public async Task<IIdentityResult> AddUserToRoleAsync(ApplicationUser user, ApplicationRole role)
         {
             IdentityResult identityResult = await _userManager.AddToRoleAsync(user, role.Name)

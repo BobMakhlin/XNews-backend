@@ -7,12 +7,17 @@ namespace Application.Identity.Interfaces
     /// <summary>
     /// Represents a storage, that allows to interact with roles and users.
     /// </summary>
-    public interface IUserRoleService<in TUser, TRole>
+    public interface IUserRoleService<TUser, TRole>
     {
         /// <summary>
-        /// Returns a collection of roles of the specified <paramref name="user"/>.
+        /// Queries roles of the specified <paramref name="user"/>.
         /// </summary>
         IQueryable<TRole> GetUserRoles(TUser user);
+
+        /// <summary>
+        /// Queries user of the specified <paramref name="role"/>.
+        /// </summary>
+        IQueryable<TUser> GetRoleUsers(TRole role);
 
         /// <summary>
         /// Adds the specified <paramref name="role"/> to a <paramref name="user"/>.

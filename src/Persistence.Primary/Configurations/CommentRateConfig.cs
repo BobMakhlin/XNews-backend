@@ -23,6 +23,11 @@ namespace Persistence.Primary.Configurations
                 .WithMany(p => p.CommentRates)
                 .HasForeignKey(d => d.CommentId)
                 .HasConstraintName("FK_CommentRate_CommentId");
+            
+            builder
+                .Property(e => e.UserId)
+                .IsRequired()
+                .HasMaxLength(450);
         }
     }
 }

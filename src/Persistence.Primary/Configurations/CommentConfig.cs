@@ -31,6 +31,11 @@ namespace Persistence.Primary.Configurations
                 .WithMany(p => p.InverseParentComment)
                 .HasForeignKey(d => d.ParentCommentId)
                 .HasConstraintName("FK_Comment_ParentComment");
+            
+            builder
+                .Property(e => e.UserId)
+                .IsRequired()
+                .HasMaxLength(450);
         }
     }
 }

@@ -52,5 +52,12 @@ namespace Presentation.API.Controllers.Realisation
             await Mediator.Send(new AddRoleToUserCommand {UserId = userId, RoleId = roleId});
             return NoContent();
         }
+
+        [HttpDelete("{userId}/roles/{roleId}")]
+        public async Task<IActionResult> DeleteRoleOfUserAsync([FromRoute] string userId, [FromRoute] string roleId)
+        {
+            await Mediator.Send(new DeleteRoleOfUserCommand {UserId = userId, RoleId = roleId});
+            return NoContent();
+        }
     }
 }

@@ -6,7 +6,6 @@ using Application.Identity.Interfaces;
 using Application.Identity.Models;
 using Application.Identity.Results;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace Application.CQRS.Users.Commands
 {
@@ -24,13 +23,13 @@ namespace Application.CQRS.Users.Commands
         {
             #region Fields
 
-            private readonly IIdentityStorage<ApplicationUser> _userStorage;
+            private readonly IIdentityStorage<ApplicationUser, string> _userStorage;
 
             #endregion
 
             #region Constructors
 
-            public Handler(IIdentityStorage<ApplicationUser> userStorage)
+            public Handler(IIdentityStorage<ApplicationUser, string> userStorage)
             {
                 _userStorage = userStorage;
             }
@@ -41,8 +40,7 @@ namespace Application.CQRS.Users.Commands
 
             public async Task<Unit> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
             {
-                ApplicationUser userToDelete = await _userStorage.GetAll()
-                    .SingleOrDefaultAsync(u => u.Id == request.UserId, cancellationToken)
+                ApplicationUser userToDelete = await _userStorage.FindByIdAsync(request.UserId)
                     .ConfigureAwait(false);
                 if (userToDelete == null)
                 {

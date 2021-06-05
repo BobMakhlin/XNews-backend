@@ -10,7 +10,10 @@ namespace Application.Identity.Interfaces
     /// <typeparam name="TItem">
     /// The type of the item, stored inside of a storage.
     /// </typeparam>
-    public interface IIdentityStorage<TItem>
+    /// <typeparam name="TItemId">
+    /// The type of the item identifier.
+    /// </typeparam>
+    public interface IIdentityStorage<TItem, in TItemId>
     {
         /// <summary>
         /// Queries all items of the storage.
@@ -28,5 +31,9 @@ namespace Application.Identity.Interfaces
         /// Deletes the specified <see cref="item"/> from a storage.
         /// </summary>
         Task<IIdentityResult> DeleteAsync(TItem item);
+        /// <summary>
+        /// Finds the item by <paramref name="id"/> in a storage.
+        /// </summary>
+        Task<TItem> FindByIdAsync(TItemId id);
     }
 }

@@ -42,8 +42,8 @@ namespace Infrastructure.Identity
                 .AddEntityFrameworkStores<XNewsIdentityDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddScoped<IIdentityStorage<ApplicationUser>, ApplicationUserStorage>();
-            services.AddScoped<IIdentityStorage<ApplicationRole>, ApplicationRoleStorage>();
+            services.AddScoped<IIdentityStorage<ApplicationUser, string>, ApplicationUserStorage>();
+            services.AddScoped<IIdentityStorage<ApplicationRole, string>, ApplicationRoleStorage>();
             services.AddScoped<IUserPasswordService<ApplicationUser, string>, ApplicationUserPasswordService>();
             services.AddScoped<IUserRoleService<ApplicationUser, ApplicationRole>, UserRoleService>();
 

@@ -8,7 +8,6 @@ using Application.Identity.Interfaces;
 using Application.Identity.Models;
 using AutoMapper;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace Application.CQRS.Users.Queries
 {
@@ -26,7 +25,7 @@ namespace Application.CQRS.Users.Queries
         {
             #region Fields
 
-            private readonly IIdentityStorage<ApplicationUser> _userStorage;
+            private readonly IIdentityStorage<ApplicationUser, string> _userStorage;
             private readonly IUserRoleService<ApplicationUser, ApplicationRole> _userRoleService;
             private readonly IMapper _mapper;
 
@@ -35,7 +34,7 @@ namespace Application.CQRS.Users.Queries
             #region Constructors
 
             public Handler(IUserRoleService<ApplicationUser, ApplicationRole> userRoleService,
-                IIdentityStorage<ApplicationUser> userStorage, IMapper mapper)
+                IIdentityStorage<ApplicationUser, string> userStorage, IMapper mapper)
             {
                 _userRoleService = userRoleService;
                 _userStorage = userStorage;
@@ -49,8 +48,7 @@ namespace Application.CQRS.Users.Queries
             public async Task<IEnumerable<RoleDto>> Handle(GetRolesOfUserQuery request,
                 CancellationToken cancellationToken)
             {
-                ApplicationUser user = await _userStorage.GetAll()
-                    .SingleOrDefaultAsync(u => u.Id == request.UserId, cancellationToken)
+                ApplicationUser user = await _userStorage.FindByIdAsync(request.UserId)
                     .ConfigureAwait(false);
                 if (user == null)
                 {

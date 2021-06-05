@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Identity.Interfaces;
@@ -12,7 +11,7 @@ namespace Infrastructure.Identity.Services
     /// <summary>
     /// Represents a storage of items of type <see cref="ApplicationRole"/>.
     /// </summary>
-    public class ApplicationRoleStorage : IIdentityStorage<ApplicationRole>
+    public class ApplicationRoleStorage : IIdentityStorage<ApplicationRole, string>
     {
         #region Fields
 
@@ -52,6 +51,12 @@ namespace Infrastructure.Identity.Services
             IdentityResult identityResult = await _roleManager.DeleteAsync(item)
                 .ConfigureAwait(false);
             return identityResult.ToIIdentityResult();
+        }
+
+        public async Task<ApplicationRole> FindByIdAsync(string id)
+        {
+            return await _roleManager.FindByIdAsync(id)
+                .ConfigureAwait(false);
         }
 
         #endregion

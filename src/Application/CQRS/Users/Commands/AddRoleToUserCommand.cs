@@ -6,7 +6,6 @@ using Application.Identity.Interfaces;
 using Application.Identity.Models;
 using Application.Identity.Results;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace Application.CQRS.Users.Commands
 {
@@ -25,15 +24,16 @@ namespace Application.CQRS.Users.Commands
         {
             #region Fields
 
-            private readonly IIdentityStorage<ApplicationUser> _userStorage;
-            private readonly IIdentityStorage<ApplicationRole> _roleStorage;
+            private readonly IIdentityStorage<ApplicationUser, string> _userStorage;
+            private readonly IIdentityStorage<ApplicationRole, string> _roleStorage;
             private readonly IUserRoleService<ApplicationUser, ApplicationRole> _userRoleService;
 
             #endregion
 
             #region Constructors
 
-            public Handler(IIdentityStorage<ApplicationUser> userStorage, IIdentityStorage<ApplicationRole> roleStorage,
+            public Handler(IIdentityStorage<ApplicationUser, string> userStorage,
+                IIdentityStorage<ApplicationRole, string> roleStorage,
                 IUserRoleService<ApplicationUser, ApplicationRole> userRoleService)
             {
                 _userStorage = userStorage;
@@ -47,16 +47,14 @@ namespace Application.CQRS.Users.Commands
 
             public async Task<Unit> Handle(AddRoleToUserCommand request, CancellationToken cancellationToken)
             {
-                ApplicationUser user = await _userStorage.GetAll()
-                    .SingleOrDefaultAsync(u => u.Id == request.UserId, cancellationToken)
+                ApplicationUser user = await _userStorage.FindByIdAsync(request.UserId)
                     .ConfigureAwait(false);
                 if (user == null)
                 {
                     throw new NotFoundException();
                 }
 
-                ApplicationRole role = await _roleStorage.GetAll()
-                    .SingleOrDefaultAsync(r => r.Id == request.RoleId, cancellationToken)
+                ApplicationRole role = await _roleStorage.FindByIdAsync(request.RoleId)
                     .ConfigureAwait(false);
                 if (role == null)
                 {

@@ -11,7 +11,7 @@ namespace Infrastructure.Identity.Services
     /// <summary>
     /// Represents a storage of items of type <see cref="ApplicationUser"/>.
     /// </summary>
-    public class ApplicationUserStorage : IIdentityStorage<ApplicationUser>
+    public class ApplicationUserStorage : IIdentityStorage<ApplicationUser, string>
     {
         #region Fields
 
@@ -51,6 +51,12 @@ namespace Infrastructure.Identity.Services
             IdentityResult identityResult = await _userManager.DeleteAsync(item)
                 .ConfigureAwait(false);
             return identityResult.ToIIdentityResult();
+        }
+
+        public async Task<ApplicationUser> FindByIdAsync(string id)
+        {
+            return await _userManager.FindByIdAsync(id)
+                .ConfigureAwait(false);
         }
 
         #endregion

@@ -12,6 +12,7 @@ namespace Application.CQRS.Comments.Commands
     {
         public Guid CommentId { get; set; }
         public string Content { get; set; }
+        public string UserId { get; set; }
 
         public class Handler : IRequestHandler<UpdateCommentCommand>
         {
@@ -60,6 +61,7 @@ namespace Application.CQRS.Comments.Commands
             private void UpdateCommentProperties(Comment comment, UpdateCommentCommand request)
             {
                 comment.Content = request.Content;
+                comment.UserId = request.UserId;
             }
 
             #endregion

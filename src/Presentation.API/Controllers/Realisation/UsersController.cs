@@ -45,5 +45,12 @@ namespace Presentation.API.Controllers.Realisation
             IEnumerable<RoleDto> rolesOfUser = await Mediator.Send(new GetRolesOfUserQuery {UserId = id});
             return Ok(rolesOfUser);
         }
+
+        [HttpPost("{userId}/roles/{roleId}")]
+        public async Task<IActionResult> AddRoleToUserAsync([FromRoute] string userId, [FromRoute] string roleId)
+        {
+            await Mediator.Send(new AddRoleToUserCommand {UserId = userId, RoleId = roleId});
+            return NoContent();
+        }
     }
 }

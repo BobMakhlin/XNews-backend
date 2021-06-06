@@ -14,6 +14,9 @@ namespace Application.Validation.AbstractValidators.CQRS.CommentRates.Commands
             
             RuleFor(c => c.Rate)
                 .In(CommentRateValidationOptions.NegativeRate, CommentRateValidationOptions.PositiveRate);
+
+            RuleFor(c => c.UserId)
+                .NotEmpty();
         }
     }
 }

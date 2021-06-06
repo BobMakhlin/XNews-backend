@@ -11,6 +11,7 @@ namespace Application.CQRS.CommentRates.Commands
     {
         public Guid CommentId { get; set; }
         public double Rate { get; set; }
+        public string UserId { get; set; }
 
         public class Handler : IRequestHandler<CreateCommentRateCommand, Guid>
         {
@@ -55,7 +56,8 @@ namespace Application.CQRS.CommentRates.Commands
                 return new()
                 {
                     CommentId = command.CommentId,
-                    Rate = command.Rate
+                    Rate = command.Rate,
+                    UserId = command.UserId
                 };
             }
 

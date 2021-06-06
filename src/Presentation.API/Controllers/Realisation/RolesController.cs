@@ -48,5 +48,18 @@ namespace Presentation.API.Controllers.Realisation
             string roleId = await Mediator.Send(request);
             return Ok(roleId);
         }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutRoleAsync([FromRoute] string id, [FromBody] UpdateRoleCommand request)
+        {
+            if (id != request.RoleId)
+            {
+                return BadRequest();
+            }   
+            
+            await Mediator.Send(request);
+            
+            return NoContent();
+        }
     }
 }

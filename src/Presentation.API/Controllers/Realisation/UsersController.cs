@@ -4,7 +4,9 @@ using Application.CQRS.Roles.Models;
 using Application.CQRS.Users.Commands.UserPassword;
 using Application.CQRS.Users.Commands.UserRole;
 using Application.CQRS.Users.Commands.UserStorage;
+using Application.CQRS.Users.Models;
 using Application.CQRS.Users.Queries;
+using Application.Pagination.Common.Models.PagedList;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.API.Controllers.Abstraction;
 
@@ -14,6 +16,13 @@ namespace Presentation.API.Controllers.Realisation
     [Route("[controller]")]
     public class UsersController : MyBaseController
     {
+        [HttpGet]
+        public async Task<IActionResult> GetAllUsersAsync([FromQuery] GetAllUsersQuery request)
+        {
+            IPagedList<UserDto> users = await Mediator.Send(request);
+            return Ok(users);
+        }
+        
         [HttpPost]
         public async Task<IActionResult> PostUserAsync([FromBody] CreateUserCommand request)
         {

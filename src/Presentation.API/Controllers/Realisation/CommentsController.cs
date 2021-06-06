@@ -7,6 +7,7 @@ using Application.CQRS.Comments.Commands;
 using Application.CQRS.Comments.Models;
 using Application.CQRS.Comments.Queries;
 using Application.CQRS.Posts.Queries;
+using Application.CQRS.Users.Models;
 using Application.Pagination.Common.Models.PagedList;
 using Presentation.API.Controllers.Abstraction;
 
@@ -56,6 +57,13 @@ namespace Presentation.API.Controllers.Realisation
         {
             await Mediator.Send(new DeleteCommentCommand {CommentId = id});
             return NoContent();
+        }
+        
+        [HttpGet("{commentId}/author")]
+        public async Task<IActionResult> GetAuthorOfCommentAsync([FromRoute] Guid commentId)
+        {
+            UserDto user = await Mediator.Send(new GetAuthorOfCommentQuery {CommentId = commentId});
+            return Ok(user);
         }
     }
 }

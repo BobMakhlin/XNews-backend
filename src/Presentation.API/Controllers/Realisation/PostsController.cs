@@ -7,6 +7,7 @@ using Application.CQRS.Posts.Commands;
 using Application.CQRS.Posts.Models;
 using Application.CQRS.Posts.Queries;
 using Application.CQRS.Users.Models;
+using Application.CQRS.Users.Queries;
 using Application.Pagination.Common.Models.PagedList;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.API.Controllers.Abstraction;
@@ -98,6 +99,13 @@ namespace Presentation.API.Controllers.Realisation
         {
             UserDto user = await Mediator.Send(new GetAuthorOfPostQuery {PostId = postId});
             return Ok(user);
+        }
+        
+        [HttpGet("of/user")]
+        public async Task<IActionResult> GetPostsOfUserAsync([FromQuery] GetPostsOfUserQuery request)
+        {
+            IPagedList<PostDto> posts = await Mediator.Send(request);
+            return Ok(posts);
         }
     }
 }

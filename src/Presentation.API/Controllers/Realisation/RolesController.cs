@@ -41,5 +41,12 @@ namespace Presentation.API.Controllers.Realisation
             await Mediator.Send(new DeleteRoleCommand {RoleId = id});
             return NoContent();
         }
+
+        [HttpPost]
+        public async Task<IActionResult> PostRoleAsync([FromBody] CreateRoleCommand request)
+        {
+            string roleId = await Mediator.Send(request);
+            return Ok(roleId);
+        }
     }
 }

@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Application.CQRS.Categories.Models;
-using Application.CQRS.Comments.Models;
 using Application.CQRS.PostRates.Models;
 using Application.CQRS.Posts.Commands;
 using Application.CQRS.Posts.Models;
 using Application.CQRS.Posts.Queries;
+using Application.CQRS.Users.Models;
 using Application.Pagination.Common.Models.PagedList;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.API.Controllers.Abstraction;
@@ -91,6 +91,13 @@ namespace Presentation.API.Controllers.Realisation
         {
             IEnumerable<PostRateDto> rates = await Mediator.Send(new GetAllRatesOfPostQuery {PostId = postId});
             return Ok(rates);
+        }
+
+        [HttpGet("{postId}/author")]
+        public async Task<IActionResult> GetAuthorOfPostAsync([FromRoute] Guid postId)
+        {
+            UserDto user = await Mediator.Send(new GetAuthorOfPostQuery {PostId = postId});
+            return Ok(user);
         }
     }
 }

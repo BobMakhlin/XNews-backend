@@ -20,6 +20,13 @@ namespace Presentation.API.Controllers.Realisation
             IPagedList<RoleDto> roles = await Mediator.Send(request);
             return Ok(roles);
         }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetRoleByIdAsync([FromRoute] string id)
+        {
+            RoleDto role = await Mediator.Send(new GetRoleByIdQuery {RoleId = id});
+            return Ok(role);
+        }
         
         [HttpGet("{id}/users")]
         public async Task<IActionResult> GetUsersOfRoleAsync([FromRoute] string id)

@@ -33,7 +33,7 @@ namespace Persistence.Primary.DataAccess
         {
             return Comment.FromSqlInterpolated
             (@$"
-                SELECT CommentId, Content, PostId, ParentCommentId 
+                SELECT CommentId, UserId, Content, PostId, ParentCommentId 
                 FROM dbo.fn_PostCommentHierarchy({postId}, {pageNumber}, {pageSize})
             ");
         }

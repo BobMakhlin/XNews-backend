@@ -33,7 +33,8 @@ namespace Application.CQRS.Roles.Queries
 
             #region Constructors
 
-            public Handler(IUserRoleService<ApplicationUser, ApplicationRole> userRoleService, IIdentityStorage<ApplicationRole, string> roleStorage, IMapper mapper)
+            public Handler(IUserRoleService<ApplicationUser, ApplicationRole> userRoleService,
+                IIdentityStorage<ApplicationRole, string> roleStorage, IMapper mapper)
             {
                 _userRoleService = userRoleService;
                 _roleStorage = roleStorage;
@@ -44,14 +45,12 @@ namespace Application.CQRS.Roles.Queries
             
             #region IRequestHandler<GetUsersOfRoleQuery, IEnumerable<UserDto>>
 
-            public async Task<IEnumerable<UserDto>> Handle(GetUsersOfRoleQuery request, CancellationToken cancellationToken)
+            public async Task<IEnumerable<UserDto>> Handle(GetUsersOfRoleQuery request,
+                CancellationToken cancellationToken)
             {
                 ApplicationRole role = await _roleStorage.FindByIdAsync(request.RoleId)
-                    .ConfigureAwait(false);
-                if (role == null)
-                {
-                    throw new NotFoundException();
-                }
+                                           .ConfigureAwait(false)
+                                       ?? throw new NotFoundException();
 
                 return await _userRoleService.GetRoleUsers(role)
                     .ProjectToListAsync<UserDto>(_mapper.ConfigurationProvider, cancellationToken)

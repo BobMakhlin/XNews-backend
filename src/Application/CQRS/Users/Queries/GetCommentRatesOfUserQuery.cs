@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Application.Common.Exceptions;
 using Application.CQRS.CommentRates.Models;
+using Application.Identity.Extensions;
 using Application.Identity.Interfaces;
 using Application.Identity.Models;
 using Application.Pagination.Common.Models;
@@ -71,25 +72,11 @@ namespace Application.CQRS.Users.Queries
                     return commentRates;
                 }
 
-                bool userExists = await IsUserExistsAsync(request.UserId)
+                bool userExists = await _userStorage.Exists(request.UserId)
                     .ConfigureAwait(false);
                 return userExists
                     ? PagedList<CommentRateDto>.CreateEmptyPagedList(request)
                     : throw new NotFoundException();
-            }
-
-            #endregion
-
-            #region Methods
-
-            /// <summary>
-            /// Checks if the user with the specified <paramref name="userId"/> exists.
-            /// </summary>
-            private async Task<bool> IsUserExistsAsync(string userId)
-            {
-                ApplicationUser user = await _userStorage.FindByIdAsync(userId)
-                    .ConfigureAwait(false);
-                return user != null;
             }
 
             #endregion

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Common.Exceptions;
 using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -57,6 +58,16 @@ namespace Application.CQRS.Posts.Queries
             {
                 int rootCommentsCount = await GetRootCommentsCountOfPostAsync(request.PostId, cancellationToken)
                     .ConfigureAwait(false);
+
+                if (rootCommentsCount == 0)
+                {
+                    bool postExists = await IsPostExistsAsync(request.PostId, cancellationToken)
+                        .ConfigureAwait(false);
+                
+                    return postExists
+                        ? PagedList<CommentDto>.CreateEmptyPagedList(request)
+                        : throw new NotFoundException();
+                }
 
                 IEnumerable<CommentDto> commentHierarchy = await GetCommentHierarchyOfPostAsync(request.PostId,
                         request.PageNumber, request.PageSize, cancellationToken)
@@ -140,6 +151,16 @@ namespace Application.CQRS.Posts.Queries
                 IEnumerable<CommentDto> rootComments = commentFlatList
                     .Where(c => c.ParentCommentId == null);
                 return rootComments;
+            }
+
+            /// <summary>
+            /// Checks if the post with the specified <paramref name="postId"/> exists.
+            /// </summary>
+            private async Task<bool> IsPostExistsAsync(Guid postId, CancellationToken cancellationToken)
+            {
+                return await _context.Post
+                    .AnyAsync(p => p.PostId == postId, cancellationToken)
+                    .ConfigureAwait(false);
             }
 
             #endregion

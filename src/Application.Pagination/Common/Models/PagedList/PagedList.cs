@@ -92,6 +92,15 @@ namespace Application.Pagination.Common.Models.PagedList
             };
         }
 
+        /// <summary>
+        /// A static factory method, that creates an instance of type <see cref="PagedList{T}"/>,
+        /// containing no items inside.
+        /// </summary>
+        public static PagedList<T> CreateEmptyPagedList(IPaginationRequest paginationRequest)
+        {
+            return CreateFromExistingPage(Enumerable.Empty<T>(), 0, paginationRequest);
+        }
+
         private static int GetTotalPagesCount(int totalItemsCount, int pageSize)
         {
             return (int) Math.Ceiling(totalItemsCount / (double) pageSize);

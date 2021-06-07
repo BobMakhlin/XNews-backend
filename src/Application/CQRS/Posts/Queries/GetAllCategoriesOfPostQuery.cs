@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Common.Exceptions;
 using Application.Common.Extensions;
 using Application.CQRS.Categories.Models;
 using Application.Persistence.Interfaces;
 using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.CQRS.Posts.Queries
 {
@@ -39,10 +41,19 @@ namespace Application.CQRS.Posts.Queries
             public async Task<IEnumerable<CategoryDto>> Handle(GetAllCategoriesOfPostQuery request,
                 CancellationToken cancellationToken)
             {
-                return await _context.Category
+                List<CategoryDto> categories = await _context.Category
                     .Where(c => c.Posts.Any(p => p.PostId == request.PostId))
                     .ProjectToListAsync<CategoryDto>(_mapper.ConfigurationProvider, cancellationToken)
                     .ConfigureAwait(false);
+                if (categories.Count > 0)
+                {
+                    return categories;
+                }
+
+                bool postExists = await _context.Post
+                    .AnyAsync(p => p.PostId == request.PostId, cancellationToken)
+                    .ConfigureAwait(false);
+                return postExists ? Enumerable.Empty<CategoryDto>() : throw new NotFoundException();
             }
 
             #endregion

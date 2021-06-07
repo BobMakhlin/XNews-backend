@@ -23,6 +23,11 @@ namespace Persistence.Primary.Configurations
                 .WithMany(p => p.PostRates)
                 .HasForeignKey(d => d.PostId)
                 .HasConstraintName("FK_PostRate_PostId");
+            
+            builder
+                .Property(e => e.UserId)
+                .IsRequired()
+                .HasMaxLength(450);
         }
     }
 }

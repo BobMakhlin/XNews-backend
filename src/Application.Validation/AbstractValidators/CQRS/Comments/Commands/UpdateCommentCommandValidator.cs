@@ -14,6 +14,9 @@ namespace Application.Validation.AbstractValidators.CQRS.Comments.Commands
             RuleFor(c => c.Content)
                 .NotEmpty()
                 .Length(CommentValidationOptions.ContentMinLength, CommentValidationOptions.ContentMaxLength);
+            
+            RuleFor(c => c.UserId)
+                .NotEmpty();
         }
     }
 }

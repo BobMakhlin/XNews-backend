@@ -10,15 +10,15 @@ using Persistence.Primary.DataAccess;
 namespace Persistence.Primary.Migrations
 {
     [DbContext(typeof(XNewsDbContext))]
-    [Migration("20210511155910_AddPostCommentHierarchyFunction")]
-    partial class AddPostCommentHierarchyFunction
+    [Migration("20210605111209_Add_UserIdColumn_ToNeededEntities")]
+    partial class Add_UserIdColumn_ToNeededEntities
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.5")
+                .HasAnnotation("ProductVersion", "5.0.6")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("CategoryPost", b =>
@@ -40,8 +40,7 @@ namespace Persistence.Primary.Migrations
                 {
                     b.Property<Guid>("CategoryId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasDefaultValueSql("NEWID()");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -60,8 +59,7 @@ namespace Persistence.Primary.Migrations
                 {
                     b.Property<Guid>("CommentId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasDefaultValueSql("NEWID()");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -73,6 +71,11 @@ namespace Persistence.Primary.Migrations
 
                     b.Property<Guid>("PostId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("CommentId");
 
@@ -87,14 +90,18 @@ namespace Persistence.Primary.Migrations
                 {
                     b.Property<Guid>("CommentRateId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasDefaultValueSql("NEWID()");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("CommentId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<double>("Rate")
                         .HasColumnType("float");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("CommentRateId");
 
@@ -107,8 +114,7 @@ namespace Persistence.Primary.Migrations
                 {
                     b.Property<Guid>("PostId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasDefaultValueSql("NEWID()");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -119,6 +125,11 @@ namespace Persistence.Primary.Migrations
                         .HasMaxLength(72)
                         .HasColumnType("nvarchar(72)");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("PostId");
 
                     b.ToTable("Post");
@@ -128,14 +139,18 @@ namespace Persistence.Primary.Migrations
                 {
                     b.Property<Guid>("PostRateId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasDefaultValueSql("NEWID()");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("PostId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<double>("Rate")
                         .HasColumnType("float");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("PostRateId");
 
@@ -195,6 +210,7 @@ namespace Persistence.Primary.Migrations
                         .WithMany("PostRates")
                         .HasForeignKey("PostId")
                         .HasConstraintName("FK_PostRate_PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Post");

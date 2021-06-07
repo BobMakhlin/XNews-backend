@@ -16,7 +16,7 @@ namespace Persistence.Primary.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.5")
+                .HasAnnotation("ProductVersion", "5.0.6")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("CategoryPost", b =>
@@ -70,6 +70,11 @@ namespace Persistence.Primary.Migrations
                     b.Property<Guid>("PostId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("CommentId");
 
                     b.HasIndex(new[] { "ParentCommentId" }, "IX_Comment_ParentCommentId");
@@ -90,6 +95,11 @@ namespace Persistence.Primary.Migrations
 
                     b.Property<double>("Rate")
                         .HasColumnType("float");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("CommentRateId");
 
@@ -113,6 +123,11 @@ namespace Persistence.Primary.Migrations
                         .HasMaxLength(72)
                         .HasColumnType("nvarchar(72)");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("PostId");
 
                     b.ToTable("Post");
@@ -129,6 +144,11 @@ namespace Persistence.Primary.Migrations
 
                     b.Property<double>("Rate")
                         .HasColumnType("float");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("PostRateId");
 

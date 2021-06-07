@@ -11,6 +11,7 @@ namespace Application.CQRS.PostRates.Commands
     {
         public Guid PostId { get; set; }
         public double Rate { get; set; }
+        public string UserId { get; set; }
 
         public class Handler : IRequestHandler<CreatePostRateCommand, Guid>
         {
@@ -55,7 +56,8 @@ namespace Application.CQRS.PostRates.Commands
                 return new()
                 {
                     PostId = command.PostId,
-                    Rate = command.Rate
+                    Rate = command.Rate,
+                    UserId = command.UserId
                 };
             }
 

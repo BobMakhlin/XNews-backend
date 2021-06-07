@@ -11,6 +11,7 @@ namespace Application.CQRS.Posts.Commands
     {
         public string Title { get; set; }
         public string Content { get; set; }
+        public string UserId { get; set; }
 
         public class Handler : IRequestHandler<CreatePostCommand, Guid>
         {
@@ -55,7 +56,8 @@ namespace Application.CQRS.Posts.Commands
                 return new()
                 {
                     Title = command.Title,
-                    Content = command.Content
+                    Content = command.Content,
+                    UserId = command.UserId
                 };
             }
 

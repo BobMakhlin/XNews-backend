@@ -1,6 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Application.CQRS.CommentRates.Commands;
+using Application.CQRS.CommentRates.Models;
+using Application.CQRS.CommentRates.Queries;
+using Application.CQRS.Users.Models;
+using Application.CQRS.Users.Queries;
+using Application.Pagination.Common.Models.PagedList;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.API.Controllers.Abstraction;
 
@@ -22,6 +27,20 @@ namespace Presentation.API.Controllers.Realisation
         {
             await Mediator.Send(new DeleteCommentRateCommand {CommentRateId = id});
             return NoContent();
+        }
+
+        [HttpGet("{id}/author")]
+        public async Task<IActionResult> GetAuthorOfCommentRate([FromRoute] Guid id)
+        {
+            UserDto user = await Mediator.Send(new GetAuthorOfCommentRateQuery {CommentRateId = id});
+            return Ok(user);
+        }
+
+        [HttpGet("of/user")]
+        public async Task<IActionResult> GetCommentRatesOfUser([FromQuery] GetCommentRatesOfUserQuery request)
+        {
+            IPagedList<CommentRateDto> commentRates = await Mediator.Send(request);
+            return Ok(commentRates);
         }
     }
 }

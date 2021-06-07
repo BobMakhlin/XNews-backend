@@ -11,6 +11,7 @@ namespace Application.CQRS.PostRates.Models
 
         public Guid PostRateId { get; set; }
         public double Rate { get; set; }
+        public string UserId { get; set; }
 
         #endregion
     }

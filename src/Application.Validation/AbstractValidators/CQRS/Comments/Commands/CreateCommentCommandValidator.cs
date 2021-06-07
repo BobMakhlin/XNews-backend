@@ -14,6 +14,9 @@ namespace Application.Validation.AbstractValidators.CQRS.Comments.Commands
 
             RuleFor(c => c.PostId)
                 .NotEmpty();
+
+            RuleFor(c => c.UserId)
+                .NotEmpty();
         }
     }
 }

@@ -23,6 +23,11 @@ namespace Persistence.Primary.Configurations
                 .Property(e => e.Title)
                 .IsRequired()
                 .HasMaxLength(72);
+            
+            builder
+                .Property(e => e.UserId)
+                .IsRequired()
+                .HasMaxLength(450);
         }
     }
 }

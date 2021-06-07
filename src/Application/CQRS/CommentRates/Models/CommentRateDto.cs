@@ -11,7 +11,8 @@ namespace Application.CQRS.CommentRates.Models
 
         public Guid CommentRateId { get; set; }
         public double Rate { get; set; }
-
+        public string UserId { get; set; }
+        
         #endregion
     }
 }

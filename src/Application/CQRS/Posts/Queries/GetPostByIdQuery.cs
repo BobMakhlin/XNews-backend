@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Common.Exceptions;
 using Application.Common.Extensions;
 using Application.CQRS.Posts.Models;
 using Application.Persistence.Interfaces;
@@ -38,9 +39,10 @@ namespace Application.CQRS.Posts.Queries
             public async Task<PostDto> Handle(GetPostByIdQuery request, CancellationToken cancellationToken)
             {
                 return await _context.Post
-                    .Where(p => p.PostId == request.PostId)
-                    .ProjectToSingleOrDefaultAsync<PostDto>(_mapper.ConfigurationProvider, cancellationToken)
-                    .ConfigureAwait(false);
+                           .Where(p => p.PostId == request.PostId)
+                           .ProjectToSingleOrDefaultAsync<PostDto>(_mapper.ConfigurationProvider, cancellationToken)
+                           .ConfigureAwait(false)
+                       ?? throw new NotFoundException();
             }
 
             #endregion

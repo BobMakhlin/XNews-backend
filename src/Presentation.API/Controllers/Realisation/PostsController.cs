@@ -29,12 +29,6 @@ namespace Presentation.API.Controllers.Realisation
         public async Task<IActionResult> GetPostAsync([FromRoute] Guid id)
         {
             PostDto post = await Mediator.Send(new GetPostByIdQuery {PostId = id});
-
-            if (post == null)
-            {
-                return NotFound();
-            }
-
             return Ok(post);
         }
 

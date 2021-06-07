@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Common.Exceptions;
 using Application.Common.Extensions;
 using Application.CQRS.Users.Models;
 using Application.Identity.Interfaces;
@@ -38,16 +39,17 @@ namespace Application.CQRS.Users.Queries
             }
 
             #endregion
-            
+
             #region IRequestHandler<GetUserByIdQuery, UserDto>
 
             public async Task<UserDto> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
             {
                 return await _userStorage
-                    .GetAll()
-                    .Where(u => u.Id == request.UserId)
-                    .ProjectToSingleOrDefaultAsync<UserDto>(_mapper.ConfigurationProvider, cancellationToken)
-                    .ConfigureAwait(false);
+                           .GetAll()
+                           .Where(u => u.Id == request.UserId)
+                           .ProjectToSingleOrDefaultAsync<UserDto>(_mapper.ConfigurationProvider, cancellationToken)
+                           .ConfigureAwait(false)
+                       ?? throw new NotFoundException();
             }
 
             #endregion

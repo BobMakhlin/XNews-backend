@@ -25,12 +25,6 @@ namespace Presentation.API.Controllers.Realisation
         public async Task<IActionResult> GetCategoryAsync([FromRoute] Guid id)
         {
             CategoryDto categoryDto = await Mediator.Send(new GetCategoryByIdQuery {CategoryId = id});
-
-            if (categoryDto == null)
-            {
-                return NotFound();
-            }
-
             return Ok(categoryDto);
         }
 

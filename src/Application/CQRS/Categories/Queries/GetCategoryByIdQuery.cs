@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Common.Exceptions;
 using Application.Common.Extensions;
 using Application.CQRS.Categories.Models;
 using Application.Persistence.Interfaces;
@@ -38,9 +39,10 @@ namespace Application.CQRS.Categories.Queries
             public async Task<CategoryDto> Handle(GetCategoryByIdQuery request, CancellationToken cancellationToken)
             {
                 return await _context.Category
-                    .Where(c => c.CategoryId == request.CategoryId)
-                    .ProjectToSingleOrDefaultAsync<CategoryDto>(_mapper.ConfigurationProvider, cancellationToken)
-                    .ConfigureAwait(false);
+                           .Where(c => c.CategoryId == request.CategoryId)
+                           .ProjectToSingleOrDefaultAsync<CategoryDto>(_mapper.ConfigurationProvider, cancellationToken)
+                           .ConfigureAwait(false)
+                       ?? throw new NotFoundException();
             }
 
             #endregion

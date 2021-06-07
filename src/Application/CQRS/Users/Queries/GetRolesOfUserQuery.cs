@@ -49,11 +49,8 @@ namespace Application.CQRS.Users.Queries
                 CancellationToken cancellationToken)
             {
                 ApplicationUser user = await _userStorage.FindByIdAsync(request.UserId)
-                    .ConfigureAwait(false);
-                if (user == null)
-                {
-                    throw new NotFoundException();
-                }
+                                           .ConfigureAwait(false)
+                                       ?? throw new NotFoundException();
 
                 return await _userRoleService.GetUserRoles(user)
                     .ProjectToListAsync<RoleDto>(_mapper.ConfigurationProvider, cancellationToken)

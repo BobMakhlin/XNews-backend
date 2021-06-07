@@ -1,7 +1,10 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Common.Exceptions;
 using Application.CQRS.CommentRates.Models;
+using Application.Identity.Interfaces;
+using Application.Identity.Models;
 using Application.Pagination.Common.Models;
 using Application.Pagination.Common.Models.PagedList;
 using Application.Pagination.Extensions;
@@ -35,29 +38,58 @@ namespace Application.CQRS.Users.Queries
 
             private readonly IMapper _mapper;
             private readonly IXNewsDbContext _context;
-           
+            private readonly IIdentityStorage<ApplicationUser, string> _userStorage;
+
             #endregion
 
             #region Constructors
 
-            public Handler(IXNewsDbContext context, IMapper mapper)
+            public Handler(IXNewsDbContext context, IMapper mapper,
+                IIdentityStorage<ApplicationUser, string> userStorage)
             {
                 _context = context;
                 _mapper = mapper;
+                _userStorage = userStorage;
             }
 
             #endregion
-            
+
             #region IRequestHandler<GetCommentRatesOfUserQuery, IPagedList<CommentRateDto>>
 
-            public async Task<IPagedList<CommentRateDto>> Handle(GetCommentRatesOfUserQuery request, CancellationToken cancellationToken)
+            public async Task<IPagedList<CommentRateDto>> Handle(GetCommentRatesOfUserQuery request,
+                CancellationToken cancellationToken)
             {
-                return await _context.CommentRate
+                IPagedList<CommentRateDto> commentRates = await _context.CommentRate
                     .Where(cr => cr.UserId == request.UserId)
                     .OrderBy(c => c.CommentRateId)
                     .ProjectTo<CommentRateDto>(_mapper.ConfigurationProvider)
                     .ProjectToPagedListAsync(request, cancellationToken)
                     .ConfigureAwait(false);
+
+                if (commentRates.TotalItemsCount > 0)
+                {
+                    return commentRates;
+                }
+
+                bool userExists = await IsUserExistsAsync(request.UserId)
+                    .ConfigureAwait(false);
+                return userExists
+                    ? PagedList<CommentRateDto>.CreateEmptyPagedList(request)
+                    : throw new NotFoundException();
+            }
+
+            #endregion
+
+            #region Methods
+
+            /// <summary>
+            /// Checks if the user with the specified <paramref name="userId"/> exists.
+            /// </summary>
+            private async Task<bool> IsUserExistsAsync(string userId)
+            {
+                ApplicationUser user = await _userStorage.FindByIdAsync(userId)
+                    .ConfigureAwait(false);
+                return user != null;
             }
 
             #endregion

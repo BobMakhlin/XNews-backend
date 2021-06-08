@@ -37,11 +37,8 @@ namespace Application.CQRS.Posts.Commands
             public async Task<Unit> Handle(UpdatePostCommand request, CancellationToken cancellationToken)
             {
                 Post post = await _context.Post.FindAsync(request.PostId)
-                    .ConfigureAwait(false);
-                if (post == null)
-                {
-                    throw new NotFoundException();
-                }
+                                .ConfigureAwait(false)
+                            ?? throw new NotFoundException();
 
                 UpdatePostProperties(post, request);
                 await _context.SaveChangesAsync(cancellationToken)

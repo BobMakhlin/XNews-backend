@@ -36,11 +36,8 @@ namespace Application.CQRS.Comments.Commands
             public async Task<Unit> Handle(UpdateCommentCommand request, CancellationToken cancellationToken)
             {
                 Comment comment = await _context.Comment.FindAsync(request.CommentId)
-                    .ConfigureAwait(false);
-                if (comment == null)
-                {
-                    throw new NotFoundException();
-                }
+                                      .ConfigureAwait(false)
+                                  ?? throw new NotFoundException();
 
                 UpdateCommentProperties(comment, request);
                 await _context.SaveChangesAsync(cancellationToken)

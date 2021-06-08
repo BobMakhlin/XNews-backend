@@ -42,12 +42,9 @@ namespace Application.CQRS.Roles.Commands
             public async Task<Unit> Handle(UpdateRoleCommand request, CancellationToken cancellationToken)
             {
                 ApplicationRole roleToUpdate = await _roleStorage.FindByIdAsync(request.RoleId)
-                    .ConfigureAwait(false);
-                if (roleToUpdate == null)
-                {
-                    throw new NotFoundException();
-                }
-                
+                                                   .ConfigureAwait(false)
+                                               ?? throw new NotFoundException();
+
                 UpdateApplicationRoleProperties(roleToUpdate, request);
 
                 IIdentityResult identityResult = await _roleStorage.UpdateAsync(roleToUpdate)

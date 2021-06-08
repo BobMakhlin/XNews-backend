@@ -46,11 +46,8 @@ namespace Application.CQRS.Users.Commands.UserPassword
             public async Task<Unit> Handle(ChangeUserPasswordCommand request, CancellationToken cancellationToken)
             {
                 ApplicationUser user = await _userStorage.FindByIdAsync(request.UserId)
-                    .ConfigureAwait(false);
-                if (user == null)
-                {
-                    throw new NotFoundException();
-                }
+                                           .ConfigureAwait(false)
+                                       ?? throw new NotFoundException();
 
                 IIdentityResult identityResult = await _userPasswordService
                     .ChangeUserPasswordAsync(user, request.CurrentPassword, request.NewPassword)

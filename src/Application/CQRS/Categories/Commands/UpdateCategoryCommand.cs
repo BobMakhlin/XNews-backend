@@ -35,11 +35,8 @@ namespace Application.CQRS.Categories.Commands
             public async Task<Unit> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
             {
                 Category category = await _context.Category.FindAsync(request.CategoryId)
-                    .ConfigureAwait(false);
-                if (category == null)
-                {
-                    throw new NotFoundException();
-                }
+                                        .ConfigureAwait(false)
+                                    ?? throw new NotFoundException();
 
                 UpdateCategoryProperties(category, request);
                 await _context.SaveChangesAsync(cancellationToken)

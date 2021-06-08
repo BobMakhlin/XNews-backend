@@ -41,11 +41,8 @@ namespace Application.CQRS.Users.Commands.UserStorage
             public async Task<Unit> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
             {
                 ApplicationUser userToDelete = await _userStorage.FindByIdAsync(request.UserId)
-                    .ConfigureAwait(false);
-                if (userToDelete == null)
-                {
-                    throw new NotFoundException();
-                }
+                                                   .ConfigureAwait(false)
+                                               ?? throw new NotFoundException();
 
                 IIdentityResult identityResult = await _userStorage.DeleteAsync(userToDelete)
                     .ConfigureAwait(false);

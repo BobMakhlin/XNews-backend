@@ -44,12 +44,9 @@ namespace Application.CQRS.Users.Commands.UserStorage
             public async Task<Unit> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
             {
                 ApplicationUser userToUpdate = await _userStorage.FindByIdAsync(request.UserId)
-                    .ConfigureAwait(false);
-                if (userToUpdate == null)
-                {
-                    throw new NotFoundException();
-                }
-                
+                                                   .ConfigureAwait(false)
+                                               ?? throw new NotFoundException();
+
                 UpdateApplicationUserProperties(userToUpdate, request);
 
                 IIdentityResult identityResult = await _userStorage.UpdateAsync(userToUpdate)

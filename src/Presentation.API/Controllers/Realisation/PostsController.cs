@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Application.CQRS.Categories.Models;
+using Application.CQRS.PostRates.Commands;
 using Application.CQRS.PostRates.Models;
 using Application.CQRS.Posts.Commands;
 using Application.CQRS.Posts.Models;
@@ -11,6 +12,7 @@ using Application.CQRS.Users.Queries;
 using Application.Pagination.Common.Models.PagedList;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.API.Controllers.Abstraction;
+using Presentation.API.Requests;
 
 namespace Presentation.API.Controllers.Realisation
 {
@@ -100,6 +102,19 @@ namespace Presentation.API.Controllers.Realisation
         {
             IPagedList<PostDto> posts = await Mediator.Send(request);
             return Ok(posts);
+        }
+
+        [HttpPost("{id}/rates")]
+        public async Task<IActionResult> AddRateToPostAsync([FromRoute] Guid id,
+            [FromBody] PostsControllerRequests.AddRateToPostRequest request)
+        {
+            await Mediator.Send(new CreatePostRateCommand
+            {
+                PostId = id,
+                UserId = request.UserId,
+                Rate = request.Rate
+            });
+            return NoContent();
         }
     }
 }

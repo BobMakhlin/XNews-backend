@@ -48,18 +48,12 @@ namespace Application.CQRS.Users.Commands.UserRole
             public async Task<Unit> Handle(DeleteRoleOfUserCommand request, CancellationToken cancellationToken)
             {
                 ApplicationUser user = await _userStorage.FindByIdAsync(request.UserId)
-                    .ConfigureAwait(false);
-                if (user == null)
-                {
-                    throw new NotFoundException();
-                }
+                                           .ConfigureAwait(false)
+                                       ?? throw new NotFoundException();
 
                 ApplicationRole role = await _roleStorage.FindByIdAsync(request.RoleId)
-                    .ConfigureAwait(false);
-                if (role == null)
-                {
-                    throw new NotFoundException();
-                }
+                                           .ConfigureAwait(false)
+                                       ?? throw new NotFoundException();
 
                 IIdentityResult identityResult = await _userRoleService.RemoveUserFromRoleAsync(user, role)
                     .ConfigureAwait(false);

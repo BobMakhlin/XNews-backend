@@ -34,12 +34,9 @@ namespace Application.CQRS.CommentRates.Commands
             public async Task<Unit> Handle(DeleteCommentRateCommand request, CancellationToken cancellationToken)
             {
                 CommentRate commentRate = await _context.CommentRate
-                    .FindAsync(request.CommentRateId)
-                    .ConfigureAwait(false);
-                if (commentRate == null)
-                {
-                    throw new NotFoundException();
-                }
+                                              .FindAsync(request.CommentRateId)
+                                              .ConfigureAwait(false)
+                                          ?? throw new NotFoundException();
 
                 _context.CommentRate.Remove(commentRate);
                 await _context.SaveChangesAsync(cancellationToken)

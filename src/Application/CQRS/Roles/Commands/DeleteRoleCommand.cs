@@ -41,12 +41,9 @@ namespace Application.CQRS.Roles.Commands
             public async Task<Unit> Handle(DeleteRoleCommand request, CancellationToken cancellationToken)
             {
                 ApplicationRole roleToDelete = await _roleStorage.FindByIdAsync(request.RoleId)
-                    .ConfigureAwait(false);
-                if (roleToDelete == null)
-                {
-                    throw new NotFoundException();
-                }
-                
+                                                   .ConfigureAwait(false)
+                                               ?? throw new NotFoundException();
+
                 IIdentityResult identityResult = await _roleStorage.DeleteAsync(roleToDelete)
                     .ConfigureAwait(false);
                 identityResult.ThrowIfFailed();

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Specialized;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Common.Exceptions;
@@ -35,11 +34,8 @@ namespace Application.CQRS.Categories.Commands
             public async Task<Unit> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
             {
                 Category category = await _context.Category.FindAsync(request.CategoryId)
-                    .ConfigureAwait(false);
-                if (category == null)
-                {
-                    throw new NotFoundException();
-                }
+                                        .ConfigureAwait(false)
+                                    ?? throw new NotFoundException();
 
                 _context.Category.Remove(category);
                 await _context.SaveChangesAsync(cancellationToken)

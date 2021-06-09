@@ -11,6 +11,7 @@ using Application.Pagination.Common.Models.PagedList;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.API.Controllers.Abstraction;
 using Presentation.API.Requests.Common;
+using Presentation.API.Requests.ControllerRequests;
 
 namespace Presentation.API.Controllers.Realisation
 {
@@ -93,10 +94,16 @@ namespace Presentation.API.Controllers.Realisation
             return NoContent();
         }
 
-        [HttpPost("change-password")]
-        public async Task<IActionResult> ChangeUserPassword([FromBody] ChangeUserPasswordCommand request)
+        [HttpPost("{id}/change-password")]
+        public async Task<IActionResult> ChangeUserPasswordAsync([FromRoute] string id,
+            [FromBody] UsersControllerRequests.ChangeUserPasswordRequest request)
         {
-            await Mediator.Send(request);
+            await Mediator.Send(new ChangeUserPasswordCommand
+            {
+                UserId = id,
+                CurrentPassword = request.CurrentPassword,
+                NewPassword = request.NewPassword
+            });
             return NoContent();
         }
     }

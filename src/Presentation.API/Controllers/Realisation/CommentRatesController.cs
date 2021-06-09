@@ -12,13 +12,6 @@ namespace Presentation.API.Controllers.Realisation
     [Route("[controller]")]
     public class CommentRatesController : MyBaseController
     {
-        [HttpPost]
-        public async Task<IActionResult> CreateCommentRate([FromBody] CreateCommentRateCommand request)
-        {
-            Guid createdCommentRateId = await Mediator.Send(request);
-            return Ok(createdCommentRateId);
-        }
-        
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCommentRateAsync([FromRoute] Guid id)
         {

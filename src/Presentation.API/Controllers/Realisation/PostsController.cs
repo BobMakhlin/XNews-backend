@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Application.CQRS.Categories.Models;
+using Application.CQRS.Comments.Models;
 using Application.CQRS.PostRates.Commands;
 using Application.CQRS.PostRates.Models;
 using Application.CQRS.Posts.Commands;
@@ -11,6 +12,7 @@ using Application.CQRS.Users.Models;
 using Application.Pagination.Common.Models.PagedList;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.API.Controllers.Abstraction;
+using Presentation.API.Requests.Common;
 using Presentation.API.Requests.ControllerRequests;
 
 namespace Presentation.API.Controllers.Realisation
@@ -107,6 +109,19 @@ namespace Presentation.API.Controllers.Realisation
                 Rate = request.Rate
             });
             return NoContent();
+        }
+
+        [HttpGet("{id}/comments")]
+        public async Task<IActionResult> GetCommentsOfPostAsync([FromRoute] Guid id,
+            [FromQuery] PaginationRequest request)
+        {
+            IPagedList<CommentDto> comments = await Mediator.Send(new GetAllCommentsOfPostQuery
+            {
+                PostId = id,
+                PageNumber = request.PageNumber,
+                PageSize = request.PageSize
+            });
+            return Ok(comments);
         }
     }
 }

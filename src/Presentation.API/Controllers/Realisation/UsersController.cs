@@ -53,6 +53,19 @@ namespace Presentation.API.Controllers.Realisation
             return Ok(postRates);
         }
 
+        [HttpGet("{id}/comments")]
+        public async Task<IActionResult> GetCommentsOfUserAsync([FromRoute] string id,
+            [FromQuery] PaginationRequest paginationRequest)
+        {
+            IPagedList<CommentDto> comments = await Mediator.Send(new GetCommentsOfUserQuery
+            {
+                UserId = id,
+                PageNumber = paginationRequest.PageNumber,
+                PageSize = paginationRequest.PageSize
+            });
+            return Ok(comments);
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUserByIdAsync([FromRoute] string id)
         {

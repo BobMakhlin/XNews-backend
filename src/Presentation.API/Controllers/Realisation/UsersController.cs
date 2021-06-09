@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Application.CQRS.Posts.Models;
 using Application.CQRS.Roles.Models;
 using Application.CQRS.Users.Commands.UserPassword;
 using Application.CQRS.Users.Commands.UserRole;
@@ -9,6 +10,7 @@ using Application.CQRS.Users.Queries;
 using Application.Pagination.Common.Models.PagedList;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.API.Controllers.Abstraction;
+using Presentation.API.Requests.Common;
 
 namespace Presentation.API.Controllers.Realisation
 {
@@ -21,6 +23,19 @@ namespace Presentation.API.Controllers.Realisation
         {
             IPagedList<UserDto> users = await Mediator.Send(request);
             return Ok(users);
+        }
+
+        [HttpGet("{id}/posts")]
+        public async Task<IActionResult> GetPostsOfUserAsync([FromRoute] string id,
+            [FromQuery] PaginationRequest paginationRequest)
+        {
+            IPagedList<PostDto> posts = await Mediator.Send(new GetPostsOfUserQuery
+            {
+                UserId = id, 
+                PageNumber = paginationRequest.PageNumber, 
+                PageSize = paginationRequest.PageSize
+            });
+            return Ok(posts);
         }
 
         [HttpGet("{id}")]

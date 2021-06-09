@@ -1,6 +1,6 @@
 using Presentation.API.Controllers.Realisation;
 
-namespace Presentation.API.Requests
+namespace Presentation.API.Requests.ControllerRequests
 {
     /// <summary>
     /// Contains types that represent requests for action-methods of <see cref="PostsController"/>.

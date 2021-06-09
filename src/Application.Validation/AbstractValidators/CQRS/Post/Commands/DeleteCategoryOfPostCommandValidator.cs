@@ -1,4 +1,5 @@
 using Application.CQRS.Posts.Commands;
+using Application.CQRS.Posts.Commands.PostCategory;
 using FluentValidation;
 
 namespace Application.Validation.AbstractValidators.CQRS.Post.Commands

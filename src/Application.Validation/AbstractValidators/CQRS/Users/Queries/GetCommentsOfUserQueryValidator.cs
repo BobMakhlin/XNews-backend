@@ -1,4 +1,5 @@
 using Application.CQRS.Users.Queries;
+using Application.CQRS.Users.Queries.UserComment;
 using Application.Validation.AbstractValidators.Common;
 using FluentValidation;
 

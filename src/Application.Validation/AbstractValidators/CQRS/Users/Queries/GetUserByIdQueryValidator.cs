@@ -1,4 +1,5 @@
 using Application.CQRS.Users.Queries;
+using Application.CQRS.Users.Queries.UserStorage;
 using FluentValidation;
 
 namespace Application.Validation.AbstractValidators.CQRS.Users.Queries

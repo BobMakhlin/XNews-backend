@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.CQRS.Posts.Commands;
+using Application.CQRS.Posts.Commands.PostStorage;
 using Application.Persistence.Interfaces;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;

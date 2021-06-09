@@ -3,11 +3,17 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Application.CQRS.Categories.Models;
 using Application.CQRS.Comments.Models;
-using Application.CQRS.PostRates.Commands;
 using Application.CQRS.PostRates.Models;
 using Application.CQRS.Posts.Commands;
+using Application.CQRS.Posts.Commands.PostCategory;
+using Application.CQRS.Posts.Commands.PostRate;
+using Application.CQRS.Posts.Commands.PostStorage;
 using Application.CQRS.Posts.Models;
 using Application.CQRS.Posts.Queries;
+using Application.CQRS.Posts.Queries.PostCategory;
+using Application.CQRS.Posts.Queries.PostComment;
+using Application.CQRS.Posts.Queries.PostRate;
+using Application.CQRS.Posts.Queries.PostStorage;
 using Application.Pagination.Common.Models.PagedList;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.API.Controllers.Abstraction;
@@ -94,7 +100,7 @@ namespace Presentation.API.Controllers.Realisation
         public async Task<IActionResult> AddRateToPostAsync([FromRoute] Guid id,
             [FromBody] PostsControllerRequests.AddRateToPostRequest request)
         {
-            await Mediator.Send(new CreatePostRateCommand
+            await Mediator.Send(new AddRateToPostCommand
             {
                 PostId = id,
                 UserId = request.UserId,

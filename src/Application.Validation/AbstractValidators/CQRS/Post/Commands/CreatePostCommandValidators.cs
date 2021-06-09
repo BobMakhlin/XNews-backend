@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Application.CQRS.Posts.Commands;
+using Application.CQRS.Posts.Commands.PostStorage;
 using Application.Identity.Interfaces;
 using Application.Identity.Models;
 using Application.Persistence.Interfaces;

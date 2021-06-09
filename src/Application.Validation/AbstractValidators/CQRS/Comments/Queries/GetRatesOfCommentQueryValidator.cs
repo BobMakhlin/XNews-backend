@@ -1,4 +1,5 @@
 using Application.CQRS.Comments.Queries;
+using Application.CQRS.Comments.Queries.CommentRate;
 using FluentValidation;
 
 namespace Application.Validation.AbstractValidators.CQRS.Comments.Queries

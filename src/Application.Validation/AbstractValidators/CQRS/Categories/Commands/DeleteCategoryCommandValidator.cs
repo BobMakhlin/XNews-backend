@@ -1,4 +1,5 @@
 using Application.CQRS.Categories.Commands;
+using Application.CQRS.Categories.Commands.CategoryStorage;
 using FluentValidation;
 
 namespace Application.Validation.AbstractValidators.CQRS.Categories.Commands

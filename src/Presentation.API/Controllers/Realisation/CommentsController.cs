@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Application.CQRS.CommentRates.Commands;
 using Microsoft.AspNetCore.Mvc;
 using Application.CQRS.CommentRates.Models;
 using Application.CQRS.Comments.Commands;
+using Application.CQRS.Comments.Commands.CommentRate;
+using Application.CQRS.Comments.Commands.CommentStorage;
 using Application.CQRS.Comments.Queries;
+using Application.CQRS.Comments.Queries.CommentRate;
 using Presentation.API.Controllers.Abstraction;
 using Presentation.API.Requests.ControllerRequests;
 
@@ -54,7 +56,7 @@ namespace Presentation.API.Controllers.Realisation
         public async Task<IActionResult> AddRateToCommentAsync([FromRoute] Guid id,
             [FromBody] CommentsControllerRequests.AddRateToCommentRequest request)
         {
-            await Mediator.Send(new CreateCommentRateCommand
+            await Mediator.Send(new AddRateToCommentCommand
             {
                 CommentId = id,
                 Rate = request.Rate,

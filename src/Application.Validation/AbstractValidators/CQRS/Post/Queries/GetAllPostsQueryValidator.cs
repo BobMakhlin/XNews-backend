@@ -1,4 +1,5 @@
 using Application.CQRS.Posts.Queries;
+using Application.CQRS.Posts.Queries.PostStorage;
 using Application.Validation.AbstractValidators.Common;
 using FluentValidation;
 

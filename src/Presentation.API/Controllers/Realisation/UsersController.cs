@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Application.CQRS.PostRates.Models;
 using Application.CQRS.Posts.Models;
 using Application.CQRS.Roles.Models;
 using Application.CQRS.Users.Commands.UserPassword;
@@ -37,6 +38,19 @@ namespace Presentation.API.Controllers.Realisation
                 PageSize = paginationRequest.PageSize
             });
             return Ok(posts);
+        }
+        
+        [HttpGet("{id}/postRates")]
+        public async Task<IActionResult> GetPostRatesOfUserAsync([FromRoute] string id,
+            [FromQuery] PaginationRequest paginationRequest)
+        {
+            IPagedList<PostRateDto> postRates = await Mediator.Send(new GetPostRatesOfUserQuery
+            {
+                UserId = id,
+                PageNumber = paginationRequest.PageNumber,
+                PageSize = paginationRequest.PageSize
+            });
+            return Ok(postRates);
         }
 
         [HttpGet("{id}")]

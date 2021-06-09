@@ -9,7 +9,6 @@ using Application.CQRS.Users.Commands.UserPassword;
 using Application.CQRS.Users.Commands.UserRole;
 using Application.CQRS.Users.Commands.UserStorage;
 using Application.CQRS.Users.Models;
-using Application.CQRS.Users.Queries;
 using Application.CQRS.Users.Queries.UserComment;
 using Application.CQRS.Users.Queries.UserCommentRate;
 using Application.CQRS.Users.Queries.UserPost;
@@ -28,6 +27,8 @@ namespace Presentation.API.Controllers.Realisation
     [Route("[controller]")]
     public class UsersController : MyBaseController
     {
+        #region UserStorage
+
         [HttpGet]
         public async Task<IActionResult> GetAllUsersAsync([FromQuery] GetAllUsersQuery request)
         {
@@ -35,58 +36,6 @@ namespace Presentation.API.Controllers.Realisation
             return Ok(users);
         }
 
-        [HttpGet("{id}/posts")]
-        public async Task<IActionResult> GetPostsOfUserAsync([FromRoute] string id,
-            [FromQuery] PaginationRequest paginationRequest)
-        {
-            IPagedList<PostDto> posts = await Mediator.Send(new GetPostsOfUserQuery
-            {
-                UserId = id, 
-                PageNumber = paginationRequest.PageNumber, 
-                PageSize = paginationRequest.PageSize
-            });
-            return Ok(posts);
-        }
-        
-        [HttpGet("{id}/postRates")]
-        public async Task<IActionResult> GetPostRatesOfUserAsync([FromRoute] string id,
-            [FromQuery] PaginationRequest paginationRequest)
-        {
-            IPagedList<PostRateDto> postRates = await Mediator.Send(new GetPostRatesOfUserQuery
-            {
-                UserId = id,
-                PageNumber = paginationRequest.PageNumber,
-                PageSize = paginationRequest.PageSize
-            });
-            return Ok(postRates);
-        }
-
-        [HttpGet("{id}/comments")]
-        public async Task<IActionResult> GetCommentsOfUserAsync([FromRoute] string id,
-            [FromQuery] PaginationRequest paginationRequest)
-        {
-            IPagedList<CommentDto> comments = await Mediator.Send(new GetCommentsOfUserQuery
-            {
-                UserId = id,
-                PageNumber = paginationRequest.PageNumber,
-                PageSize = paginationRequest.PageSize
-            });
-            return Ok(comments);
-        }
-        
-        [HttpGet("{id}/commentRates")]
-        public async Task<IActionResult> GetCommentRatesOfUserAsync([FromRoute] string id,
-            [FromQuery] PaginationRequest paginationRequest)
-        {
-            IPagedList<CommentRateDto> commentRates = await Mediator.Send(new GetCommentRatesOfUserQuery
-            {
-                UserId = id,
-                PageNumber = paginationRequest.PageNumber,
-                PageSize = paginationRequest.PageSize
-            });
-            return Ok(commentRates);
-        }
-        
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUserByIdAsync([FromRoute] string id)
         {
@@ -120,6 +69,78 @@ namespace Presentation.API.Controllers.Realisation
             await Mediator.Send(new DeleteUserCommand {UserId = id});
             return NoContent();
         }
+        
+        #endregion
+
+        #region UserPost
+
+        [HttpGet("{id}/posts")]
+        public async Task<IActionResult> GetPostsOfUserAsync([FromRoute] string id,
+            [FromQuery] PaginationRequest paginationRequest)
+        {
+            IPagedList<PostDto> posts = await Mediator.Send(new GetPostsOfUserQuery
+            {
+                UserId = id, 
+                PageNumber = paginationRequest.PageNumber, 
+                PageSize = paginationRequest.PageSize
+            });
+            return Ok(posts);
+        }
+
+        #endregion
+
+        #region UserPostRate
+
+        [HttpGet("{id}/postRates")]
+        public async Task<IActionResult> GetPostRatesOfUserAsync([FromRoute] string id,
+            [FromQuery] PaginationRequest paginationRequest)
+        {
+            IPagedList<PostRateDto> postRates = await Mediator.Send(new GetPostRatesOfUserQuery
+            {
+                UserId = id,
+                PageNumber = paginationRequest.PageNumber,
+                PageSize = paginationRequest.PageSize
+            });
+            return Ok(postRates);
+        }
+
+        #endregion
+
+        #region UserComment
+
+        [HttpGet("{id}/comments")]
+        public async Task<IActionResult> GetCommentsOfUserAsync([FromRoute] string id,
+            [FromQuery] PaginationRequest paginationRequest)
+        {
+            IPagedList<CommentDto> comments = await Mediator.Send(new GetCommentsOfUserQuery
+            {
+                UserId = id,
+                PageNumber = paginationRequest.PageNumber,
+                PageSize = paginationRequest.PageSize
+            });
+            return Ok(comments);
+        }
+
+        #endregion
+
+        #region UserCommentRate
+
+        [HttpGet("{id}/commentRates")]
+        public async Task<IActionResult> GetCommentRatesOfUserAsync([FromRoute] string id,
+            [FromQuery] PaginationRequest paginationRequest)
+        {
+            IPagedList<CommentRateDto> commentRates = await Mediator.Send(new GetCommentRatesOfUserQuery
+            {
+                UserId = id,
+                PageNumber = paginationRequest.PageNumber,
+                PageSize = paginationRequest.PageSize
+            });
+            return Ok(commentRates);
+        }
+
+        #endregion
+
+        #region UserRole
 
         [HttpGet("{id}/roles")]
         public async Task<IActionResult> GetRolesOfUserAsync([FromRoute] string id)
@@ -127,7 +148,7 @@ namespace Presentation.API.Controllers.Realisation
             IEnumerable<RoleDto> rolesOfUser = await Mediator.Send(new GetRolesOfUserQuery {UserId = id});
             return Ok(rolesOfUser);
         }
-
+        
         [HttpPost("{userId}/roles/{roleId}")]
         public async Task<IActionResult> AddRoleToUserAsync([FromRoute] string userId, [FromRoute] string roleId)
         {
@@ -142,6 +163,10 @@ namespace Presentation.API.Controllers.Realisation
             return NoContent();
         }
 
+        #endregion
+
+        #region UserPassword
+
         [HttpPost("{id}/change-password")]
         public async Task<IActionResult> ChangeUserPasswordAsync([FromRoute] string id,
             [FromBody] UsersControllerRequests.ChangeUserPasswordRequest request)
@@ -154,5 +179,7 @@ namespace Presentation.API.Controllers.Realisation
             });
             return NoContent();
         }
+
+        #endregion
     }
 }

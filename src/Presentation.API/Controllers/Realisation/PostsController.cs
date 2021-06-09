@@ -4,12 +4,10 @@ using System.Threading.Tasks;
 using Application.CQRS.Categories.Models;
 using Application.CQRS.Comments.Models;
 using Application.CQRS.PostRates.Models;
-using Application.CQRS.Posts.Commands;
 using Application.CQRS.Posts.Commands.PostCategory;
 using Application.CQRS.Posts.Commands.PostRate;
 using Application.CQRS.Posts.Commands.PostStorage;
 using Application.CQRS.Posts.Models;
-using Application.CQRS.Posts.Queries;
 using Application.CQRS.Posts.Queries.PostCategory;
 using Application.CQRS.Posts.Queries.PostComment;
 using Application.CQRS.Posts.Queries.PostRate;
@@ -26,6 +24,8 @@ namespace Presentation.API.Controllers.Realisation
     [Route("[controller]")]
     public class PostsController : MyBaseController
     {
+        #region PostStorage
+
         [HttpGet]
         public async Task<IActionResult> GetAllPostsAsync([FromQuery] GetAllPostsQuery request)
         {
@@ -67,6 +67,10 @@ namespace Presentation.API.Controllers.Realisation
             return NoContent();
         }
 
+        #endregion
+
+        #region PostCategory
+
         [HttpGet("{postId}/categories")]
         public async Task<IActionResult> GetCategoriesOfPostAsync([FromRoute] Guid postId)
         {
@@ -89,6 +93,10 @@ namespace Presentation.API.Controllers.Realisation
             return NoContent();
         }
 
+        #endregion
+
+        #region PostRate
+
         [HttpGet("{postId}/rates")]
         public async Task<IActionResult> GetRatesOfPostAsync([FromRoute] Guid postId)
         {
@@ -109,6 +117,10 @@ namespace Presentation.API.Controllers.Realisation
             return NoContent();
         }
 
+        #endregion
+
+        #region PostComment
+
         [HttpGet("{id}/comments")]
         public async Task<IActionResult> GetCommentsOfPostAsync([FromRoute] Guid id,
             [FromQuery] PaginationRequest request)
@@ -121,5 +133,7 @@ namespace Presentation.API.Controllers.Realisation
             });
             return Ok(comments);
         }
+
+        #endregion
     }
 }

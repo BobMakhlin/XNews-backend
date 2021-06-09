@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Application.CQRS.CommentRates.Models;
-using Application.CQRS.Comments.Commands;
 using Application.CQRS.Comments.Commands.CommentRate;
 using Application.CQRS.Comments.Commands.CommentStorage;
-using Application.CQRS.Comments.Queries;
 using Application.CQRS.Comments.Queries.CommentRate;
 using Presentation.API.Controllers.Abstraction;
 using Presentation.API.Requests.ControllerRequests;
@@ -17,12 +15,31 @@ namespace Presentation.API.Controllers.Realisation
     [Route("[controller]")]
     public class CommentsController : MyBaseController
     {
+        #region CommentRate
+
         [HttpGet("{id}/rates")]
         public async Task<IActionResult> GetRatesOfCommentAsync([FromRoute] Guid id)
         {
             IEnumerable<CommentRateDto> rates = await Mediator.Send(new GetRatesOfCommentQuery {CommentId = id});
             return Ok(rates);
         }
+        
+        [HttpPost("{id}/rates")]
+        public async Task<IActionResult> AddRateToCommentAsync([FromRoute] Guid id,
+            [FromBody] CommentsControllerRequests.AddRateToCommentRequest request)
+        {
+            await Mediator.Send(new AddRateToCommentCommand
+            {
+                CommentId = id,
+                Rate = request.Rate,
+                UserId = request.UserId
+            });
+            return NoContent();
+        }
+
+        #endregion
+
+        #region CommentStorage
 
         [HttpPost]
         public async Task<IActionResult> CreateCommentAsync([FromBody] CreateCommentCommand request)
@@ -52,17 +69,6 @@ namespace Presentation.API.Controllers.Realisation
             return NoContent();
         }
 
-        [HttpPost("{id}/rates")]
-        public async Task<IActionResult> AddRateToCommentAsync([FromRoute] Guid id,
-            [FromBody] CommentsControllerRequests.AddRateToCommentRequest request)
-        {
-            await Mediator.Send(new AddRateToCommentCommand
-            {
-                CommentId = id,
-                Rate = request.Rate,
-                UserId = request.UserId
-            });
-            return NoContent();
-        }
+        #endregion
     }
 }

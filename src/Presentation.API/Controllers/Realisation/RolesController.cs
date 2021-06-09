@@ -1,9 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Application.CQRS.Roles.Commands;
 using Application.CQRS.Roles.Commands.RoleStorage;
 using Application.CQRS.Roles.Models;
-using Application.CQRS.Roles.Queries;
 using Application.CQRS.Roles.Queries.RoleStorage;
 using Application.CQRS.Roles.Queries.RoleUser;
 using Application.CQRS.Users.Models;
@@ -17,6 +15,8 @@ namespace Presentation.API.Controllers.Realisation
     [Route("[controller]")]
     public class RolesController : MyBaseController
     {
+        #region RoleStorage
+
         [HttpGet]
         public async Task<IActionResult> GetAllRolesAsync([FromQuery] GetAllRolesQuery request)
         {
@@ -29,20 +29,6 @@ namespace Presentation.API.Controllers.Realisation
         {
             RoleDto role = await Mediator.Send(new GetRoleByIdQuery {RoleId = id});
             return Ok(role);
-        }
-        
-        [HttpGet("{id}/users")]
-        public async Task<IActionResult> GetUsersOfRoleAsync([FromRoute] string id)
-        {
-            IEnumerable<UserDto> usersOfRole = await Mediator.Send(new GetUsersOfRoleQuery {RoleId = id});
-            return Ok(usersOfRole);
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteRoleAsync([FromRoute] string id)
-        {
-            await Mediator.Send(new DeleteRoleCommand {RoleId = id});
-            return NoContent();
         }
 
         [HttpPost]
@@ -58,11 +44,31 @@ namespace Presentation.API.Controllers.Realisation
             if (id != request.RoleId)
             {
                 return BadRequest();
-            }   
-            
+            }
+
             await Mediator.Send(request);
-            
+
             return NoContent();
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteRoleAsync([FromRoute] string id)
+        {
+            await Mediator.Send(new DeleteRoleCommand {RoleId = id});
+            return NoContent();
+        }
+
+        #endregion
+
+        #region RoleUser
+
+        [HttpGet("{id}/users")]
+        public async Task<IActionResult> GetUsersOfRoleAsync([FromRoute] string id)
+        {
+            IEnumerable<UserDto> usersOfRole = await Mediator.Send(new GetUsersOfRoleQuery {RoleId = id});
+            return Ok(usersOfRole);
+        }
+
+        #endregion
     }
 }

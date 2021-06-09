@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using Application.CQRS.Categories.Commands;
 using Application.CQRS.Categories.Commands.CategoryStorage;
 using Application.CQRS.Categories.Models;
-using Application.CQRS.Categories.Queries;
 using Application.CQRS.Categories.Queries.CategoryStorage;
 using Application.Pagination.Common.Models.PagedList;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +13,8 @@ namespace Presentation.API.Controllers.Realisation
     [Route("[controller]")]
     public class CategoriesController : MyBaseController
     {
+        #region CategoryStorage
+
         [HttpGet]
         public async Task<IActionResult> GetAllCategoriesAsync([FromQuery] GetAllCategoriesQuery request)
         {
@@ -56,5 +55,7 @@ namespace Presentation.API.Controllers.Realisation
             await Mediator.Send(new DeleteCategoryCommand {CategoryId = id});
             return NoContent();
         }
+
+        #endregion
     }
 }

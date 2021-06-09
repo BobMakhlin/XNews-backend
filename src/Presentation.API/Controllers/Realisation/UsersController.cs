@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Application.CQRS.CommentRates.Models;
+using Application.CQRS.Comments.Models;
 using Application.CQRS.PostRates.Models;
 using Application.CQRS.Posts.Models;
 using Application.CQRS.Roles.Models;
@@ -65,7 +67,20 @@ namespace Presentation.API.Controllers.Realisation
             });
             return Ok(comments);
         }
-
+        
+        [HttpGet("{id}/commentRates")]
+        public async Task<IActionResult> GetCommentRatesOfUserAsync([FromRoute] string id,
+            [FromQuery] PaginationRequest paginationRequest)
+        {
+            IPagedList<CommentRateDto> commentRates = await Mediator.Send(new GetCommentRatesOfUserQuery
+            {
+                UserId = id,
+                PageNumber = paginationRequest.PageNumber,
+                PageSize = paginationRequest.PageSize
+            });
+            return Ok(commentRates);
+        }
+        
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUserByIdAsync([FromRoute] string id)
         {

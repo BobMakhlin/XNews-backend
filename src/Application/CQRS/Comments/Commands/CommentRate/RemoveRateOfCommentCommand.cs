@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Common.Exceptions;
 using Application.Common.Extensions;
 using Application.Identity.Interfaces;
 using Application.Identity.Models;
@@ -65,7 +66,7 @@ namespace Application.CQRS.Comments.Commands.CommentRate
                 await _context.Comment.ThrowIfDoesNotExistAsync(request.CommentId)
                     .ConfigureAwait(false);
 
-                return Unit.Value;
+                throw new NotFoundException(nameof(Domain.Primary.Entities.CommentRate), new object[] { });
             }
 
             #endregion

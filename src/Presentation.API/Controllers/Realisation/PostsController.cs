@@ -117,6 +117,13 @@ namespace Presentation.API.Controllers.Realisation
             return NoContent();
         }
 
+        [HttpDelete("{postId}/rates/{userId}")]
+        public async Task<IActionResult> RemoveRateOfPostAsync([FromRoute] Guid postId, [FromRoute] string userId)
+        {
+            await Mediator.Send(new RemoveRateOfPostCommand {PostId = postId, UserId = userId});
+            return NoContent();
+        }
+
         #endregion
 
         #region PostComment

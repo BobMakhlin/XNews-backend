@@ -45,7 +45,7 @@ namespace Application.CQRS.Users.Commands.UserStorage
             {
                 ApplicationUser userToUpdate = await _userStorage.FindByIdAsync(request.UserId)
                                                    .ConfigureAwait(false)
-                                               ?? throw new NotFoundException();
+                                               ?? throw new NotFoundException(nameof(ApplicationUser), request.UserId);
 
                 UpdateApplicationUserProperties(userToUpdate, request);
 

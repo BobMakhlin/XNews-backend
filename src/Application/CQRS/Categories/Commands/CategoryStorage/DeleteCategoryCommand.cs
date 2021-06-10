@@ -35,7 +35,7 @@ namespace Application.CQRS.Categories.Commands.CategoryStorage
             {
                 Category category = await _context.Category.FindAsync(request.CategoryId)
                                         .ConfigureAwait(false)
-                                    ?? throw new NotFoundException();
+                                    ?? throw new NotFoundException(nameof(Category), request.CategoryId);
 
                 _context.Category.Remove(category);
                 await _context.SaveChangesAsync(cancellationToken)

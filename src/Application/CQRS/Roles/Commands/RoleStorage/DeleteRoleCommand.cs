@@ -42,7 +42,7 @@ namespace Application.CQRS.Roles.Commands.RoleStorage
             {
                 ApplicationRole roleToDelete = await _roleStorage.FindByIdAsync(request.RoleId)
                                                    .ConfigureAwait(false)
-                                               ?? throw new NotFoundException();
+                                               ?? throw new NotFoundException(nameof(ApplicationRole), request.RoleId);
 
                 IIdentityResult identityResult = await _roleStorage.DeleteAsync(roleToDelete)
                     .ConfigureAwait(false);

@@ -21,7 +21,7 @@ namespace Application.Common.Extensions
 
             if (!itemExists)
             {
-                throw new NotFoundException();
+                throw new NotFoundException(typeof(TItem).Name, id);
             }
         }
     }

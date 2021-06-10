@@ -47,7 +47,7 @@ namespace Application.CQRS.Users.Commands.UserPassword
             {
                 ApplicationUser user = await _userStorage.FindByIdAsync(request.UserId)
                                            .ConfigureAwait(false)
-                                       ?? throw new NotFoundException();
+                                       ?? throw new NotFoundException(nameof(ApplicationUser), request.UserId);
 
                 IIdentityResult identityResult = await _userPasswordService
                     .ChangeUserPasswordAsync(user, request.CurrentPassword, request.NewPassword)

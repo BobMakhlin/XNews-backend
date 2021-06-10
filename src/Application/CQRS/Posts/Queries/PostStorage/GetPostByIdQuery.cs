@@ -7,6 +7,7 @@ using Application.Common.Extensions;
 using Application.CQRS.Posts.Models;
 using Application.Persistence.Interfaces;
 using AutoMapper;
+using Domain.Primary.Entities;
 using MediatR;
 
 namespace Application.CQRS.Posts.Queries.PostStorage
@@ -42,7 +43,7 @@ namespace Application.CQRS.Posts.Queries.PostStorage
                            .Where(p => p.PostId == request.PostId)
                            .ProjectToSingleOrDefaultAsync<PostDto>(_mapper.ConfigurationProvider, cancellationToken)
                            .ConfigureAwait(false)
-                       ?? throw new NotFoundException();
+                       ?? throw new NotFoundException(nameof(Post), request.PostId);
             }
 
             #endregion

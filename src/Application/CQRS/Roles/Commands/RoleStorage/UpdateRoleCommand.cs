@@ -43,7 +43,7 @@ namespace Application.CQRS.Roles.Commands.RoleStorage
             {
                 ApplicationRole roleToUpdate = await _roleStorage.FindByIdAsync(request.RoleId)
                                                    .ConfigureAwait(false)
-                                               ?? throw new NotFoundException();
+                                               ?? throw new NotFoundException(nameof(ApplicationRole), request.RoleId);
 
                 UpdateApplicationRoleProperties(roleToUpdate, request);
 

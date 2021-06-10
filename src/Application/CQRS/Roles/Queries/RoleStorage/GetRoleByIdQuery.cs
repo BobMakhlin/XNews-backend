@@ -49,7 +49,7 @@ namespace Application.CQRS.Roles.Queries.RoleStorage
                            .Where(role => role.Id == request.RoleId)
                            .ProjectToSingleOrDefaultAsync<RoleDto>(_mapper.ConfigurationProvider, cancellationToken)
                            .ConfigureAwait(false)
-                       ?? throw new NotFoundException();
+                       ?? throw new NotFoundException(nameof(ApplicationRole), request.RoleId);
             }
 
             #endregion

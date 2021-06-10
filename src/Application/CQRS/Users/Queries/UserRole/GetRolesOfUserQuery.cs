@@ -50,7 +50,7 @@ namespace Application.CQRS.Users.Queries.UserRole
             {
                 ApplicationUser user = await _userStorage.FindByIdAsync(request.UserId)
                                            .ConfigureAwait(false)
-                                       ?? throw new NotFoundException();
+                                       ?? throw new NotFoundException(nameof(ApplicationUser), request.UserId);
 
                 return await _userRoleService.GetUserRoles(user)
                     .ProjectToListAsync<RoleDto>(_mapper.ConfigurationProvider, cancellationToken)

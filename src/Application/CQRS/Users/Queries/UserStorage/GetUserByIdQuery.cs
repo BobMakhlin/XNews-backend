@@ -49,7 +49,7 @@ namespace Application.CQRS.Users.Queries.UserStorage
                            .Where(u => u.Id == request.UserId)
                            .ProjectToSingleOrDefaultAsync<UserDto>(_mapper.ConfigurationProvider, cancellationToken)
                            .ConfigureAwait(false)
-                       ?? throw new NotFoundException();
+                       ?? throw new NotFoundException(nameof(ApplicationUser), request.UserId);
             }
 
             #endregion

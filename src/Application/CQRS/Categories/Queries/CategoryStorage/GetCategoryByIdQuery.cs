@@ -7,6 +7,7 @@ using Application.Common.Extensions;
 using Application.CQRS.Categories.Models;
 using Application.Persistence.Interfaces;
 using AutoMapper;
+using Domain.Primary.Entities;
 using MediatR;
 
 namespace Application.CQRS.Categories.Queries.CategoryStorage
@@ -42,7 +43,7 @@ namespace Application.CQRS.Categories.Queries.CategoryStorage
                            .Where(c => c.CategoryId == request.CategoryId)
                            .ProjectToSingleOrDefaultAsync<CategoryDto>(_mapper.ConfigurationProvider, cancellationToken)
                            .ConfigureAwait(false)
-                       ?? throw new NotFoundException();
+                       ?? throw new NotFoundException(nameof(Category), request.CategoryId);
             }
 
             #endregion

@@ -37,7 +37,7 @@ namespace Application.CQRS.Comments.Commands.CommentStorage
             {
                 Comment comment = await _context.Comment.FindAsync(request.CommentId)
                                       .ConfigureAwait(false)
-                                  ?? throw new NotFoundException();
+                                  ?? throw new NotFoundException(nameof(Comment), request.CommentId);
 
                 UpdateCommentProperties(comment, request);
                 await _context.SaveChangesAsync(cancellationToken)

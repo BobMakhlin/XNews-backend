@@ -42,7 +42,7 @@ namespace Application.CQRS.Users.Commands.UserStorage
             {
                 ApplicationUser userToDelete = await _userStorage.FindByIdAsync(request.UserId)
                                                    .ConfigureAwait(false)
-                                               ?? throw new NotFoundException();
+                                               ?? throw new NotFoundException(nameof(ApplicationUser), request.UserId);
 
                 IIdentityResult identityResult = await _userStorage.DeleteAsync(userToDelete)
                     .ConfigureAwait(false);

@@ -22,7 +22,7 @@ namespace Application.Common.Extensions
             
             if (entity == null)
             {
-                throw new NotFoundException();
+                throw new NotFoundException(typeof(TEntity).Name, primaryKeyValues);
             }
         }
     }

@@ -38,7 +38,7 @@ namespace Application.CQRS.Comments.Commands.CommentStorage
                                       .Include(c => c.CommentRates)
                                       .SingleOrDefaultAsync(c => c.CommentId == request.CommentId, cancellationToken)
                                       .ConfigureAwait(false)
-                                  ?? throw new NotFoundException();
+                                  ?? throw new NotFoundException(nameof(Comment), request.CommentId);
 
                 MarkCommentForRemove(comment);
                 await _context.SaveChangesAsync(cancellationToken)

@@ -49,11 +49,11 @@ namespace Application.CQRS.Users.Commands.UserRole
             {
                 ApplicationUser user = await _userStorage.FindByIdAsync(request.UserId)
                                            .ConfigureAwait(false)
-                                       ?? throw new NotFoundException();
+                                       ?? throw new NotFoundException(nameof(ApplicationUser), request.UserId);
 
                 ApplicationRole role = await _roleStorage.FindByIdAsync(request.RoleId)
                                            .ConfigureAwait(false)
-                                       ?? throw new NotFoundException();
+                                       ?? throw new NotFoundException(nameof(ApplicationRole), request.RoleId);
 
                 IIdentityResult identityResult = await _userRoleService.AddUserToRoleAsync(user, role)
                     .ConfigureAwait(false);

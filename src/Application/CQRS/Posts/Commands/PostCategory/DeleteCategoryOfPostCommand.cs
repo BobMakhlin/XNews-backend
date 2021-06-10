@@ -39,12 +39,12 @@ namespace Application.CQRS.Posts.Commands.PostCategory
                                 .Include(p => p.Categories)
                                 .SingleOrDefaultAsync(p => p.PostId == request.PostId, cancellationToken)
                                 .ConfigureAwait(false)
-                            ?? throw new NotFoundException();
+                            ?? throw new NotFoundException(nameof(Post), request.PostId);
 
                 Category category = await _context.Category
                                         .FindAsync(request.CategoryId)
                                         .ConfigureAwait(false)
-                                    ?? throw new NotFoundException();
+                                    ?? throw new NotFoundException(nameof(Category), request.CategoryId);
 
                 post.Categories.Remove(category);
                 await _context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);

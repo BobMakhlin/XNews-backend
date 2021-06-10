@@ -38,7 +38,7 @@ namespace Application.CQRS.Posts.Commands.PostStorage
             {
                 Post post = await _context.Post.FindAsync(request.PostId)
                                 .ConfigureAwait(false)
-                            ?? throw new NotFoundException();
+                            ?? throw new NotFoundException(nameof(Post), request.PostId);
 
                 UpdatePostProperties(post, request);
                 await _context.SaveChangesAsync(cancellationToken)

@@ -38,7 +38,7 @@ namespace Application.CQRS.Posts.Commands.PostStorage
                                 .Include(p => p.Comments)
                                 .SingleOrDefaultAsync(p => p.PostId == request.PostId, cancellationToken)
                                 .ConfigureAwait(false)
-                            ?? throw new NotFoundException();
+                            ?? throw new NotFoundException(nameof(Post), request.PostId);
 
                 MarkPostForRemove(post);
                 await _context.SaveChangesAsync(cancellationToken)

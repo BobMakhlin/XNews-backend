@@ -43,7 +43,7 @@ namespace Presentation.API.Middlewares
             }
             catch (NotFoundException ex)
             {
-                HandleNotFoundException(ex, context);
+                await HandleNotFoundExceptionAsync(ex, context);
             }
             catch (IdentityException ex)
             {
@@ -76,9 +76,11 @@ namespace Presentation.API.Middlewares
         /// <param name="exception">Exception to be handled</param>
         /// <param name="context">Used to set the response to a client</param>
         /// <returns></returns>
-        private void HandleNotFoundException(NotFoundException exception, HttpContext context)
+        private async Task HandleNotFoundExceptionAsync(NotFoundException exception, HttpContext context)
         {
             context.Response.StatusCode = StatusCodes.Status404NotFound;
+            context.Response.ContentType = "text/plain";
+            await context.Response.WriteAsync(exception.Message);
         }
 
         private async Task HandleIdentityExceptionAsync(IdentityException exception, HttpContext context)

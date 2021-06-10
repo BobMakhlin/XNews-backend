@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Application.Common.Exceptions;
 using Application.Common.Extensions;
 using Application.CQRS.CommentRates.Models;
 using Application.Persistence.Interfaces;
 using AutoMapper;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace Application.CQRS.Comments.Queries.CommentRate
 {
@@ -45,15 +43,14 @@ namespace Application.CQRS.Comments.Queries.CommentRate
                     .Where(cr => cr.CommentId == request.CommentId)
                     .ProjectToListAsync<CommentRateDto>(_mapper.ConfigurationProvider, cancellationToken)
                     .ConfigureAwait(false);
-                if (rates.Count > 0)
+
+                if (rates.Count == 0)
                 {
-                    return rates;
+                    await _context.Comment.ThrowIfDoesNotExistAsync(request.CommentId)
+                        .ConfigureAwait(false);
                 }
 
-                bool commentExists = await _context.Comment
-                    .AnyAsync(c => c.CommentId == request.CommentId, cancellationToken)
-                    .ConfigureAwait(false);
-                return commentExists ? Enumerable.Empty<CommentRateDto>() : throw new NotFoundException();
+                return rates;
             }
 
             #endregion

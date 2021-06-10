@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Application.Common.Exceptions;
 using Application.Common.Extensions;
 using Application.CQRS.PostRates.Models;
 using Application.Persistence.Interfaces;
 using AutoMapper;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace Application.CQRS.Posts.Queries.PostRate
 {
@@ -35,7 +33,7 @@ namespace Application.CQRS.Posts.Queries.PostRate
             }
 
             #endregion
-            
+
             #region IRequestHandler<GetAllRatesOfPostQuery, IEnumerable<PostRateDto>>
 
             public async Task<IEnumerable<PostRateDto>> Handle(GetAllRatesOfPostQuery request,
@@ -45,15 +43,14 @@ namespace Application.CQRS.Posts.Queries.PostRate
                     .Where(pr => pr.PostId == request.PostId)
                     .ProjectToListAsync<PostRateDto>(_mapper.ConfigurationProvider, cancellationToken)
                     .ConfigureAwait(false);
-                if (postRates.Count > 0)
+
+                if (postRates.Count == 0)
                 {
-                    return postRates;
+                    await _context.Post.ThrowIfDoesNotExistAsync(request.PostId)
+                        .ConfigureAwait(false);
                 }
 
-                bool postExists = await _context.Post
-                    .AnyAsync(p => p.PostId == request.PostId, cancellationToken)
-                    .ConfigureAwait(false);
-                return postExists ? Enumerable.Empty<PostRateDto>() : throw new NotFoundException();
+                return postRates;
             }
 
             #endregion

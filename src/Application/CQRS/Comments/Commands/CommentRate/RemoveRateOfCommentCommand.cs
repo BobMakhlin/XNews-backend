@@ -2,8 +2,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Application.Common.Exceptions;
-using Application.Identity.Extensions;
+using Application.Common.Extensions;
 using Application.Identity.Interfaces;
 using Application.Identity.Models;
 using Application.Persistence.Interfaces;
@@ -61,47 +60,12 @@ namespace Application.CQRS.Comments.Commands.CommentRate
                     return Unit.Value;
                 }
 
-                await ThrowIfUserDoesNotExist(request.UserId)
+                await _userStorage.ThrowIfDoesNotExistAsync(request.UserId)
                     .ConfigureAwait(false);
-                await ThrowIfCommentDoesNotExist(request.CommentId, cancellationToken)
+                await _context.Comment.ThrowIfDoesNotExistAsync(request.CommentId)
                     .ConfigureAwait(false);
 
                 return Unit.Value;
-            }
-
-            #endregion
-
-            #region Methods
-
-            /// <summary>
-            /// Throws an exception of type <see cref="NotFoundException"/> if the user with the specified
-            /// <paramref name="userId"/> doesn't exist.
-            /// </summary>
-            private async Task ThrowIfUserDoesNotExist(string userId)
-            {
-                bool userExists = await _userStorage.Exists(userId)
-                    .ConfigureAwait(false);
-
-                if (!userExists)
-                {
-                    throw new NotFoundException();
-                }
-            }
-
-            /// <summary>
-            /// Throws an exception of type <see cref="NotFoundException"/> if the comment with the specified
-            /// <paramref name="commentId"/> doesn't exist.
-            /// </summary>
-            private async Task ThrowIfCommentDoesNotExist(Guid commentId, CancellationToken cancellationToken)
-            {
-                bool commentExists = await _context.Comment.AnyAsync(c => c.CommentId == commentId,
-                        cancellationToken)
-                    .ConfigureAwait(false);
-
-                if (!commentExists)
-                {
-                    throw new NotFoundException();
-                }
             }
 
             #endregion
@@ -110,6 +74,3 @@ namespace Application.CQRS.Comments.Commands.CommentRate
         #endregion
     }
 }
-
-//
-// return Unit.Value;

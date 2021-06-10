@@ -1,9 +1,8 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Application.Common.Exceptions;
+using Application.Common.Extensions;
 using Application.CQRS.PostRates.Models;
-using Application.Identity.Extensions;
 using Application.Identity.Interfaces;
 using Application.Identity.Models;
 using Application.Pagination.Common.Models;
@@ -67,16 +66,13 @@ namespace Application.CQRS.Users.Queries.UserPostRate
                     .ProjectToPagedListAsync(request, cancellationToken)
                     .ConfigureAwait(false);
 
-                if (postRates.TotalItemsCount > 0)
+                if (postRates.TotalItemsCount == 0)
                 {
-                    return postRates;
+                    await _userStorage.ThrowIfDoesNotExistAsync(request.UserId)
+                        .ConfigureAwait(false);
                 }
-
-                bool userExists = await _userStorage.Exists(request.UserId)
-                    .ConfigureAwait(false);
-                return userExists
-                    ? PagedList<PostRateDto>.CreateEmptyPagedList(request)
-                    : throw new NotFoundException();
+                
+                return postRates;
             }
 
             #endregion

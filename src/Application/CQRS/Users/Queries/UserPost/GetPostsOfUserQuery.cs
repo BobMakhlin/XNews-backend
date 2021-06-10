@@ -1,9 +1,8 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Application.Common.Exceptions;
+using Application.Common.Extensions;
 using Application.CQRS.Posts.Models;
-using Application.Identity.Extensions;
 using Application.Identity.Interfaces;
 using Application.Identity.Models;
 using Application.Pagination.Common.Models;
@@ -67,16 +66,13 @@ namespace Application.CQRS.Users.Queries.UserPost
                     .ProjectToPagedListAsync(request, cancellationToken)
                     .ConfigureAwait(false);
 
-                if (posts.TotalItemsCount > 0)
+                if (posts.TotalItemsCount == 0)
                 {
-                    return posts;
+                    await _userStorage.ThrowIfDoesNotExistAsync(request.UserId)
+                        .ConfigureAwait(false);
                 }
 
-                bool userExists = await _userStorage.Exists(request.UserId)
-                    .ConfigureAwait(false);
-                return userExists
-                    ? PagedList<PostDto>.CreateEmptyPagedList(request)
-                    : throw new NotFoundException();
+                return posts;
             }
 
             #endregion

@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Common.Extensions;
+using Application.Identity.Interfaces;
+using Application.Identity.Models;
 using Application.Persistence.Interfaces;
 using Domain.Primary.Entities;
 using MediatR;
@@ -24,14 +27,16 @@ namespace Application.CQRS.Posts.Commands.PostRate
             #region Fields
 
             private readonly IXNewsDbContext _context;
-
+            private readonly IIdentityStorage<ApplicationUser, string> _userStorage;
+            
             #endregion
 
             #region Constructors
 
-            public Handler(IXNewsDbContext context)
+            public Handler(IXNewsDbContext context, IIdentityStorage<ApplicationUser, string> userStorage)
             {
                 _context = context;
+                _userStorage = userStorage;
             }
 
             #endregion
@@ -40,6 +45,9 @@ namespace Application.CQRS.Posts.Commands.PostRate
 
             public async Task<Guid> Handle(AddRateToPostCommand request, CancellationToken cancellationToken)
             {
+                await _userStorage.ThrowIfDoesNotExistAsync(request.UserId)
+                    .ConfigureAwait(false);
+                
                 Domain.Primary.Entities.PostRate postRate = ConvertToPostRate(request);
                 
                 await CreatePostRateAsync(postRate, cancellationToken)

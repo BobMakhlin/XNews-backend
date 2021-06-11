@@ -18,7 +18,7 @@ namespace Presentation.API.Controllers.Realisation
         #region CommentRate
 
         [HttpGet("{id}/rates")]
-        public async Task<IActionResult> GetRatesOfCommentAsync([FromRoute] Guid id)
+        public async Task<ActionResult<IEnumerable<CommentRateDto>>> GetRatesOfCommentAsync([FromRoute] Guid id)
         {
             IEnumerable<CommentRateDto> rates = await Mediator.Send(new GetRatesOfCommentQuery {CommentId = id});
             return Ok(rates);
@@ -49,7 +49,7 @@ namespace Presentation.API.Controllers.Realisation
         #region CommentStorage
 
         [HttpPost]
-        public async Task<IActionResult> CreateCommentAsync([FromBody] CreateCommentCommand request)
+        public async Task<ActionResult<Guid>> CreateCommentAsync([FromBody] CreateCommentCommand request)
         {
             Guid createdCommentId = await Mediator.Send(request);
             return Ok(createdCommentId);

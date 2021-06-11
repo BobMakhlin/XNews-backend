@@ -16,21 +16,22 @@ namespace Presentation.API.Controllers.Realisation
         #region CategoryStorage
 
         [HttpGet]
-        public async Task<IActionResult> GetAllCategoriesAsync([FromQuery] GetAllCategoriesQuery request)
+        public async Task<ActionResult<IPagedList<CategoryDto>>> GetAllCategoriesAsync(
+            [FromQuery] GetAllCategoriesQuery request)
         {
             IPagedList<CategoryDto> categories = await Mediator.Send(request);
             return Ok(categories);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetCategoryAsync([FromRoute] Guid id)
+        public async Task<ActionResult<CategoryDto>> GetCategoryAsync([FromRoute] Guid id)
         {
             CategoryDto categoryDto = await Mediator.Send(new GetCategoryByIdQuery {CategoryId = id});
             return Ok(categoryDto);
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostCategoryAsync([FromBody] CreateCategoryCommand request)
+        public async Task<ActionResult<Guid>> PostCategoryAsync([FromBody] CreateCategoryCommand request)
         {
             Guid createdCategoryId = await Mediator.Send(request);
             return Ok(createdCategoryId);

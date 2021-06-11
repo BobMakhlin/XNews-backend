@@ -30,21 +30,21 @@ namespace Presentation.API.Controllers.Realisation
         #region UserStorage
 
         [HttpGet]
-        public async Task<IActionResult> GetAllUsersAsync([FromQuery] GetAllUsersQuery request)
+        public async Task<ActionResult<IPagedList<UserDto>>> GetAllUsersAsync([FromQuery] GetAllUsersQuery request)
         {
             IPagedList<UserDto> users = await Mediator.Send(request);
             return Ok(users);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetUserByIdAsync([FromRoute] string id)
+        public async Task<ActionResult<UserDto>> GetUserByIdAsync([FromRoute] string id)
         {
             UserDto user = await Mediator.Send(new GetUserByIdQuery {UserId = id});
             return Ok(user);
         }
-        
+
         [HttpPost]
-        public async Task<IActionResult> PostUserAsync([FromBody] CreateUserCommand request)
+        public async Task<ActionResult<string>> PostUserAsync([FromBody] CreateUserCommand request)
         {
             string userId = await Mediator.Send(request);
             return Ok(userId);
@@ -75,7 +75,7 @@ namespace Presentation.API.Controllers.Realisation
         #region UserPost
 
         [HttpGet("{id}/posts")]
-        public async Task<IActionResult> GetPostsOfUserAsync([FromRoute] string id,
+        public async Task<ActionResult<IPagedList<PostDto>>> GetPostsOfUserAsync([FromRoute] string id,
             [FromQuery] PaginationRequest paginationRequest)
         {
             IPagedList<PostDto> posts = await Mediator.Send(new GetPostsOfUserQuery
@@ -92,7 +92,7 @@ namespace Presentation.API.Controllers.Realisation
         #region UserPostRate
 
         [HttpGet("{id}/postRates")]
-        public async Task<IActionResult> GetPostRatesOfUserAsync([FromRoute] string id,
+        public async Task<ActionResult<IPagedList<PostRateDto>>> GetPostRatesOfUserAsync([FromRoute] string id,
             [FromQuery] PaginationRequest paginationRequest)
         {
             IPagedList<PostRateDto> postRates = await Mediator.Send(new GetPostRatesOfUserQuery
@@ -109,7 +109,7 @@ namespace Presentation.API.Controllers.Realisation
         #region UserComment
 
         [HttpGet("{id}/comments")]
-        public async Task<IActionResult> GetCommentsOfUserAsync([FromRoute] string id,
+        public async Task<ActionResult<IPagedList<CommentDto>>> GetCommentsOfUserAsync([FromRoute] string id,
             [FromQuery] PaginationRequest paginationRequest)
         {
             IPagedList<CommentDto> comments = await Mediator.Send(new GetCommentsOfUserQuery
@@ -126,7 +126,7 @@ namespace Presentation.API.Controllers.Realisation
         #region UserCommentRate
 
         [HttpGet("{id}/commentRates")]
-        public async Task<IActionResult> GetCommentRatesOfUserAsync([FromRoute] string id,
+        public async Task<ActionResult<IPagedList<CommentRateDto>>> GetCommentRatesOfUserAsync([FromRoute] string id,
             [FromQuery] PaginationRequest paginationRequest)
         {
             IPagedList<CommentRateDto> commentRates = await Mediator.Send(new GetCommentRatesOfUserQuery
@@ -143,7 +143,7 @@ namespace Presentation.API.Controllers.Realisation
         #region UserRole
 
         [HttpGet("{id}/roles")]
-        public async Task<IActionResult> GetRolesOfUserAsync([FromRoute] string id)
+        public async Task<ActionResult<IEnumerable<RoleDto>>> GetRolesOfUserAsync([FromRoute] string id)
         {
             IEnumerable<RoleDto> rolesOfUser = await Mediator.Send(new GetRolesOfUserQuery {UserId = id});
             return Ok(rolesOfUser);

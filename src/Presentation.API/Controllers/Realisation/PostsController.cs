@@ -27,21 +27,21 @@ namespace Presentation.API.Controllers.Realisation
         #region PostStorage
 
         [HttpGet]
-        public async Task<IActionResult> GetAllPostsAsync([FromQuery] GetAllPostsQuery request)
+        public async Task<ActionResult<IPagedList<PostDto>>> GetAllPostsAsync([FromQuery] GetAllPostsQuery request)
         {
             IPagedList<PostDto> posts = await Mediator.Send(request);
             return Ok(posts);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetPostAsync([FromRoute] Guid id)
+        public async Task<ActionResult<PostDto>> GetPostAsync([FromRoute] Guid id)
         {
             PostDto post = await Mediator.Send(new GetPostByIdQuery {PostId = id});
             return Ok(post);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreatePostAsync([FromBody] CreatePostCommand request)
+        public async Task<ActionResult<Guid>> CreatePostAsync([FromBody] CreatePostCommand request)
         {
             Guid createdPostId = await Mediator.Send(request);
             return Ok(createdPostId);
@@ -72,7 +72,7 @@ namespace Presentation.API.Controllers.Realisation
         #region PostCategory
 
         [HttpGet("{postId}/categories")]
-        public async Task<IActionResult> GetCategoriesOfPostAsync([FromRoute] Guid postId)
+        public async Task<ActionResult<IEnumerable<CategoryDto>>> GetCategoriesOfPostAsync([FromRoute] Guid postId)
         {
             IEnumerable<CategoryDto> categories =
                 await Mediator.Send(new GetAllCategoriesOfPostQuery {PostId = postId});
@@ -98,7 +98,7 @@ namespace Presentation.API.Controllers.Realisation
         #region PostRate
 
         [HttpGet("{postId}/rates")]
-        public async Task<IActionResult> GetRatesOfPostAsync([FromRoute] Guid postId)
+        public async Task<ActionResult<IEnumerable<PostRateDto>>> GetRatesOfPostAsync([FromRoute] Guid postId)
         {
             IEnumerable<PostRateDto> rates = await Mediator.Send(new GetAllRatesOfPostQuery {PostId = postId});
             return Ok(rates);
@@ -129,7 +129,7 @@ namespace Presentation.API.Controllers.Realisation
         #region PostComment
 
         [HttpGet("{id}/comments")]
-        public async Task<IActionResult> GetCommentsOfPostAsync([FromRoute] Guid id,
+        public async Task<ActionResult<IPagedList<CommentDto>>> GetCommentsOfPostAsync([FromRoute] Guid id,
             [FromQuery] PaginationRequest request)
         {
             IPagedList<CommentDto> comments = await Mediator.Send(new GetAllCommentsOfPostQuery

@@ -18,21 +18,21 @@ namespace Presentation.API.Controllers.Realisation
         #region RoleStorage
 
         [HttpGet]
-        public async Task<IActionResult> GetAllRolesAsync([FromQuery] GetAllRolesQuery request)
+        public async Task<ActionResult<IPagedList<RoleDto>>> GetAllRolesAsync([FromQuery] GetAllRolesQuery request)
         {
             IPagedList<RoleDto> roles = await Mediator.Send(request);
             return Ok(roles);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetRoleByIdAsync([FromRoute] string id)
+        public async Task<ActionResult<RoleDto>> GetRoleByIdAsync([FromRoute] string id)
         {
             RoleDto role = await Mediator.Send(new GetRoleByIdQuery {RoleId = id});
             return Ok(role);
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostRoleAsync([FromBody] CreateRoleCommand request)
+        public async Task<ActionResult<string>> PostRoleAsync([FromBody] CreateRoleCommand request)
         {
             string roleId = await Mediator.Send(request);
             return Ok(roleId);
@@ -63,7 +63,7 @@ namespace Presentation.API.Controllers.Realisation
         #region RoleUser
 
         [HttpGet("{id}/users")]
-        public async Task<IActionResult> GetUsersOfRoleAsync([FromRoute] string id)
+        public async Task<ActionResult<IEnumerable<UserDto>>> GetUsersOfRoleAsync([FromRoute] string id)
         {
             IEnumerable<UserDto> usersOfRole = await Mediator.Send(new GetUsersOfRoleQuery {RoleId = id});
             return Ok(usersOfRole);

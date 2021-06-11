@@ -42,10 +42,12 @@ namespace Application.Validation.AbstractValidators.CQRS.Comments.Commands.Comme
         /// Checks if the user with the specified <paramref name="userId"/> has already rated the comment
         /// with the specified <paramref name="command.CommentId"/>.
         /// </summary>
-        private async Task<bool> NotHaveRatedTheCurrentComment(AddRateToCommentCommand command, string userId, CancellationToken token)
+        private async Task<bool> NotHaveRatedTheCurrentComment(AddRateToCommentCommand command, string userId,
+            CancellationToken token)
         {
             return !await _context.CommentRate.AnyAsync(commentRate =>
-                commentRate.UserId == userId && commentRate.CommentId == command.CommentId, token);
+                    commentRate.UserId == userId && commentRate.CommentId == command.CommentId, token)
+                .ConfigureAwait(false);
         }
 
         #endregion

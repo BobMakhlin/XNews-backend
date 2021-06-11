@@ -28,6 +28,10 @@ namespace Persistence.Primary.Configurations
                 .Property(e => e.UserId)
                 .IsRequired()
                 .HasMaxLength(450);
+            
+            builder
+                .HasIndex(e => new {e.PostId, e.UserId})
+                .IsUnique();
         }
     }
 }

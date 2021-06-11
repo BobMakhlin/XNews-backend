@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence.Primary.DataAccess;
 
 namespace Persistence.Primary.Migrations
 {
     [DbContext(typeof(XNewsDbContext))]
-    partial class XNewsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210611143145_Add_PostId_UserId_UniqueIndex_ToTable_PostRate")]
+    partial class Add_PostId_UserId_UniqueIndex_ToTable_PostRate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

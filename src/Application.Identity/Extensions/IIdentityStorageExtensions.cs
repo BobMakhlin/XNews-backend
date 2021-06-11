@@ -16,6 +16,7 @@ namespace Application.Identity.Extensions
             this IIdentityStorage<TItem, TItemId> storage,
             TItemId id
         )
+            where TItem : class
         {
             TItem item = await storage.FindByIdAsync(id)
                 .ConfigureAwait(false);

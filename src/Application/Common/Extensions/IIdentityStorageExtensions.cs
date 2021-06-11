@@ -14,7 +14,7 @@ namespace Application.Common.Extensions
         /// Throws <see cref="NotFoundException"/> if the item with the specified <paramref name="id"/> doesn't exist.
         /// </summary>
         public static async Task ThrowIfDoesNotExistAsync<TItem, TItemId>(this IIdentityStorage<TItem, TItemId> storage,
-            TItemId id)
+            TItemId id) where TItem : class
         {
             bool itemExists = await storage.Exists(id)
                 .ConfigureAwait(false);

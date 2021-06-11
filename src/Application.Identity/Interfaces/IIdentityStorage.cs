@@ -14,6 +14,7 @@ namespace Application.Identity.Interfaces
     /// The type of the item identifier.
     /// </typeparam>
     public interface IIdentityStorage<TItem, in TItemId>
+        where TItem : class
     {
         /// <summary>
         /// Queries all items of the storage.

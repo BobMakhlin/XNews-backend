@@ -10,10 +10,16 @@ namespace Application.CQRS.Posts.Commands.PostStorage
 {
     public class UpdatePostCommand : IRequest
     {
+        #region Properties
+
         public Guid PostId { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }
         public string UserId { get; set; }
+
+        #endregion
+
+        #region Classes
 
         public class Handler : IRequestHandler<UpdatePostCommand>
         {
@@ -65,5 +71,7 @@ namespace Application.CQRS.Posts.Commands.PostStorage
 
             #endregion
         }
+
+        #endregion
     }
 }

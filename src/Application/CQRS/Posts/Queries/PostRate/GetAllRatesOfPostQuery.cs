@@ -13,7 +13,13 @@ namespace Application.CQRS.Posts.Queries.PostRate
 {
     public class GetAllRatesOfPostQuery : IRequest<IEnumerable<PostRateDto>>
     {
+        #region Properties
+
         public Guid PostId { get; set; }
+
+        #endregion
+
+        #region Classes
 
         public class Handler : IRequestHandler<GetAllRatesOfPostQuery, IEnumerable<PostRateDto>>
         {
@@ -55,5 +61,7 @@ namespace Application.CQRS.Posts.Queries.PostRate
 
             #endregion
         }
+
+        #endregion
     }
 }

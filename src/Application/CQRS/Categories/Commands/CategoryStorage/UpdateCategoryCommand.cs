@@ -10,8 +10,14 @@ namespace Application.CQRS.Categories.Commands.CategoryStorage
 {
     public class UpdateCategoryCommand : IRequest
     {
+        #region Properties
+
         public Guid CategoryId { get; set; }
         public string Title { get; set; }
+
+        #endregion
+
+        #region Classes
 
         public class Handler : IRequestHandler<UpdateCategoryCommand>
         {
@@ -61,5 +67,7 @@ namespace Application.CQRS.Categories.Commands.CategoryStorage
 
             #endregion
         }
+
+        #endregion
     }
 }

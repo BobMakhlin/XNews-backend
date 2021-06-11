@@ -14,7 +14,13 @@ namespace Application.CQRS.Categories.Queries.CategoryStorage
 {
     public class GetCategoryByIdQuery : IRequest<CategoryDto>
     {
+        #region Properties
+
         public Guid CategoryId { get; set; }
+
+        #endregion
+
+        #region Classes
 
         public class Handler : IRequestHandler<GetCategoryByIdQuery, CategoryDto>
         {
@@ -48,5 +54,7 @@ namespace Application.CQRS.Categories.Queries.CategoryStorage
 
             #endregion
         }
+
+        #endregion
     }
 }

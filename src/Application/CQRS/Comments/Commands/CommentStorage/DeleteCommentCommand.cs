@@ -11,7 +11,13 @@ namespace Application.CQRS.Comments.Commands.CommentStorage
 {
     public class DeleteCommentCommand : IRequest
     {
+        #region Properties
+
         public Guid CommentId { get; set; }
+
+        #endregion
+
+        #region Classes
 
         public class Handler : IRequestHandler<DeleteCommentCommand>
         {
@@ -68,5 +74,7 @@ namespace Application.CQRS.Comments.Commands.CommentStorage
 
             #endregion
         }
+
+        #endregion
     }
 }

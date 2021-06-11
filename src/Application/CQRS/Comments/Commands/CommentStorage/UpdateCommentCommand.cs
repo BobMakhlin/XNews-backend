@@ -10,9 +10,15 @@ namespace Application.CQRS.Comments.Commands.CommentStorage
 {
     public class UpdateCommentCommand : IRequest
     {
+        #region Properties
+
         public Guid CommentId { get; set; }
         public string Content { get; set; }
         public string UserId { get; set; }
+
+        #endregion
+
+        #region Classes
 
         public class Handler : IRequestHandler<UpdateCommentCommand>
         {
@@ -63,5 +69,7 @@ namespace Application.CQRS.Comments.Commands.CommentStorage
 
             #endregion
         }
+
+        #endregion
     }
 }

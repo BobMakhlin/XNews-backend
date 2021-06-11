@@ -14,7 +14,7 @@ namespace Application.CQRS.Posts.Commands.PostRate
 {
     public class RemoveRateOfPostCommand : IRequest
     {
-        #region Fields
+        #region Properties
 
         public Guid PostId { get; set; }
         public string UserId { get; set; }

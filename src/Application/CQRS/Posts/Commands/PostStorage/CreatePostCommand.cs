@@ -9,9 +9,15 @@ namespace Application.CQRS.Posts.Commands.PostStorage
 {
     public class CreatePostCommand : IRequest<Guid>
     {
+        #region Properties
+
         public string Title { get; set; }
         public string Content { get; set; }
         public string UserId { get; set; }
+
+        #endregion
+
+        #region Classes
 
         public class Handler : IRequestHandler<CreatePostCommand, Guid>
         {
@@ -72,5 +78,7 @@ namespace Application.CQRS.Posts.Commands.PostStorage
 
             #endregion
         }
+
+        #endregion
     }
 }

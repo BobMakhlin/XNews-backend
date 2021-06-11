@@ -9,10 +9,16 @@ namespace Application.CQRS.Comments.Commands.CommentStorage
 {
     public class CreateCommentCommand : IRequest<Guid>
     {
+        #region Properties
+
         public string Content { get; set; }
         public Guid PostId { get; set; }
         public Guid? ParentCommentId { get; set; }
         public string UserId { get; set; }
+
+        #endregion
+
+        #region Classes
 
         public class Handler : IRequestHandler<CreateCommentCommand, Guid>
         {
@@ -74,5 +80,7 @@ namespace Application.CQRS.Comments.Commands.CommentStorage
 
             #endregion
         }
+
+        #endregion
     }
 }

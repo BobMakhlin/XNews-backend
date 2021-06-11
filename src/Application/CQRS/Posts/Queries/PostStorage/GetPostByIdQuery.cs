@@ -14,7 +14,13 @@ namespace Application.CQRS.Posts.Queries.PostStorage
 {
     public class GetPostByIdQuery : IRequest<PostDto>
     {
+        #region Properties
+
         public Guid PostId { get; set; }
+
+        #endregion
+
+        #region Classes
 
         public class Handler : IRequestHandler<GetPostByIdQuery, PostDto>
         {
@@ -48,5 +54,7 @@ namespace Application.CQRS.Posts.Queries.PostStorage
 
             #endregion
         }
+
+        #endregion
     }
 }

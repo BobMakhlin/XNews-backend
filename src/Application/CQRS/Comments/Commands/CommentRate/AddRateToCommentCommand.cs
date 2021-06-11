@@ -9,9 +9,15 @@ namespace Application.CQRS.Comments.Commands.CommentRate
 {
     public class AddRateToCommentCommand : IRequest<Guid>
     {
+        #region Properties
+
         public Guid CommentId { get; set; }
         public double Rate { get; set; }
         public string UserId { get; set; }
+
+        #endregion
+
+        #region Classes
 
         public class Handler : IRequestHandler<AddRateToCommentCommand, Guid>
         {
@@ -72,5 +78,7 @@ namespace Application.CQRS.Comments.Commands.CommentRate
             
             #endregion
         }
+
+        #endregion
     }
 }

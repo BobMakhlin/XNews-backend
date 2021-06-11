@@ -9,7 +9,13 @@ namespace Application.CQRS.Categories.Commands.CategoryStorage
 {
     public class CreateCategoryCommand : IRequest<Guid>
     {
+        #region Properties
+
         public string Title { get; set; }
+
+        #endregion
+
+        #region Classes
 
         public class Handler : IRequestHandler<CreateCategoryCommand, Guid>
         {
@@ -68,5 +74,7 @@ namespace Application.CQRS.Categories.Commands.CategoryStorage
 
             #endregion
         }
+
+        #endregion
     }
 }

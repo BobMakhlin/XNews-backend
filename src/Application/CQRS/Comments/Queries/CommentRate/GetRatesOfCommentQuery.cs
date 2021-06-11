@@ -13,7 +13,13 @@ namespace Application.CQRS.Comments.Queries.CommentRate
 {
     public class GetRatesOfCommentQuery : IRequest<IEnumerable<CommentRateDto>>
     {
+        #region Properties
+
         public Guid CommentId { get; set; }
+
+        #endregion
+
+        #region Classes
 
         public class Handler : IRequestHandler<GetRatesOfCommentQuery, IEnumerable<CommentRateDto>>
         {
@@ -55,5 +61,7 @@ namespace Application.CQRS.Comments.Queries.CommentRate
 
             #endregion
         }
+
+        #endregion
     }
 }

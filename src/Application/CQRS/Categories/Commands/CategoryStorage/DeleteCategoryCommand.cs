@@ -10,7 +10,13 @@ namespace Application.CQRS.Categories.Commands.CategoryStorage
 {
     public class DeleteCategoryCommand : IRequest
     {
+        #region Properties
+
         public Guid CategoryId { get; set; }
+
+        #endregion
+
+        #region Classes
 
         public class Handler : IRequestHandler<DeleteCategoryCommand>
         {
@@ -46,5 +52,7 @@ namespace Application.CQRS.Categories.Commands.CategoryStorage
 
             #endregion
         }
+
+        #endregion
     }
 }

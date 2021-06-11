@@ -13,7 +13,13 @@ namespace Application.CQRS.Posts.Queries.PostCategory
 {
     public class GetAllCategoriesOfPostQuery : IRequest<IEnumerable<CategoryDto>>
     {
+        #region Properties
+
         public Guid PostId { get; set; }
+
+        #endregion
+
+        #region Classes
 
         public class Handler : IRequestHandler<GetAllCategoriesOfPostQuery, IEnumerable<CategoryDto>>
         {
@@ -55,5 +61,7 @@ namespace Application.CQRS.Posts.Queries.PostCategory
 
             #endregion
         }
+
+        #endregion
     }
 }

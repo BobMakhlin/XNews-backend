@@ -11,7 +11,13 @@ namespace Application.CQRS.Posts.Commands.PostStorage
 {
     public class DeletePostCommand : IRequest
     {
+        #region Properties
+
         public Guid PostId { get; set; }
+
+        #endregion
+
+        #region Classes
 
         public class Handler : IRequestHandler<DeletePostCommand>
         {
@@ -63,5 +69,7 @@ namespace Application.CQRS.Posts.Commands.PostStorage
 
             #endregion
         }
+
+        #endregion
     }
 }

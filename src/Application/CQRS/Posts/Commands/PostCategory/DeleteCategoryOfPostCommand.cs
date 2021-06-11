@@ -11,8 +11,14 @@ namespace Application.CQRS.Posts.Commands.PostCategory
 {
     public class DeleteCategoryOfPostCommand : IRequest
     {
+        #region Properties
+
         public Guid PostId { get; set; }
         public Guid CategoryId { get; set; }
+
+        #endregion
+
+        #region Classes
 
         public class Handler : IRequestHandler<DeleteCategoryOfPostCommand>
         {
@@ -54,5 +60,7 @@ namespace Application.CQRS.Posts.Commands.PostCategory
 
             #endregion
         }
+
+        #endregion
     }
 }

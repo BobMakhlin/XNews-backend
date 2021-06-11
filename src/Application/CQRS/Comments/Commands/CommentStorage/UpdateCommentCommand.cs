@@ -2,6 +2,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Common.Exceptions;
+using Application.Common.Extensions;
+using Application.Identity.Interfaces;
+using Application.Identity.Models;
 using Application.Persistence.Interfaces;
 using Domain.Primary.Entities;
 using MediatR;
@@ -25,14 +28,16 @@ namespace Application.CQRS.Comments.Commands.CommentStorage
             #region Fields
 
             private readonly IXNewsDbContext _context;
+            private readonly IIdentityStorage<ApplicationUser, string> _userStorage;
 
             #endregion
             
             #region Constructors
 
-            public Handler(IXNewsDbContext context)
+            public Handler(IXNewsDbContext context, IIdentityStorage<ApplicationUser, string> userStorage)
             {
                 _context = context;
+                _userStorage = userStorage;
             }
 
             #endregion
@@ -41,6 +46,9 @@ namespace Application.CQRS.Comments.Commands.CommentStorage
 
             public async Task<Unit> Handle(UpdateCommentCommand request, CancellationToken cancellationToken)
             {
+                await _userStorage.ThrowIfDoesNotExistAsync(request.UserId)
+                    .ConfigureAwait(false);
+                
                 Comment comment = await _context.Comment.FindAsync(request.CommentId)
                                       .ConfigureAwait(false)
                                   ?? throw new NotFoundException(nameof(Comment), request.CommentId);

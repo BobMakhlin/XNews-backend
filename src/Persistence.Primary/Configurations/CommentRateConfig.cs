@@ -10,24 +10,28 @@ namespace Persistence.Primary.Configurations
         {
             builder
                 .ToTable("CommentRate");
-                
+
             builder
                 .Property(e => e.CommentRateId)
                 .ValueGeneratedOnAdd();
 
             builder
                 .HasIndex(e => e.CommentId, "IX_CommentRate_CommentId");
-                
+
             builder
                 .HasOne(d => d.Comment)
                 .WithMany(p => p.CommentRates)
                 .HasForeignKey(d => d.CommentId)
                 .HasConstraintName("FK_CommentRate_CommentId");
-            
+
             builder
                 .Property(e => e.UserId)
                 .IsRequired()
                 .HasMaxLength(450);
+
+            builder
+                .HasIndex(e => new {e.CommentId, e.UserId})
+                .IsUnique();
         }
     }
 }

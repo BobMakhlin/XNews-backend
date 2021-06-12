@@ -81,5 +81,35 @@ namespace Application.Validation.Tools.Extensions
                 )
                 .WithMessage("{PropertyName} must be unique");
         }
+
+        /// <summary>
+        /// Checks if the given values are unique for the columns combination,
+        /// specified by <paramref name="getColumnsCombination"/>, in <paramref name="dbSet"/>.
+        /// </summary>
+        /// <param name="ruleBuilder"></param>
+        /// <param name="dbSet"></param>
+        /// <param name="getColumnsCombination">
+        /// Determines the columns combination.
+        /// By columns combination we mean object, containing multiple columns,
+        /// <para>e.g. <c>comment => new { comment.CommentId, comment.UserId }</c>.</para>
+        /// </param>
+        public static IRuleBuilderOptions<TObject, object[]> UniqueForColumnsCombinationInDbSet
+            <TObject, TColumnsCombination, TEntity>
+            (
+                this IRuleBuilder<TObject, object[]> ruleBuilder,
+                DbSet<TEntity> dbSet,
+                Expression<Func<TEntity, TColumnsCombination>> getColumnsCombination
+            )
+            where TObject : class
+            where TEntity : class
+        {
+            return ruleBuilder
+                .MustAsync
+                (
+                    (values, token) => EfCoreValidationHelpers.AreValuesUniqueForColumnsCombinationInDbSetAsync
+                        (dbSet, getColumnsCombination, values, token)
+                )
+                .WithMessage("The given values are not unique for the specified columns combination");
+        }
     }
 }

@@ -10,7 +10,7 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
 
-namespace Application.CQRS.Categories.Queries.CategoryStorage
+namespace Application.CQRS.Categories.Queries.CategoryStorage.GetAll
 {
     public class GetPagedListOfCategoriesQuery : IRequest<IPagedList<CategoryDto>>, IPaginationRequest
     {

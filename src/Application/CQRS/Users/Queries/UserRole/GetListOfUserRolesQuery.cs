@@ -11,7 +11,7 @@ using MediatR;
 
 namespace Application.CQRS.Users.Queries.UserRole
 {
-    public class GetRolesOfUserQuery : IRequest<IEnumerable<RoleDto>>
+    public class GetListOfUserRolesQuery : IRequest<IEnumerable<RoleDto>>
     {
         #region Properties
 
@@ -21,7 +21,7 @@ namespace Application.CQRS.Users.Queries.UserRole
 
         #region Classes
 
-        public class Handler : IRequestHandler<GetRolesOfUserQuery, IEnumerable<RoleDto>>
+        public class Handler : IRequestHandler<GetListOfUserRolesQuery, IEnumerable<RoleDto>>
         {
             #region Fields
 
@@ -43,9 +43,9 @@ namespace Application.CQRS.Users.Queries.UserRole
 
             #endregion
 
-            #region IRequestHandler<GetRolesOfUserQuery, IEnumerable<RoleDto>>
+            #region IRequestHandler<GetListOfUserRolesQuery, IEnumerable<RoleDto>>
 
-            public async Task<IEnumerable<RoleDto>> Handle(GetRolesOfUserQuery request,
+            public async Task<IEnumerable<RoleDto>> Handle(GetListOfUserRolesQuery request,
                 CancellationToken cancellationToken)
             {
                 ApplicationUser user = await _userStorage.FindByIdAsync(request.UserId)

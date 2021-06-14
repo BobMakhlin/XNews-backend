@@ -4,24 +4,24 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Common.Extensions;
-using Application.CQRS.CommentRates.Models;
+using Application.CQRS.Categories.Models;
 using Application.Persistence.Interfaces;
 using AutoMapper;
 using MediatR;
 
-namespace Application.CQRS.Comments.Queries.CommentRate
+namespace Application.CQRS.Posts.Queries.PostCategory
 {
-    public class GetRatesOfCommentQuery : IRequest<IEnumerable<CommentRateDto>>
+    public class GetListOfPostCategoriesQuery : IRequest<IEnumerable<CategoryDto>>
     {
         #region Properties
 
-        public Guid CommentId { get; set; }
+        public Guid PostId { get; set; }
 
         #endregion
 
         #region Classes
 
-        public class Handler : IRequestHandler<GetRatesOfCommentQuery, IEnumerable<CommentRateDto>>
+        public class Handler : IRequestHandler<GetListOfPostCategoriesQuery, IEnumerable<CategoryDto>>
         {
             #region Fields
 
@@ -40,23 +40,23 @@ namespace Application.CQRS.Comments.Queries.CommentRate
 
             #endregion
 
-            #region IRequestHandler<GetRatesOfCommentQuery, IEnumerable<CommentRateDto>>
+            #region IRequestHandler<GetListOfPostCategoriesQuery, IEnumerable<CategoryDto>>
 
-            public async Task<IEnumerable<CommentRateDto>> Handle(GetRatesOfCommentQuery request,
+            public async Task<IEnumerable<CategoryDto>> Handle(GetListOfPostCategoriesQuery request,
                 CancellationToken cancellationToken)
             {
-                List<CommentRateDto> rates = await _context.CommentRate
-                    .Where(cr => cr.CommentId == request.CommentId)
-                    .ProjectToListAsync<CommentRateDto>(_mapper.ConfigurationProvider, cancellationToken)
+                List<CategoryDto> categories = await _context.Category
+                    .Where(c => c.Posts.Any(p => p.PostId == request.PostId))
+                    .ProjectToListAsync<CategoryDto>(_mapper.ConfigurationProvider, cancellationToken)
                     .ConfigureAwait(false);
 
-                if (rates.Count == 0)
+                if (categories.Count == 0)
                 {
-                    await _context.Comment.ThrowIfDoesNotExistAsync(request.CommentId)
+                    await _context.Post.ThrowIfDoesNotExistAsync(request.PostId)
                         .ConfigureAwait(false);
                 }
 
-                return rates;
+                return categories;
             }
 
             #endregion

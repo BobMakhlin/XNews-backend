@@ -4,9 +4,9 @@ using FluentValidation;
 
 namespace Application.Validation.AbstractValidators.CQRS.Users.Queries.UserPost
 {
-    public class GetPostsOfUserQueryValidator : AbstractValidator<GetPostsOfUserQuery>
+    public class GetPagedListOfPostsMadeByUserQueryValidator : AbstractValidator<GetPagedListOfPostsMadeByUserQuery>
     {
-        public GetPostsOfUserQueryValidator()
+        public GetPagedListOfPostsMadeByUserQueryValidator()
         {
             Include(new PaginationRequestValidator());
             

@@ -12,7 +12,7 @@ using MediatR;
 
 namespace Application.CQRS.Posts.Queries.PostStorage
 {
-    public class GetAllPostsQuery : IRequest<IPagedList<PostDto>>, IPaginationRequest
+    public class GetPagedListOfPostsQuery : IRequest<IPagedList<PostDto>>, IPaginationRequest
     {
         #region IPaginationRequest
 
@@ -23,7 +23,7 @@ namespace Application.CQRS.Posts.Queries.PostStorage
 
         #region Classes
 
-        public class Handler : IRequestHandler<GetAllPostsQuery, IPagedList<PostDto>>
+        public class Handler : IRequestHandler<GetPagedListOfPostsQuery, IPagedList<PostDto>>
         {
             #region Fields
 
@@ -42,9 +42,9 @@ namespace Application.CQRS.Posts.Queries.PostStorage
 
             #endregion
 
-            #region IRequestHandler<GetAllPostsQuery, IEnumerable<PostDto>>
+            #region IRequestHandler<GetPagedListOfPostsQuery, IEnumerable<PostDto>>
 
-            public async Task<IPagedList<PostDto>> Handle(GetAllPostsQuery request,
+            public async Task<IPagedList<PostDto>> Handle(GetPagedListOfPostsQuery request,
                 CancellationToken cancellationToken)
             {
                 return await _context.Post

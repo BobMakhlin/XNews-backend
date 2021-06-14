@@ -4,14 +4,14 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Common.Extensions;
-using Application.CQRS.Categories.Models;
+using Application.CQRS.PostRates.Models;
 using Application.Persistence.Interfaces;
 using AutoMapper;
 using MediatR;
 
-namespace Application.CQRS.Posts.Queries.PostCategory
+namespace Application.CQRS.Posts.Queries.PostRate
 {
-    public class GetAllCategoriesOfPostQuery : IRequest<IEnumerable<CategoryDto>>
+    public class GetListOfPostRatesQuery : IRequest<IEnumerable<PostRateDto>>
     {
         #region Properties
 
@@ -21,13 +21,13 @@ namespace Application.CQRS.Posts.Queries.PostCategory
 
         #region Classes
 
-        public class Handler : IRequestHandler<GetAllCategoriesOfPostQuery, IEnumerable<CategoryDto>>
+        public class Handler : IRequestHandler<GetListOfPostRatesQuery, IEnumerable<PostRateDto>>
         {
             #region Fields
 
             private readonly IXNewsDbContext _context;
-            private readonly IMapper _mapper;
-
+            private readonly IMapper _mapper;            
+            
             #endregion
 
             #region Constructors
@@ -40,23 +40,23 @@ namespace Application.CQRS.Posts.Queries.PostCategory
 
             #endregion
 
-            #region IRequestHandler<GetAllCategoriesOfPostQuery, IEnumerable<CategoryDto>>
+            #region IRequestHandler<GetListOfPostRatesQuery, IEnumerable<PostRateDto>>
 
-            public async Task<IEnumerable<CategoryDto>> Handle(GetAllCategoriesOfPostQuery request,
+            public async Task<IEnumerable<PostRateDto>> Handle(GetListOfPostRatesQuery request,
                 CancellationToken cancellationToken)
             {
-                List<CategoryDto> categories = await _context.Category
-                    .Where(c => c.Posts.Any(p => p.PostId == request.PostId))
-                    .ProjectToListAsync<CategoryDto>(_mapper.ConfigurationProvider, cancellationToken)
+                List<PostRateDto> postRates = await _context.PostRate
+                    .Where(pr => pr.PostId == request.PostId)
+                    .ProjectToListAsync<PostRateDto>(_mapper.ConfigurationProvider, cancellationToken)
                     .ConfigureAwait(false);
 
-                if (categories.Count == 0)
+                if (postRates.Count == 0)
                 {
                     await _context.Post.ThrowIfDoesNotExistAsync(request.PostId)
                         .ConfigureAwait(false);
                 }
 
-                return categories;
+                return postRates;
             }
 
             #endregion

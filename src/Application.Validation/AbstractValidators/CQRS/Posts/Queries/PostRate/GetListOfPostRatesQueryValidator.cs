@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace Application.Validation.AbstractValidators.CQRS.Posts.Queries.PostRate
 {
-    public class GetAllRatesOfPostQueryValidator : AbstractValidator<GetAllRatesOfPostQuery>
+    public class GetListOfPostRatesQueryValidator : AbstractValidator<GetListOfPostRatesQuery>
     {
-        public GetAllRatesOfPostQueryValidator()
+        public GetListOfPostRatesQueryValidator()
         {
             RuleFor(q => q.PostId)
                 .NotEmpty();

@@ -12,7 +12,7 @@ using MediatR;
 
 namespace Application.CQRS.Categories.Queries.CategoryStorage
 {
-    public class GetAllCategoriesQuery : IRequest<IPagedList<CategoryDto>>, IPaginationRequest
+    public class GetPagedListOfCategoriesQuery : IRequest<IPagedList<CategoryDto>>, IPaginationRequest
     {
         #region IPaginationRequest
 
@@ -23,7 +23,7 @@ namespace Application.CQRS.Categories.Queries.CategoryStorage
 
         #region Classes
 
-        public class Handler : IRequestHandler<GetAllCategoriesQuery, IPagedList<CategoryDto>>
+        public class Handler : IRequestHandler<GetPagedListOfCategoriesQuery, IPagedList<CategoryDto>>
         {
             #region Fields
 
@@ -42,9 +42,9 @@ namespace Application.CQRS.Categories.Queries.CategoryStorage
 
             #endregion
 
-            #region IRequestHandler<GetAllCategoriesQuery, IPagedList<CategoryDto>>
+            #region IRequestHandler<GetPagedListOfCategoriesQuery, IPagedList<CategoryDto>>
 
-            public async Task<IPagedList<CategoryDto>> Handle(GetAllCategoriesQuery request,
+            public async Task<IPagedList<CategoryDto>> Handle(GetPagedListOfCategoriesQuery request,
                 CancellationToken cancellationToken)
             {
                 return await _context.Category

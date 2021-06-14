@@ -20,7 +20,7 @@ namespace Presentation.API.Controllers.Realisation
         [HttpGet("{id}/rates")]
         public async Task<ActionResult<IEnumerable<CommentRateDto>>> GetRatesOfCommentAsync([FromRoute] Guid id)
         {
-            IEnumerable<CommentRateDto> rates = await Mediator.Send(new GetRatesOfCommentQuery {CommentId = id});
+            IEnumerable<CommentRateDto> rates = await Mediator.Send(new GetListOfCommentRatesQuery {CommentId = id});
             return Ok(rates);
         }
         

@@ -4,9 +4,9 @@ using FluentValidation;
 
 namespace Application.Validation.AbstractValidators.CQRS.Users.Queries.UserStorage
 {
-    public class GetAllUsersQueryValidator : AbstractValidator<GetAllUsersQuery>
+    public class GetPagedListOfUsersQueryValidator : AbstractValidator<GetPagedListOfUsersQuery>
     {
-        public GetAllUsersQueryValidator()
+        public GetPagedListOfUsersQueryValidator()
         {
             Include(new PaginationRequestValidator());
         }

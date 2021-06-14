@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace Application.Validation.AbstractValidators.CQRS.Users.Queries.UserRole
 {
-    public class GetRolesOfUserQueryValidator : AbstractValidator<GetRolesOfUserQuery>
+    public class GetListOfUserRolesQueryValidator : AbstractValidator<GetListOfUserRolesQuery>
     {
-        public GetRolesOfUserQueryValidator()
+        public GetListOfUserRolesQueryValidator()
         {
             RuleFor(q => q.UserId)
                 .NotEmpty();

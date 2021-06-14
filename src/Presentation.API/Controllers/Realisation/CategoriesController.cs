@@ -17,7 +17,7 @@ namespace Presentation.API.Controllers.Realisation
 
         [HttpGet]
         public async Task<ActionResult<IPagedList<CategoryDto>>> GetAllCategoriesAsync(
-            [FromQuery] GetAllCategoriesQuery request)
+            [FromQuery] GetPagedListOfCategoriesQuery request)
         {
             IPagedList<CategoryDto> categories = await Mediator.Send(request);
             return Ok(categories);

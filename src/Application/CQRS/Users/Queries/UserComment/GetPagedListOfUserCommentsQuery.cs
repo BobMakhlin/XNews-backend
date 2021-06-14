@@ -2,7 +2,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Common.Extensions;
-using Application.CQRS.Posts.Models;
+using Application.CQRS.Comments.Models;
 using Application.Identity.Interfaces;
 using Application.Identity.Models;
 using Application.Pagination.Common.Models;
@@ -13,9 +13,9 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
 
-namespace Application.CQRS.Users.Queries.UserPost
+namespace Application.CQRS.Users.Queries.UserComment
 {
-    public class GetPostsOfUserQuery : IRequest<IPagedList<PostDto>>, IPaginationRequest
+    public class GetPagedListOfUserCommentsQuery : IRequest<IPagedList<CommentDto>>, IPaginationRequest
     {
         #region Properties
 
@@ -23,16 +23,16 @@ namespace Application.CQRS.Users.Queries.UserPost
 
         #endregion
 
-        #region IPaginationRequest
+        #region IPaginationInfo
 
         public int PageNumber { get; set; }
-        public int PageSize { get; set; } 
+        public int PageSize { get; set; }
 
         #endregion
-        
+
         #region Classes
 
-        public class Handler : IRequestHandler<GetPostsOfUserQuery, IPagedList<PostDto>>
+        public class Handler : IRequestHandler<GetPagedListOfUserCommentsQuery, IPagedList<CommentDto>>
         {
             #region Fields
 
@@ -54,25 +54,25 @@ namespace Application.CQRS.Users.Queries.UserPost
 
             #endregion
 
-            #region IRequestHandler<GetPostsOfUserQuery, IPagedList<PostDto>>
+            #region IRequestHandler<GetPagedListOfUserCommentsQuery, IPagedList<CommentDto>>
 
-            public async Task<IPagedList<PostDto>> Handle(GetPostsOfUserQuery request,
+            public async Task<IPagedList<CommentDto>> Handle(GetPagedListOfUserCommentsQuery request,
                 CancellationToken cancellationToken)
             {
-                IPagedList<PostDto> posts = await _context.Post
-                    .Where(p => p.UserId == request.UserId)
-                    .OrderBy(p => p.PostId)
-                    .ProjectTo<PostDto>(_mapper.ConfigurationProvider)
+                IPagedList<CommentDto> comments = await _context.Comment
+                    .Where(c => c.UserId == request.UserId)
+                    .OrderBy(c => c.CommentId)
+                    .ProjectTo<CommentDto>(_mapper.ConfigurationProvider)
                     .ProjectToPagedListAsync(request, cancellationToken)
                     .ConfigureAwait(false);
 
-                if (posts.TotalItemsCount == 0)
+                if (comments.TotalItemsCount == 0)
                 {
                     await _userStorage.ThrowIfDoesNotExistAsync(request.UserId)
                         .ConfigureAwait(false);
                 }
 
-                return posts;
+                return comments;
             }
 
             #endregion

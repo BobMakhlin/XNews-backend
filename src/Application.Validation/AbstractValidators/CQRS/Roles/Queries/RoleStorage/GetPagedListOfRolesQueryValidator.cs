@@ -4,9 +4,9 @@ using FluentValidation;
 
 namespace Application.Validation.AbstractValidators.CQRS.Roles.Queries.RoleStorage
 {
-    public class GetAllRolesQueryValidator : AbstractValidator<GetAllRolesQuery>
+    public class GetPagedListOfRolesQueryValidator : AbstractValidator<GetPagedListOfRolesQuery>
     {
-        public GetAllRolesQueryValidator()
+        public GetPagedListOfRolesQueryValidator()
         {
             Include(new PaginationRequestValidator());
         }

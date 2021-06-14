@@ -15,7 +15,7 @@ using MediatR;
 
 namespace Application.CQRS.Users.Queries.UserPostRate
 {
-    public class GetPostRatesOfUserQuery : IRequest<IPagedList<PostRateDto>>, IPaginationRequest
+    public class GetPagedListOfPostRatesMadeByUserQuery : IRequest<IPagedList<PostRateDto>>, IPaginationRequest
     {
         #region Properties
 
@@ -32,7 +32,7 @@ namespace Application.CQRS.Users.Queries.UserPostRate
 
         #region Classes
 
-        public class Handler : IRequestHandler<GetPostRatesOfUserQuery, IPagedList<PostRateDto>>
+        public class Handler : IRequestHandler<GetPagedListOfPostRatesMadeByUserQuery, IPagedList<PostRateDto>>
         {
             #region Fields
 
@@ -54,9 +54,9 @@ namespace Application.CQRS.Users.Queries.UserPostRate
 
             #endregion
 
-            #region IRequestHandler<GetPostRatesOfUserQuery, IPagedList<PostRateDto>>
+            #region IRequestHandler<GetPagedListOfPostRatesMadeByUserQuery, IPagedList<PostRateDto>>
 
-            public async Task<IPagedList<PostRateDto>> Handle(GetPostRatesOfUserQuery request,
+            public async Task<IPagedList<PostRateDto>> Handle(GetPagedListOfPostRatesMadeByUserQuery request,
                 CancellationToken cancellationToken)
             {
                 IPagedList<PostRateDto> postRates = await _context.PostRate

@@ -4,9 +4,9 @@ using FluentValidation;
 
 namespace Application.Validation.AbstractValidators.CQRS.Categories.Queries.CategoryStorage
 {
-    public class GetAllCategoriesQueryValidator : AbstractValidator<GetAllCategoriesQuery>
+    public class GetPagedListOfCategoriesQueryValidator : AbstractValidator<GetPagedListOfCategoriesQuery>
     {
-        public GetAllCategoriesQueryValidator()
+        public GetPagedListOfCategoriesQueryValidator()
         {
             Include(new PaginationRequestValidator());
         }

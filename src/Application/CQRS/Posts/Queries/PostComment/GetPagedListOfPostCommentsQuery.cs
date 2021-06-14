@@ -14,7 +14,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.CQRS.Posts.Queries.PostComment
 {
-    public class GetAllCommentsOfPostQuery : IRequest<IPagedList<CommentDto>>, IPaginationRequest
+    public class GetPagedListOfPostCommentsQuery : IRequest<IPagedList<CommentDto>>, IPaginationRequest
     {
         #region Properties
 
@@ -31,7 +31,7 @@ namespace Application.CQRS.Posts.Queries.PostComment
 
         #region Classes
 
-        public class Handler : IRequestHandler<GetAllCommentsOfPostQuery, IPagedList<CommentDto>>
+        public class Handler : IRequestHandler<GetPagedListOfPostCommentsQuery, IPagedList<CommentDto>>
         {
             #region Fields
 
@@ -50,9 +50,9 @@ namespace Application.CQRS.Posts.Queries.PostComment
 
             #endregion
 
-            #region IRequestHandler<GetAllCommentsOfPostQuery, IPagedList<CommentDto>>
+            #region IRequestHandler<GetPagedListOfPostCommentsQuery, IPagedList<CommentDto>>
 
-            public async Task<IPagedList<CommentDto>> Handle(GetAllCommentsOfPostQuery request,
+            public async Task<IPagedList<CommentDto>> Handle(GetPagedListOfPostCommentsQuery request,
                 CancellationToken cancellationToken)
             {
                 int rootCommentsCount = await GetRootCommentsCountOfPostAsync(request.PostId, cancellationToken)

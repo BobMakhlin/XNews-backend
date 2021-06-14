@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace Application.Validation.AbstractValidators.CQRS.Comments.Queries.CommentRate
 {
-    public class GetRatesOfCommentQueryValidator : AbstractValidator<GetRatesOfCommentQuery>
+    public class GetListOfCommentRatesQueryValidator : AbstractValidator<GetListOfCommentRatesQuery>
     {
-        public GetRatesOfCommentQueryValidator()
+        public GetListOfCommentRatesQueryValidator()
         {
             RuleFor(c => c.CommentId)
                 .NotEmpty();

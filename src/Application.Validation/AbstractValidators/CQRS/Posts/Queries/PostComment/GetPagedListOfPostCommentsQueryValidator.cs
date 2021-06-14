@@ -4,9 +4,9 @@ using FluentValidation;
 
 namespace Application.Validation.AbstractValidators.CQRS.Posts.Queries.PostComment
 {
-    public class GetAllCommentsOfPostQueryValidator : AbstractValidator<GetAllCommentsOfPostQuery>
+    public class GetPagedListOfPostCommentsQueryValidator : AbstractValidator<GetPagedListOfPostCommentsQuery>
     {
-        public GetAllCommentsOfPostQueryValidator()
+        public GetPagedListOfPostCommentsQueryValidator()
         {
             Include(new PaginationRequestValidator());
 

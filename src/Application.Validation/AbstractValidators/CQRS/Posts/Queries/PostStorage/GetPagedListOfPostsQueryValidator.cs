@@ -4,9 +4,9 @@ using FluentValidation;
 
 namespace Application.Validation.AbstractValidators.CQRS.Posts.Queries.PostStorage
 {
-    public class GetAllPostsQueryValidator : AbstractValidator<GetAllPostsQuery>
+    public class GetPagedListOfPostsQueryValidator : AbstractValidator<GetPagedListOfPostsQuery>
     {
-        public GetAllPostsQueryValidator()
+        public GetPagedListOfPostsQueryValidator()
         {
             Include(new PaginationRequestValidator());
         }

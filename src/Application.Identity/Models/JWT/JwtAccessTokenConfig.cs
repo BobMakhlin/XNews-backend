@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Application.Identity.Models.JWT
 {
@@ -12,5 +13,11 @@ namespace Application.Identity.Models.JWT
         public string IssuerSigningKey { get; set; }
         public TimeSpan ClockSkew { get; set; }
         public TimeSpan Lifetime { get; set; }
+
+        /// <summary>
+        /// Algorithm used to encrypt the JWT access token.
+        /// You can find all supported algorithms in <see cref="SecurityAlgorithms"/>.
+        /// </summary>
+        public string EncryptionAlgorithm { get; set; }
     }
 }

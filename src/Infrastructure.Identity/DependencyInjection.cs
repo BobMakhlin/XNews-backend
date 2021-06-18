@@ -19,6 +19,22 @@ namespace Infrastructure.Identity
 {
     public static class DependencyInjection
     {
+        #region Fields
+
+        /// <summary>
+        /// Configuration key by which the access token is stored in the configuration.
+        /// </summary>
+        private static string _jwtAccessTokenSectionConfigurationKey = "JWT:AccessToken";
+
+        /// <summary>
+        /// Algorithm used for JWT access token encryption.
+        /// </summary>
+        private static string _jwtAccessTokenAlgorithm = SecurityAlgorithms.HmacSha256;
+
+        #endregion
+
+        #region Methods
+
         /// <summary>
         /// Registers the DbContext, used to store identity tables.
         /// </summary>
@@ -82,8 +98,13 @@ namespace Infrastructure.Identity
         {
             serviceCollection.Configure<JwtAccessTokenConfig>
             (
-                configuration.GetSection("JWT:AccessToken")
+                configuration.GetSection(_jwtAccessTokenSectionConfigurationKey)
             );
+            serviceCollection.Configure<JwtAccessTokenConfig>(opts =>
+            {
+                opts.EncryptionAlgorithm = _jwtAccessTokenAlgorithm;
+            });
+
             serviceCollection.AddScoped<IJwtAccessTokenGenerator<ApplicationUser, string>, JwtAccessTokenGenerator>();
             serviceCollection.AddScoped<IJwtService<ApplicationUser, string>, JwtService>();
         }
@@ -121,5 +142,7 @@ namespace Infrastructure.Identity
                     };
                 });
         }
+
+        #endregion
     }
 }

@@ -18,11 +18,6 @@ namespace Infrastructure.Identity.Services.JWT
     {
         #region Fields
 
-        /// <summary>
-        /// Algorithm that is used for signing credentials of the JWT-access token.
-        /// </summary>
-        private readonly string _signingCredentialsAlgorithm = SecurityAlgorithms.HmacSha256;
-
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly JwtAccessTokenConfig _tokenConfig;
 
@@ -45,7 +40,8 @@ namespace Infrastructure.Identity.Services.JWT
         {
             IEnumerable<Claim> claims = await GetClaimsForJwtTokenAsync(user)
                 .ConfigureAwait(false);
-            SigningCredentials signingCredentials = GetSigningCredentials();
+            SigningCredentials signingCredentials =
+                CreateSigningCredentials(_tokenConfig.IssuerSigningKey, _tokenConfig.EncryptionAlgorithm);
 
             JwtSecurityToken jwtTokenConfig = CreateJwtSecurityToken(claims, signingCredentials, _tokenConfig);
 
@@ -79,14 +75,14 @@ namespace Infrastructure.Identity.Services.JWT
         }
 
         /// <summary>
-        /// Returns a signing credentials, that can be used to sign the JWT-key.
+        /// Creates an instance of type <see cref="SigningCredentials"/> based on the specified parameters.
         /// </summary>
-        private SigningCredentials GetSigningCredentials()
+        private SigningCredentials CreateSigningCredentials(string issuerSigningKey, string encryptionAlgorithm)
         {
             SymmetricSecurityKey symmetricSecurityKey =
-                SymmetricSecurityKeyHelper.CreateFromString(_tokenConfig.IssuerSigningKey);
+                SymmetricSecurityKeyHelper.CreateFromString(issuerSigningKey);
 
-            return new SigningCredentials(symmetricSecurityKey, _signingCredentialsAlgorithm);
+            return new SigningCredentials(symmetricSecurityKey, encryptionAlgorithm);
         }
 
         /// <summary>

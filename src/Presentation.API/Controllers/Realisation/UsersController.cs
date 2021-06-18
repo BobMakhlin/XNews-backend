@@ -5,6 +5,7 @@ using Application.CQRS.Comments.Models;
 using Application.CQRS.PostRates.Models;
 using Application.CQRS.Posts.Models;
 using Application.CQRS.Roles.Models;
+using Application.CQRS.Users.Commands.UserAuthentication;
 using Application.CQRS.Users.Commands.UserPassword;
 using Application.CQRS.Users.Commands.UserRole;
 using Application.CQRS.Users.Commands.UserStorage;
@@ -15,6 +16,7 @@ using Application.CQRS.Users.Queries.UserPost;
 using Application.CQRS.Users.Queries.UserPostRate;
 using Application.CQRS.Users.Queries.UserRole;
 using Application.CQRS.Users.Queries.UserStorage;
+using Application.Identity.Models;
 using Application.Pagination.Common.Models.PagedList;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.API.Controllers.Abstraction;
@@ -30,7 +32,8 @@ namespace Presentation.API.Controllers.Realisation
         #region UserStorage
 
         [HttpGet]
-        public async Task<ActionResult<IPagedList<UserDto>>> GetAllUsersAsync([FromQuery] GetPagedListOfUsersQuery request)
+        public async Task<ActionResult<IPagedList<UserDto>>> GetAllUsersAsync(
+            [FromQuery] GetPagedListOfUsersQuery request)
         {
             IPagedList<UserDto> users = await Mediator.Send(request);
             return Ok(users);
@@ -57,19 +60,19 @@ namespace Presentation.API.Controllers.Realisation
             {
                 return BadRequest();
             }
-            
+
             await Mediator.Send(request);
-            
+
             return NoContent();
         }
-        
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUserAsync([FromRoute] string id)
         {
             await Mediator.Send(new DeleteUserCommand {UserId = id});
             return NoContent();
         }
-        
+
         #endregion
 
         #region UserPost
@@ -80,8 +83,8 @@ namespace Presentation.API.Controllers.Realisation
         {
             IPagedList<PostDto> posts = await Mediator.Send(new GetPagedListOfPostsMadeByUserQuery
             {
-                UserId = id, 
-                PageNumber = paginationRequest.PageNumber, 
+                UserId = id,
+                PageNumber = paginationRequest.PageNumber,
                 PageSize = paginationRequest.PageSize
             });
             return Ok(posts);
@@ -148,7 +151,7 @@ namespace Presentation.API.Controllers.Realisation
             IEnumerable<RoleDto> rolesOfUser = await Mediator.Send(new GetListOfUserRolesQuery {UserId = id});
             return Ok(rolesOfUser);
         }
-        
+
         [HttpPost("{userId}/roles/{roleId}")]
         public async Task<IActionResult> AddRoleToUserAsync([FromRoute] string userId, [FromRoute] string roleId)
         {
@@ -178,6 +181,16 @@ namespace Presentation.API.Controllers.Realisation
                 NewPassword = request.NewPassword
             });
             return NoContent();
+        }
+
+        #endregion
+
+        #region UserAuthentication
+
+        [HttpPost("login")]
+        public async Task<ActionResult<AuthenticationResponse>> Login([FromBody] AuthenticateCommand request)
+        {
+            return await Mediator.Send(request);
         }
 
         #endregion

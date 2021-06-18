@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 using Application.Common.Exceptions;
 using Application.Common.Extensions;
 using Application.CQRS.Roles.Models;
+using Application.Identity.Entities;
 using Application.Identity.Interfaces;
-using Application.Identity.Models;
 using AutoMapper;
 using MediatR;
 

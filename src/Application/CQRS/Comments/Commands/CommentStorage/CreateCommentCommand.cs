@@ -2,8 +2,8 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Common.Extensions;
+using Application.Identity.Entities;
 using Application.Identity.Interfaces;
-using Application.Identity.Models;
 using Application.Persistence.Interfaces;
 using Domain.Primary.Entities;
 using MediatR;

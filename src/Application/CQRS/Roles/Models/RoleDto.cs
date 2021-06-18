@@ -1,6 +1,5 @@
-using System;
 using Application.Common.Mappings.Interfaces;
-using Application.Identity.Models;
+using Application.Identity.Entities;
 using AutoMapper;
 
 namespace Application.CQRS.Roles.Models

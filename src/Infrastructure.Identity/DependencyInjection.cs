@@ -1,12 +1,19 @@
+using Application.Identity.Entities;
 using Application.Identity.Interfaces;
-using Application.Identity.Models;
+using Application.Identity.Interfaces.JWT;
+using Application.Identity.Models.JWT;
 using Infrastructure.Identity.DataAccess;
+using Infrastructure.Identity.Helpers;
 using Infrastructure.Identity.Options;
 using Infrastructure.Identity.Services;
+using Infrastructure.Identity.Services.JWT;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Infrastructure.Identity
 {
@@ -33,21 +40,86 @@ namespace Infrastructure.Identity
         /// <summary>
         /// Registers the identity system on the specified <paramref name="services"/>.
         /// </summary>
-        /// <param name="services"></param>
-        /// <returns></returns>
-        public static IServiceCollection AddIdentitySystem(this IServiceCollection services)
+        public static IServiceCollection AddIdentitySystem(this IServiceCollection services,
+            IConfiguration configuration)
         {
-            services
+            AddIdentity(services);
+            AddIdentityCommonServices(services);
+            AddAuthenticationServices(services, configuration);
+            AddJwtBearerAuthentication(services);
+
+            return services;
+        }
+
+        /// <summary>
+        /// Registers the ASP.NET Core identity in the specified <paramref name="serviceCollection"/>.
+        /// </summary>
+        private static void AddIdentity(IServiceCollection serviceCollection)
+        {
+            serviceCollection
                 .AddIdentity<ApplicationUser, ApplicationRole>()
                 .AddEntityFrameworkStores<XNewsIdentityDbContext>()
                 .AddDefaultTokenProviders();
+        }
 
-            services.AddScoped<IIdentityStorage<ApplicationUser, string>, ApplicationUserStorage>();
-            services.AddScoped<IIdentityStorage<ApplicationRole, string>, ApplicationRoleStorage>();
-            services.AddScoped<IUserPasswordService<ApplicationUser, string>, ApplicationUserPasswordService>();
-            services.AddScoped<IUserRoleService<ApplicationUser, ApplicationRole>, UserRoleService>();
+        /// <summary>
+        /// Registers the common identity services in the specified <paramref name="serviceCollection"/>.
+        /// </summary>
+        private static void AddIdentityCommonServices(IServiceCollection serviceCollection)
+        {
+            serviceCollection.AddScoped<IIdentityStorage<ApplicationUser, string>, ApplicationUserStorage>();
+            serviceCollection.AddScoped<IIdentityStorage<ApplicationRole, string>, ApplicationRoleStorage>();
+            serviceCollection
+                .AddScoped<IUserPasswordService<ApplicationUser, string>, ApplicationUserPasswordService>();
+            serviceCollection.AddScoped<IUserRoleService<ApplicationUser, ApplicationRole>, UserRoleService>();
+        }
 
-            return services;
+        /// <summary>
+        /// Registers authentication services in the specified <paramref name="serviceCollection"/>.
+        /// </summary>
+        private static void AddAuthenticationServices(IServiceCollection serviceCollection,
+            IConfiguration configuration)
+        {
+            serviceCollection.Configure<JwtAccessTokenConfig>
+            (
+                configuration.GetSection("JWT:AccessToken")
+            );
+            serviceCollection.AddScoped<IJwtAccessTokenGenerator<ApplicationUser, string>, JwtAccessTokenGenerator>();
+            serviceCollection.AddScoped<IJwtService<ApplicationUser, string>, JwtService>();
+        }
+
+        /// <summary>
+        /// Enables the JWT bearer authentication by registering it in the specified <see cref="serviceCollection"/>.
+        /// </summary>
+        private static void AddJwtBearerAuthentication(IServiceCollection serviceCollection)
+        {
+            using ServiceProvider provider = serviceCollection.BuildServiceProvider();
+            JwtAccessTokenConfig tokenConfig = provider
+                .GetRequiredService<IOptions<JwtAccessTokenConfig>>()
+                .Value;
+
+            serviceCollection
+                .AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(o =>
+                {
+                    o.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateLifetime = true,
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateIssuerSigningKey = true,
+
+                        ClockSkew = tokenConfig.ClockSkew,
+                        ValidIssuer = tokenConfig.ValidIssuer,
+                        ValidAudience = tokenConfig.ValidAudience,
+                        IssuerSigningKey =
+                            SymmetricSecurityKeyHelper.CreateFromString(tokenConfig.IssuerSigningKey)
+                    };
+                });
         }
     }
 }

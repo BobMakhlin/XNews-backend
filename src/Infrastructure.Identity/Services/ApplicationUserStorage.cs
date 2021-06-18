@@ -1,7 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
+using Application.Identity.Entities;
 using Application.Identity.Interfaces;
-using Application.Identity.Models;
 using Application.Identity.Results;
 using Infrastructure.Identity.Extensions;
 using Microsoft.AspNetCore.Identity;

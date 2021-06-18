@@ -2,8 +2,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Application.Common.Exceptions;
 using Application.Common.Extensions;
+using Application.Identity.Entities;
 using Application.Identity.Interfaces;
-using Application.Identity.Models;
 using Application.Identity.Results;
 using MediatR;
 

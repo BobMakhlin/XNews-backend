@@ -1,4 +1,4 @@
-using Application.CQRS.Categories.Queries.CategoryStorage;
+using Application.CQRS.Categories.Queries.CategoryStorage.GetById;
 using FluentValidation;
 
 namespace Application.Validation.AbstractValidators.CQRS.Categories.Queries.CategoryStorage

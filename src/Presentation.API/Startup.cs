@@ -43,7 +43,7 @@ namespace Presentation.API
             services.AddPersistenceLogging(Configuration);
             
             services.AddIdentityDbContext(Configuration);
-            services.AddIdentitySystem();
+            services.AddIdentitySystem(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -62,6 +62,7 @@ namespace Presentation.API
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseMiddleware<ExceptionHandlerMiddleware>();

@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
 
-namespace Application.Identity.Models
+namespace Application.Identity.Entities
 {
-    public class ApplicationRole : IdentityRole
+    public class ApplicationUser : IdentityUser
     {
         public ICollection<ApplicationUserRole> UserRoles { get; set; }
     }

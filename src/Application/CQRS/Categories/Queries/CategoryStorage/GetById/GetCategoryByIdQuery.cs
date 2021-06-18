@@ -10,7 +10,7 @@ using AutoMapper;
 using Domain.Primary.Entities;
 using MediatR;
 
-namespace Application.CQRS.Categories.Queries.CategoryStorage
+namespace Application.CQRS.Categories.Queries.CategoryStorage.GetById
 {
     public class GetCategoryByIdQuery : IRequest<CategoryDto>
     {

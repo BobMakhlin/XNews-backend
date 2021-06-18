@@ -19,9 +19,21 @@ namespace Infrastructure.Identity.DataAccess
             IdentityUserToken<string>
         >
     {
+        #region Constructors
+
         public XNewsIdentityDbContext(DbContextOptions<XNewsIdentityDbContext> options) : base(options)
         {
         }
+
+        #endregion
+
+        #region Properties
+
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
+
+        #endregion
+        
+        #region Methods
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -29,5 +41,7 @@ namespace Infrastructure.Identity.DataAccess
 
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
+
+        #endregion
     }
 }

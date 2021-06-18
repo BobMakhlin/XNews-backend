@@ -4,14 +4,16 @@ using Infrastructure.Identity.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Identity.Migrations
 {
     [DbContext(typeof(XNewsIdentityDbContext))]
-    partial class XNewsIdentityDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210618133648_AddTable_RefreshToken")]
+    partial class AddTable_RefreshToken
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -132,9 +134,6 @@ namespace Infrastructure.Identity.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -150,8 +149,6 @@ namespace Infrastructure.Identity.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.HasKey("RefreshTokenId");
-
-                    b.HasIndex("ApplicationUserId");
 
                     b.ToTable("RefreshToken");
                 });
@@ -264,13 +261,6 @@ namespace Infrastructure.Identity.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Application.Identity.Entities.RefreshToken", b =>
-                {
-                    b.HasOne("Application.Identity.Entities.ApplicationUser", null)
-                        .WithMany("RefreshTokens")
-                        .HasForeignKey("ApplicationUserId");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Application.Identity.Entities.ApplicationRole", null)
@@ -314,8 +304,6 @@ namespace Infrastructure.Identity.Migrations
 
             modelBuilder.Entity("Application.Identity.Entities.ApplicationUser", b =>
                 {
-                    b.Navigation("RefreshTokens");
-
                     b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618

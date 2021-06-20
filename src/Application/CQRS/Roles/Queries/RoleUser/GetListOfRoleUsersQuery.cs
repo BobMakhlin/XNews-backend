@@ -5,7 +5,7 @@ using Application.Common.Exceptions;
 using Application.Common.Extensions;
 using Application.CQRS.Users.Models;
 using Application.Identity.Entities;
-using Application.Identity.Interfaces;
+using Application.Identity.Interfaces.Storages;
 using AutoMapper;
 using MediatR;
 

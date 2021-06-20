@@ -1,13 +1,16 @@
-﻿using System.Threading;
+﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Application.Common.Exceptions;
 using Application.Common.Extensions;
 using Application.Identity.Entities;
+using Application.Identity.Interfaces;
 using Application.Identity.Interfaces.JWT;
+using Application.Identity.Interfaces.Storages;
 using Application.Identity.Models;
 using Application.Identity.Results;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.CQRS.Users.Commands.UserAuthentication
 {
@@ -26,18 +29,18 @@ namespace Application.CQRS.Users.Commands.UserAuthentication
         {
             #region Fields
 
-            private readonly UserManager<ApplicationUser> _userManager;
+            private readonly IIdentityStorage<ApplicationUser, string> _userStorage;
             private readonly IJwtService<ApplicationUser, string> _jwtService;
 
             #endregion
 
             #region Constructors
 
-            public Handler(UserManager<ApplicationUser> userManager,
-                IJwtService<ApplicationUser, string> jwtService)
+            public Handler(IJwtService<ApplicationUser, string> jwtService,
+                IIdentityStorage<ApplicationUser, string> userStorage)
             {
-                _userManager = userManager;
                 _jwtService = jwtService;
+                _userStorage = userStorage;
             }
 
             #endregion
@@ -47,10 +50,11 @@ namespace Application.CQRS.Users.Commands.UserAuthentication
             public async Task<AuthenticationResponse> Handle(AuthenticateCommand request,
                 CancellationToken cancellationToken)
             {
-                ApplicationUser user =
-                    await _userManager.FindByEmailAsync(request.Email)
-                        .ConfigureAwait(false)
-                    ?? throw new NotFoundException(nameof(ApplicationUser), request.Email);
+                ApplicationUser user = await _userStorage.GetAll()
+                                           .Where(x => x.Email == request.Email)
+                                           .Include(x => x.RefreshTokens)
+                                           .SingleOrDefaultAsync(cancellationToken)
+                                       ?? throw new NotFoundException(nameof(ApplicationUser), request.Email);
 
                 (IIdentityResult, AuthenticationResponse) result = await _jwtService
                     .AuthenticateAsync(user, request.Password)

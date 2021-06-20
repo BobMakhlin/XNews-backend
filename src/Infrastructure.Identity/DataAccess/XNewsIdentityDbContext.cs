@@ -1,5 +1,7 @@
 using System.Reflection;
 using Application.Identity.Entities;
+using Application.Identity.Interfaces;
+using Application.Identity.Interfaces.Database;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -7,17 +9,19 @@ using Microsoft.EntityFrameworkCore;
 namespace Infrastructure.Identity.DataAccess
 {
     internal class XNewsIdentityDbContext
-        : IdentityDbContext
-        <
-            ApplicationUser, 
-            ApplicationRole, 
-            string, 
-            IdentityUserClaim<string>,
-            ApplicationUserRole, 
-            IdentityUserLogin<string>,
-            IdentityRoleClaim<string>, 
-            IdentityUserToken<string>
-        >
+        :
+            IdentityDbContext
+            <
+                ApplicationUser,
+                ApplicationRole,
+                string,
+                IdentityUserClaim<string>,
+                ApplicationUserRole,
+                IdentityUserLogin<string>,
+                IdentityRoleClaim<string>,
+                IdentityUserToken<string>
+            >,
+            IXNewsIdentityDbContext
     {
         #region Constructors
 
@@ -32,7 +36,7 @@ namespace Infrastructure.Identity.DataAccess
         public DbSet<RefreshToken> RefreshTokens { get; set; }
 
         #endregion
-        
+
         #region Methods
 
         protected override void OnModelCreating(ModelBuilder builder)

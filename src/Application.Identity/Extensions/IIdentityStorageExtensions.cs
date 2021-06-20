@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using Application.Identity.Interfaces;
+using Application.Identity.Interfaces.Storages;
 
 namespace Application.Identity.Extensions
 {

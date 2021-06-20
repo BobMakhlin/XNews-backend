@@ -1,6 +1,8 @@
 using Application.Identity.Entities;
 using Application.Identity.Interfaces;
+using Application.Identity.Interfaces.Database;
 using Application.Identity.Interfaces.JWT;
+using Application.Identity.Interfaces.Storages;
 using Application.Identity.Models.JWT;
 using Infrastructure.Identity.DataAccess;
 using Infrastructure.Identity.Helpers;
@@ -25,6 +27,11 @@ namespace Infrastructure.Identity
         /// Configuration key by which the access token is stored in the configuration.
         /// </summary>
         private static string _jwtAccessTokenSectionConfigurationKey = "JWT:AccessToken";
+
+        /// <summary>
+        /// Configuration key by which the refresh token is stored in the configuration.
+        /// </summary>
+        private static string _jwtRefreshTokenSectionConfigurationKey = "JWT:RefreshToken";
 
         /// <summary>
         /// Algorithm used for JWT access token encryption.
@@ -76,6 +83,10 @@ namespace Infrastructure.Identity
                 .AddIdentity<ApplicationUser, ApplicationRole>()
                 .AddEntityFrameworkStores<XNewsIdentityDbContext>()
                 .AddDefaultTokenProviders();
+
+            serviceCollection
+                .AddScoped<IXNewsIdentityDbContext>(serviceProvider =>
+                    serviceProvider.GetRequiredService<XNewsIdentityDbContext>());
         }
 
         /// <summary>
@@ -96,6 +107,20 @@ namespace Infrastructure.Identity
         private static void AddAuthenticationServices(IServiceCollection serviceCollection,
             IConfiguration configuration)
         {
+            AddJwtAccessTokenConfiguration(serviceCollection, configuration);
+            AddJwtRefreshTokenConfiguration(serviceCollection, configuration);
+            
+            serviceCollection.AddScoped<IJwtAccessTokenGenerator<ApplicationUser, string>, JwtAccessTokenGenerator>();
+            serviceCollection.AddScoped<IJwtRefreshTokenGenerator<RefreshToken>, JwtRefreshTokenGenerator>();
+            serviceCollection.AddScoped<IJwtService<ApplicationUser, string>, JwtService>();
+        }
+
+        /// <summary>
+        /// Adds the configuration of JWT access token to the specified <paramref name="serviceCollection"/>.
+        /// </summary>
+        private static void AddJwtAccessTokenConfiguration(IServiceCollection serviceCollection,
+            IConfiguration configuration)
+        {
             serviceCollection.Configure<JwtAccessTokenConfig>
             (
                 configuration.GetSection(_jwtAccessTokenSectionConfigurationKey)
@@ -104,9 +129,18 @@ namespace Infrastructure.Identity
             {
                 opts.EncryptionAlgorithm = _jwtAccessTokenAlgorithm;
             });
+        }
 
-            serviceCollection.AddScoped<IJwtAccessTokenGenerator<ApplicationUser, string>, JwtAccessTokenGenerator>();
-            serviceCollection.AddScoped<IJwtService<ApplicationUser, string>, JwtService>();
+        /// <summary>
+        /// Adds the configuration of JWT refresh token to the specified <paramref name="serviceCollection"/>.
+        /// </summary>
+        private static void AddJwtRefreshTokenConfiguration(IServiceCollection serviceCollection,
+            IConfiguration configuration)
+        {
+            serviceCollection.Configure<JwtRefreshTokenConfig>
+            (
+                configuration.GetSection(_jwtRefreshTokenSectionConfigurationKey)
+            );
         }
 
         /// <summary>

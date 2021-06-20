@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Application.Identity.Results;
 
-namespace Application.Identity.Interfaces
+namespace Application.Identity.Interfaces.Storages
 {
     /// <summary>
     /// Represents a storage, that allows to interact with passwords of users.

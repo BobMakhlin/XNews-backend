@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Application.Common.Exceptions;
 using Application.Identity.Extensions;
-using Application.Identity.Interfaces;
+using Application.Identity.Interfaces.Storages;
 
 namespace Application.Common.Extensions
 {

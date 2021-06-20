@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Application.Common.Exceptions;
 using Application.Common.Extensions;
 using Application.Identity.Entities;
-using Application.Identity.Interfaces;
+using Application.Identity.Interfaces.Storages;
 using Application.Identity.Results;
 using MediatR;
 

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Application.Common.Extensions;
 using Application.CQRS.Comments.Models;
 using Application.Identity.Entities;
-using Application.Identity.Interfaces;
+using Application.Identity.Interfaces.Storages;
 using Application.Pagination.Common.Models;
 using Application.Pagination.Common.Models.PagedList;
 using Application.Pagination.Extensions;

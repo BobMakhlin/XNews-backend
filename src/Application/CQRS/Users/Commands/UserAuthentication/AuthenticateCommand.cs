@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Application.Common.Exceptions;
 using Application.Common.Extensions;
 using Application.Identity.Entities;
-using Application.Identity.Interfaces;
 using Application.Identity.Interfaces.JWT;
 using Application.Identity.Interfaces.Storages;
 using Application.Identity.Models;
@@ -30,13 +29,13 @@ namespace Application.CQRS.Users.Commands.UserAuthentication
             #region Fields
 
             private readonly IIdentityStorage<ApplicationUser, string> _userStorage;
-            private readonly IJwtService<ApplicationUser, string> _jwtService;
+            private readonly IJwtService<ApplicationUser, string, RefreshToken> _jwtService;
 
             #endregion
 
             #region Constructors
 
-            public Handler(IJwtService<ApplicationUser, string> jwtService,
+            public Handler(IJwtService<ApplicationUser, string, RefreshToken> jwtService,
                 IIdentityStorage<ApplicationUser, string> userStorage)
             {
                 _jwtService = jwtService;

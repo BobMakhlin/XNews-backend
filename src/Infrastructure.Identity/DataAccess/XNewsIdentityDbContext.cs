@@ -21,7 +21,7 @@ namespace Infrastructure.Identity.DataAccess
                 IdentityRoleClaim<string>,
                 IdentityUserToken<string>
             >,
-            IXNewsIdentityDbContext
+            IXNewsIdentityDbContextSimplified
     {
         #region Constructors
 

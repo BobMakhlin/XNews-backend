@@ -193,6 +193,12 @@ namespace Presentation.API.Controllers.Realisation
             return await Mediator.Send(request);
         }
 
+        [HttpPost("refresh-session")]
+        public async Task<ActionResult<AuthenticationResponse>> RefreshSession([FromBody] RefreshSessionCommand request)
+        {
+            return await Mediator.Send(request);
+        }
+
         #endregion
     }
 }

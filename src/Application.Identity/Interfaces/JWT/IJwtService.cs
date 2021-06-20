@@ -7,7 +7,7 @@ namespace Application.Identity.Interfaces.JWT
     /// <summary>
     /// A service, that contains the functionality to work with JWT-tokens.
     /// </summary>
-    public interface IJwtService<in TUser, in TPassword>
+    public interface IJwtService<in TUser, in TPassword, in TRefreshToken>
     {
         /// <summary>
         /// Authenticates the <paramref name="user"/> with the specified <paramref name="password"/>.
@@ -50,5 +50,47 @@ namespace Application.Identity.Interfaces.JWT
         /// </para>
         /// </returns>
         Task<(IIdentityResult, AuthenticationResponse)> AuthenticateAsync(TUser user, TPassword password);
+
+        /// <summary>
+        /// Checks the specified <paramref name="refreshToken"/> and if it's valid, returns a JWT-tokens pair.
+        /// </summary>
+        /// <returns>
+        /// <para>
+        ///     Method returns the following tuple:
+        ///     <list type="bullet">
+        ///         <item>
+        ///             <description>Object, containing info about the identity operation execution.</description>
+        ///         </item>
+        ///         <item>
+        ///             <description>Object, containing JWT-tokens.</description>
+        ///         </item>
+        ///     </list>
+        /// </para>
+        /// <para>
+        ///     If the specified <paramref name="refreshToken"/> is not valid,
+        ///     the method returns the following tuple:
+        ///     <list type="bullet">
+        ///         <item>
+        ///             <description>The object, that determines, that the operation failed.</description>
+        ///         </item>
+        ///         <item>
+        ///             <description><see langword="null"/></description>
+        ///         </item>
+        ///     </list>
+        /// </para>
+        /// <para>
+        ///     If the specified <paramref name="refreshToken"/> is valid,
+        ///     the method returns the following tuple:
+        ///     <list type="bullet">
+        ///         <item>
+        ///             <description>The object, that determines, that the operation succeeded.</description>
+        ///         </item>
+        ///         <item>
+        ///             <description>The object, that contains JWT-tokens.</description>
+        ///         </item>
+        ///     </list>
+        /// </para>
+        /// </returns>
+        Task<(IIdentityResult, AuthenticationResponse)> RefreshSessionAsync(TRefreshToken refreshToken);
     }
 }

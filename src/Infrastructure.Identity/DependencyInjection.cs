@@ -1,5 +1,4 @@
 using Application.Identity.Entities;
-using Application.Identity.Interfaces;
 using Application.Identity.Interfaces.Database;
 using Application.Identity.Interfaces.JWT;
 using Application.Identity.Interfaces.Storages;
@@ -85,7 +84,7 @@ namespace Infrastructure.Identity
                 .AddDefaultTokenProviders();
 
             serviceCollection
-                .AddScoped<IXNewsIdentityDbContext>(serviceProvider =>
+                .AddScoped<IXNewsIdentityDbContextSimplified>(serviceProvider =>
                     serviceProvider.GetRequiredService<XNewsIdentityDbContext>());
         }
 
@@ -109,10 +108,10 @@ namespace Infrastructure.Identity
         {
             AddJwtAccessTokenConfiguration(serviceCollection, configuration);
             AddJwtRefreshTokenConfiguration(serviceCollection, configuration);
-            
+
             serviceCollection.AddScoped<IJwtAccessTokenGenerator<ApplicationUser, string>, JwtAccessTokenGenerator>();
             serviceCollection.AddScoped<IJwtRefreshTokenGenerator<RefreshToken>, JwtRefreshTokenGenerator>();
-            serviceCollection.AddScoped<IJwtService<ApplicationUser, string>, JwtService>();
+            serviceCollection.AddScoped<IJwtService<ApplicationUser, string, RefreshToken>, JwtService>();
         }
 
         /// <summary>

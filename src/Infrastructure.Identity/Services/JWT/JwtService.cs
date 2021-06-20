@@ -1,21 +1,22 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Application.Identity.Entities;
-using Application.Identity.Interfaces;
 using Application.Identity.Interfaces.Database;
 using Application.Identity.Interfaces.JWT;
 using Application.Identity.Models;
 using Application.Identity.Results;
 using Infrastructure.Identity.Results;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Identity.Services.JWT
 {
-    public class JwtService : IJwtService<ApplicationUser, string>
+    public class JwtService : IJwtService<ApplicationUser, string, RefreshToken>
     {
         #region Fields
 
-        private readonly IXNewsIdentityDbContext _context;
+        private readonly IXNewsIdentityDbContextSimplified _identityDbContext;
         private readonly UserManager<ApplicationUser> _userManager;
 
         private readonly IJwtAccessTokenGenerator<ApplicationUser, string> _jwtAccessTokenGenerator;
@@ -27,9 +28,10 @@ namespace Infrastructure.Identity.Services.JWT
 
         public JwtService(UserManager<ApplicationUser> userManager,
             IJwtAccessTokenGenerator<ApplicationUser, string> jwtAccessTokenGenerator,
-            IJwtRefreshTokenGenerator<RefreshToken> jwtRefreshTokenGenerator, IXNewsIdentityDbContext context)
+            IJwtRefreshTokenGenerator<RefreshToken> jwtRefreshTokenGenerator,
+            IXNewsIdentityDbContextSimplified identityDbContext)
         {
-            _context = context;
+            _identityDbContext = identityDbContext;
             _userManager = userManager;
             _jwtAccessTokenGenerator = jwtAccessTokenGenerator;
             _jwtRefreshTokenGenerator = jwtRefreshTokenGenerator;
@@ -37,7 +39,7 @@ namespace Infrastructure.Identity.Services.JWT
 
         #endregion
 
-        #region IJwtService<ApplicationUser, string>
+        #region IJwtService<ApplicationUser, string, RefreshToken>
 
         public async Task<(IIdentityResult, AuthenticationResponse)> AuthenticateAsync(ApplicationUser user,
             string password)
@@ -58,6 +60,36 @@ namespace Infrastructure.Identity.Services.JWT
             {
                 AccessToken = accessToken,
                 RefreshToken = refreshToken
+            });
+        }
+
+        public async Task<(IIdentityResult, AuthenticationResponse)> RefreshSessionAsync(RefreshToken refreshToken)
+        {
+            if (!refreshToken.IsActive)
+            {
+                return (CustomIdentityResult.Failed("The given refresh token is not active"), null);
+            }
+
+            ApplicationUser user =
+                await GetRefreshTokenOwnerAsync(refreshToken)
+                    .ConfigureAwait(false)
+                ?? throw new ArgumentException("The given refresh token is not attached to any user",
+                    nameof(refreshToken));
+
+            string accessToken = await _jwtAccessTokenGenerator.GenerateAsync(user)
+                .ConfigureAwait(false);
+            RefreshToken newRefreshToken = await _jwtRefreshTokenGenerator.GenerateAsync()
+                .ConfigureAwait(false);
+
+            await AttachRefreshTokenToUserAsync(user, newRefreshToken)
+                .ConfigureAwait(false);
+            await RevokeRefreshTokenAsync(refreshToken)
+                .ConfigureAwait(false);
+
+            return (CustomIdentityResult.Success(), new()
+            {
+                AccessToken = accessToken,
+                RefreshToken = newRefreshToken.Token
             });
         }
 
@@ -119,7 +151,29 @@ namespace Infrastructure.Identity.Services.JWT
         {
             user.RefreshTokens.Add(refreshToken);
 
-            await _context.SaveChangesAsync()
+            await _identityDbContext.SaveChangesAsync()
+                .ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Revokes the specified <paramref name="refreshToken"/> and saves the changes in the database.
+        /// </summary>
+        private async Task RevokeRefreshTokenAsync(RefreshToken refreshToken)
+        {
+            refreshToken.RevokedAt = DateTime.Now;
+
+            await _identityDbContext.SaveChangesAsync()
+                .ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Returns the owner of the specified <paramref name="refreshToken"/>
+        /// (the user, to whom this <paramref name="refreshToken"/> is attached).
+        /// </summary>
+        private async Task<ApplicationUser> GetRefreshTokenOwnerAsync(RefreshToken refreshToken)
+        {
+            return await _userManager.Users
+                .SingleOrDefaultAsync(u => u.RefreshTokens.Contains(refreshToken))
                 .ConfigureAwait(false);
         }
 

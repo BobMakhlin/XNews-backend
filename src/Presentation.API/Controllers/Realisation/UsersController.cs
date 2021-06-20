@@ -199,6 +199,13 @@ namespace Presentation.API.Controllers.Realisation
             return await Mediator.Send(request);
         }
 
+        [HttpPost("revoke-token")]
+        public async Task<IActionResult> RevokeToken([FromBody] RevokeTokenCommand request)
+        {
+            await Mediator.Send(request);
+            return NoContent();
+        }
+
         #endregion
     }
 }

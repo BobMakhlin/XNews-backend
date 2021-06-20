@@ -93,6 +93,21 @@ namespace Infrastructure.Identity.Services.JWT
             });
         }
 
+        public async Task<IIdentityResult> RevokeRefreshTokenAsync(RefreshToken refreshToken)
+        {
+            if (!refreshToken.IsActive)
+            {
+                return CustomIdentityResult.Failed("Refresh token has already been revoked");
+            }
+            
+            refreshToken.RevokedAt = DateTime.Now;
+
+            await _identityDbContext.SaveChangesAsync()
+                .ConfigureAwait(false);
+
+            return CustomIdentityResult.Success();
+        }
+
         #endregion
 
         #region Methods
@@ -150,17 +165,6 @@ namespace Infrastructure.Identity.Services.JWT
         private async Task AttachRefreshTokenToUserAsync(ApplicationUser user, RefreshToken refreshToken)
         {
             user.RefreshTokens.Add(refreshToken);
-
-            await _identityDbContext.SaveChangesAsync()
-                .ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// Revokes the specified <paramref name="refreshToken"/> and saves the changes in the database.
-        /// </summary>
-        private async Task RevokeRefreshTokenAsync(RefreshToken refreshToken)
-        {
-            refreshToken.RevokedAt = DateTime.Now;
 
             await _identityDbContext.SaveChangesAsync()
                 .ConfigureAwait(false);

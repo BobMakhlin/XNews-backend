@@ -92,5 +92,13 @@ namespace Application.Identity.Interfaces.JWT
         /// </para>
         /// </returns>
         Task<(IIdentityResult, AuthenticationResponse)> RefreshSessionAsync(TRefreshToken refreshToken);
+
+        /// <summary>
+        /// Revokes the specified <paramref name="refreshToken"/>.
+        /// </summary>
+        /// <returns>
+        /// The object, containing info about the identity operation execution.
+        /// </returns>
+        Task<IIdentityResult> RevokeRefreshTokenAsync(TRefreshToken refreshToken);
     }
 }

@@ -24,6 +24,7 @@
       <ProjectReference Include="..\Infrastructure.Identity\Infrastructure.Identity.csproj" />
       <ProjectReference Include="..\Persistence.Logging\Persistence.Logging.csproj" />
       <ProjectReference Include="..\Persistence.Primary\Persistence.Primary.csproj" />
+      <ProjectReference Include="..\Presentation.Common\Presentation.Common.csproj" />
     </ItemGroup>
 
 </Project>

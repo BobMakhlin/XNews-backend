@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Application;
+using Application.Identity.Interfaces;
 using Application.Persistence.Interfaces;
 using Application.Validation;
 using Infrastructure.Identity;
@@ -13,6 +14,7 @@ using Persistence.Logging;
 using Persistence.Primary;
 using Presentation.API.Extensions;
 using Presentation.API.Middlewares;
+using Presentation.Common.Services;
 
 namespace Presentation.API
 {
@@ -35,6 +37,9 @@ namespace Presentation.API
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "Presentation.API", Version = "v1"});
             });
+
+            services.AddSingleton<ICurrentLoggedInUserService, CurrentLoggedInUserService>();
+            services.AddHttpContextAccessor();
 
             services.AddApplication();
             services.AddApplicationValidation();

@@ -63,7 +63,8 @@ namespace Presentation.API
                 .AddJsonFile($"appsettings.{environmentName}.json", true, true)
                 .AddJsonFile("appsettings.Persistence.json", false, true)
                 .AddJsonFile("appsettings.CORS.json", false, true)
-                .AddJsonFile("appsettings.JWT.json", false, true);
+                .AddJsonFile("appsettings.JWT.json", false, true)
+                .AddJsonFile("appsettings.Identity.json", false, true);
 
             configBuilder
                 .AddEnvironmentVariables();

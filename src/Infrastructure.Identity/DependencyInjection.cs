@@ -33,6 +33,26 @@ namespace Infrastructure.Identity
         private static string _jwtRefreshTokenSectionConfigurationKey = "JWT:RefreshToken";
 
         /// <summary>
+        /// Configuration key of the identity user options section.
+        /// </summary>
+        private static string _identityUserOptionsSectionConfigurationKey = "Identity:User";
+
+        /// <summary>
+        /// Configuration key of the identity password options section.
+        /// </summary>
+        private static string _identityPasswordOptionsSectionConfigurationKey = "Identity:Password";
+
+        /// <summary>
+        /// Configuration key of the identity lockout options section.
+        /// </summary>
+        private static string _identityLockoutOptionsSectionConfigurationKey = "Identity:Lockout";
+
+        /// <summary>
+        /// Configuration key of the identity sign-in options section.
+        /// </summary>
+        private static string _identitySignInOptionsSectionConfigurationKey = "Identity:SignInOptions";
+
+        /// <summary>
         /// Algorithm used for JWT access token encryption.
         /// </summary>
         private static string _jwtAccessTokenAlgorithm = SecurityAlgorithms.HmacSha256;
@@ -69,7 +89,7 @@ namespace Infrastructure.Identity
         public static IServiceCollection AddIdentitySystem(this IServiceCollection services,
             IConfiguration configuration)
         {
-            AddIdentity(services);
+            AddIdentity(services, configuration);
             AddIdentityCommonServices(services);
             AddAuthenticationServices(services, configuration);
             AddJwtBearerAuthentication(services);
@@ -80,10 +100,20 @@ namespace Infrastructure.Identity
         /// <summary>
         /// Registers the ASP.NET Core identity in the specified <paramref name="serviceCollection"/>.
         /// </summary>
-        private static void AddIdentity(IServiceCollection serviceCollection)
+        private static void AddIdentity(IServiceCollection serviceCollection, IConfiguration configuration)
         {
             serviceCollection
-                .AddIdentity<ApplicationUser, ApplicationRole>()
+                .AddIdentity<ApplicationUser, ApplicationRole>(options =>
+                {
+                    options.User = configuration.GetSection(_identityUserOptionsSectionConfigurationKey)
+                        .Get<UserOptions>();
+                    options.Password = configuration.GetSection(_identityPasswordOptionsSectionConfigurationKey)
+                        .Get<PasswordOptions>();
+                    options.Lockout = configuration.GetSection(_identityLockoutOptionsSectionConfigurationKey)
+                        .Get<LockoutOptions>();
+                    options.SignIn = configuration.GetSection(_identitySignInOptionsSectionConfigurationKey)
+                        .Get<SignInOptions>();
+                })
                 .AddEntityFrameworkStores<XNewsIdentityDbContext>()
                 .AddDefaultTokenProviders();
         }

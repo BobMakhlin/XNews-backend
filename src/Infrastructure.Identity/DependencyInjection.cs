@@ -56,6 +56,10 @@ namespace Infrastructure.Identity
                 options => options.UseSqlServer(connectionString)
             );
 
+            services
+                .AddScoped<IXNewsIdentityDbContextSimplified>(serviceProvider =>
+                    serviceProvider.GetRequiredService<XNewsIdentityDbContext>());
+
             return services;
         }
 
@@ -82,10 +86,6 @@ namespace Infrastructure.Identity
                 .AddIdentity<ApplicationUser, ApplicationRole>()
                 .AddEntityFrameworkStores<XNewsIdentityDbContext>()
                 .AddDefaultTokenProviders();
-
-            serviceCollection
-                .AddScoped<IXNewsIdentityDbContextSimplified>(serviceProvider =>
-                    serviceProvider.GetRequiredService<XNewsIdentityDbContext>());
         }
 
         /// <summary>

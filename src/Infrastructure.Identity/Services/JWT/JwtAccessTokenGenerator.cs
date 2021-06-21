@@ -4,6 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Application.Identity.Claims;
 using Application.Identity.Entities;
 using Application.Identity.Interfaces.JWT;
 using Application.Identity.Models.JWT;

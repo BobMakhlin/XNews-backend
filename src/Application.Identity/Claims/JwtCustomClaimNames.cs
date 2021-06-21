@@ -1,4 +1,4 @@
-﻿namespace Infrastructure.Identity.Helpers
+﻿namespace Application.Identity.Claims
 {
     /// <summary>
     /// List of custom claims for a JWT-token.

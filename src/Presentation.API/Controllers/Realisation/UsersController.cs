@@ -46,7 +46,7 @@ namespace Presentation.API.Controllers.Realisation
             return Ok(user);
         }
 
-        [HttpPost]
+        [HttpPost("register")]
         public async Task<ActionResult<string>> PostUserAsync([FromBody] CreateUserCommand request)
         {
             string userId = await Mediator.Send(request);
@@ -199,7 +199,7 @@ namespace Presentation.API.Controllers.Realisation
             return await Mediator.Send(request);
         }
 
-        [HttpPost("revoke-token")]
+        [HttpPost("logout")]
         public async Task<IActionResult> RevokeToken([FromBody] RevokeTokenCommand request)
         {
             await Mediator.Send(request);

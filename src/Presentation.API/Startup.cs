@@ -33,10 +33,7 @@ namespace Presentation.API
             services.AddCors();
         
             services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo {Title = "Presentation.API", Version = "v1"});
-            });
+            RegisterSwagger(services);
 
             services.AddSingleton<ICurrentLoggedInUserService, CurrentLoggedInUserService>();
             services.AddHttpContextAccessor();
@@ -62,7 +59,7 @@ namespace Presentation.API
             }
 
             app.UseCors(Configuration);
-            
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
@@ -75,6 +72,40 @@ namespace Presentation.API
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
 
+        /// <summary>
+        /// Registers Swagger in the specified <paramref name="services"/>.
+        /// </summary>
+        private void RegisterSwagger(IServiceCollection services)
+        {
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo {Title = "Presentation.API", Version = "v1"});
+
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Type = SecuritySchemeType.ApiKey,
+                    Description = "Please insert JWT with Bearer into field",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        new string[] { }
+                    }
+                });
+            });
+        }
+        
         private async Task SeedDatabaseAsync(IApplicationBuilder app)
         {
             using IServiceScope scope = app.ApplicationServices.CreateScope();

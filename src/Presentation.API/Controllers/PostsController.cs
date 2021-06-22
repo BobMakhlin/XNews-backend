@@ -14,11 +14,11 @@ using Application.CQRS.Posts.Queries.PostRate;
 using Application.CQRS.Posts.Queries.PostStorage;
 using Application.Pagination.Common.Models.PagedList;
 using Microsoft.AspNetCore.Mvc;
-using Presentation.API.Controllers.Abstraction;
 using Presentation.API.Requests.Common;
 using Presentation.API.Requests.ControllerRequests;
+using Presentation.Common.ControllerAbstractions;
 
-namespace Presentation.API.Controllers.Realisation
+namespace Presentation.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]

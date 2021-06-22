@@ -5,7 +5,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
-namespace Presentation.API.Middlewares
+namespace Presentation.Common.Middlewares
 {
     /// <summary>
     /// Middleware used to handle exceptions of the all next middlewares.

@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.Extensions.Configuration;
 
-namespace Presentation.API.Extensions
+namespace Presentation.Common.Extensions
 {
     /// <summary>
     /// The <see cref="IApplicationBuilder"/> extensions to enable CORS-requests and

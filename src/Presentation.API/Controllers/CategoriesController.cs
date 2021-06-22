@@ -7,9 +7,9 @@ using Application.CQRS.Categories.Queries.CategoryStorage.GetAll;
 using Application.CQRS.Categories.Queries.CategoryStorage.GetById;
 using Application.Pagination.Common.Models.PagedList;
 using Microsoft.AspNetCore.Mvc;
-using Presentation.API.Controllers.Abstraction;
+using Presentation.Common.ControllerAbstractions;
 
-namespace Presentation.API.Controllers.Realisation
+namespace Presentation.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]

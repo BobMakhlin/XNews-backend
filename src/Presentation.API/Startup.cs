@@ -12,8 +12,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Persistence.Logging;
 using Persistence.Primary;
-using Presentation.API.Extensions;
-using Presentation.API.Middlewares;
+using Presentation.Common.Extensions;
+using Presentation.Common.Middlewares;
 using Presentation.Common.Services;
 
 namespace Presentation.API

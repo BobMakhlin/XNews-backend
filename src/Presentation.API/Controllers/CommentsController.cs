@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using Application.CQRS.CommentRates.Models;
 using Application.CQRS.Comments.Commands.CommentRate;
 using Application.CQRS.Comments.Commands.CommentStorage;
 using Application.CQRS.Comments.Queries.CommentRate;
-using Presentation.API.Controllers.Abstraction;
+using Microsoft.AspNetCore.Mvc;
 using Presentation.API.Requests.ControllerRequests;
+using Presentation.Common.ControllerAbstractions;
 
-namespace Presentation.API.Controllers.Realisation
+namespace Presentation.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]

@@ -1,8 +1,6 @@
-using System;
-using System.Linq;
 using Microsoft.Extensions.Configuration;
 
-namespace Presentation.API.Extensions
+namespace Presentation.Common.Extensions
 {
     /// <summary>
     /// Contains extension-methods for type <see cref="IConfiguration"/>.

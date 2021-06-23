@@ -8,6 +8,7 @@ using Application.Identity.Entities;
 using Application.Identity.Interfaces.Storages;
 using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.CQRS.Roles.Queries.RoleUser
 {
@@ -53,6 +54,7 @@ namespace Application.CQRS.Roles.Queries.RoleUser
                                        ?? throw new NotFoundException(nameof(ApplicationRole), request.RoleId);
 
                 return await _userRoleService.GetRoleUsers(role)
+                    .AsNoTracking()
                     .ProjectToListAsync<UserDto>(_mapper.ConfigurationProvider, cancellationToken)
                     .ConfigureAwait(false);
             }

@@ -12,6 +12,7 @@ using Application.Persistence.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.CQRS.Users.Queries.UserPost
 {
@@ -60,6 +61,7 @@ namespace Application.CQRS.Users.Queries.UserPost
                 CancellationToken cancellationToken)
             {
                 IPagedList<PostDto> posts = await _context.Post
+                    .AsNoTracking()
                     .Where(p => p.UserId == request.UserId)
                     .OrderBy(p => p.PostId)
                     .ProjectTo<PostDto>(_mapper.ConfigurationProvider)

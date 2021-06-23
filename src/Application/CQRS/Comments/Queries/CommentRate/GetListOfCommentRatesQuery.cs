@@ -8,6 +8,7 @@ using Application.CQRS.CommentRates.Models;
 using Application.Persistence.Interfaces;
 using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.CQRS.Comments.Queries.CommentRate
 {
@@ -46,6 +47,7 @@ namespace Application.CQRS.Comments.Queries.CommentRate
                 CancellationToken cancellationToken)
             {
                 List<CommentRateDto> rates = await _context.CommentRate
+                    .AsNoTracking()
                     .Where(cr => cr.CommentId == request.CommentId)
                     .ProjectToListAsync<CommentRateDto>(_mapper.ConfigurationProvider, cancellationToken)
                     .ConfigureAwait(false);

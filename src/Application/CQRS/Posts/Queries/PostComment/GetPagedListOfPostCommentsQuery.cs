@@ -108,6 +108,7 @@ namespace Application.CQRS.Posts.Queries.PostComment
             {
                 List<CommentDto> commentFlatList = await _context
                     .GetPostComments(postId, pageNumber, pageSize)
+                    .AsNoTracking()
                     .ProjectToListAsync<CommentDto>(_mapper.ConfigurationProvider, cancellationToken)
                     .ConfigureAwait(false);
 

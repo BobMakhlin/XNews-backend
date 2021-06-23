@@ -10,6 +10,7 @@ using Application.Pagination.Extensions;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.CQRS.Roles.Queries.RoleStorage
 {
@@ -49,6 +50,7 @@ namespace Application.CQRS.Roles.Queries.RoleStorage
             {
                 return await _roleStorage
                     .GetAll()
+                    .AsNoTracking()
                     .OrderBy(role => role.Id)
                     .ProjectTo<RoleDto>(_mapper.ConfigurationProvider, cancellationToken)
                     .ProjectToPagedListAsync(request, cancellationToken)

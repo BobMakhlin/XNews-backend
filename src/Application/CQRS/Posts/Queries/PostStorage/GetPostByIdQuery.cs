@@ -9,6 +9,7 @@ using Application.Persistence.Interfaces;
 using AutoMapper;
 using Domain.Primary.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.CQRS.Posts.Queries.PostStorage
 {
@@ -40,12 +41,13 @@ namespace Application.CQRS.Posts.Queries.PostStorage
             }
 
             #endregion
-            
+
             #region IRequestHandler<GetPostByIdQuery, PostDto>
 
             public async Task<PostDto> Handle(GetPostByIdQuery request, CancellationToken cancellationToken)
             {
                 return await _context.Post
+                           .AsNoTracking()
                            .Where(p => p.PostId == request.PostId)
                            .ProjectToSingleOrDefaultAsync<PostDto>(_mapper.ConfigurationProvider, cancellationToken)
                            .ConfigureAwait(false)

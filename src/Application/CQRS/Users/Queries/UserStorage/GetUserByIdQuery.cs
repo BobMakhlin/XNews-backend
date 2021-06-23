@@ -8,6 +8,7 @@ using Application.Identity.Entities;
 using Application.Identity.Interfaces.Storages;
 using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.CQRS.Users.Queries.UserStorage
 {
@@ -46,6 +47,7 @@ namespace Application.CQRS.Users.Queries.UserStorage
             {
                 return await _userStorage
                            .GetAll()
+                           .AsNoTracking()
                            .Where(u => u.Id == request.UserId)
                            .ProjectToSingleOrDefaultAsync<UserDto>(_mapper.ConfigurationProvider, cancellationToken)
                            .ConfigureAwait(false)

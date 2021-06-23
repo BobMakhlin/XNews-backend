@@ -12,6 +12,7 @@ using Application.Persistence.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.CQRS.Users.Queries.UserCommentRate
 {
@@ -60,6 +61,7 @@ namespace Application.CQRS.Users.Queries.UserCommentRate
                 CancellationToken cancellationToken)
             {
                 IPagedList<CommentRateDto> commentRates = await _context.CommentRate
+                    .AsNoTracking()
                     .Where(cr => cr.UserId == request.UserId)
                     .OrderBy(c => c.CommentRateId)
                     .ProjectTo<CommentRateDto>(_mapper.ConfigurationProvider)

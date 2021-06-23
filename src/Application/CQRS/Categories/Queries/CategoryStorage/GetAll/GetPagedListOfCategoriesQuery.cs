@@ -9,6 +9,7 @@ using Application.Persistence.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.CQRS.Categories.Queries.CategoryStorage.GetAll
 {
@@ -48,6 +49,7 @@ namespace Application.CQRS.Categories.Queries.CategoryStorage.GetAll
                 CancellationToken cancellationToken)
             {
                 return await _context.Category
+                    .AsNoTracking()
                     .OrderBy(c => c.CategoryId)
                     .ProjectTo<CategoryDto>(_mapper.ConfigurationProvider, cancellationToken)
                     .ProjectToPagedListAsync(request, cancellationToken)

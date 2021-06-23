@@ -8,6 +8,7 @@ using Application.CQRS.Categories.Models;
 using Application.Persistence.Interfaces;
 using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.CQRS.Posts.Queries.PostCategory
 {
@@ -46,6 +47,7 @@ namespace Application.CQRS.Posts.Queries.PostCategory
                 CancellationToken cancellationToken)
             {
                 List<CategoryDto> categories = await _context.Category
+                    .AsNoTracking()
                     .Where(c => c.Posts.Any(p => p.PostId == request.PostId))
                     .ProjectToListAsync<CategoryDto>(_mapper.ConfigurationProvider, cancellationToken)
                     .ConfigureAwait(false);

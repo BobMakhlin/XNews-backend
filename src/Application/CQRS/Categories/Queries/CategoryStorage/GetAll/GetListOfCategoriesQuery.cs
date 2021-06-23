@@ -6,6 +6,7 @@ using Application.CQRS.Categories.Models;
 using Application.Persistence.Interfaces;
 using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.CQRS.Categories.Queries.CategoryStorage.GetAll
 {
@@ -37,6 +38,7 @@ namespace Application.CQRS.Categories.Queries.CategoryStorage.GetAll
             public async Task<IEnumerable<CategoryDto>> Handle(GetListOfCategoriesQuery request, CancellationToken cancellationToken)
             {
                 return await _context.Category
+                    .AsNoTracking()
                     .ProjectToListAsync<CategoryDto>(_mapper.ConfigurationProvider, cancellationToken)
                     .ConfigureAwait(false);
             }

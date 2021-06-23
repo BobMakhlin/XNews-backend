@@ -9,6 +9,7 @@ using Application.Persistence.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.CQRS.Posts.Queries.PostStorage
 {
@@ -48,6 +49,7 @@ namespace Application.CQRS.Posts.Queries.PostStorage
                 CancellationToken cancellationToken)
             {
                 return await _context.Post
+                    .AsNoTracking()
                     .OrderBy(p => p.PostId)
                     .ProjectTo<PostDto>(_mapper.ConfigurationProvider, cancellationToken)
                     .ProjectToPagedListAsync(request, cancellationToken)

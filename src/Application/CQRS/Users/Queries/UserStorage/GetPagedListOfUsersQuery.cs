@@ -10,6 +10,7 @@ using Application.Pagination.Extensions;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.CQRS.Users.Queries.UserStorage
 {
@@ -49,6 +50,7 @@ namespace Application.CQRS.Users.Queries.UserStorage
             {
                 return await _userStorage
                     .GetAll()
+                    .AsNoTracking()
                     .OrderBy(user => user.Id)
                     .ProjectTo<UserDto>(_mapper.ConfigurationProvider, cancellationToken)
                     .ProjectToPagedListAsync(request, cancellationToken)

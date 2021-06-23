@@ -12,6 +12,7 @@ using Application.Persistence.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.CQRS.Users.Queries.UserPostRate
 {
@@ -60,6 +61,7 @@ namespace Application.CQRS.Users.Queries.UserPostRate
                 CancellationToken cancellationToken)
             {
                 IPagedList<PostRateDto> postRates = await _context.PostRate
+                    .AsNoTracking()
                     .Where(pr => pr.UserId == request.UserId)
                     .OrderBy(pr => pr.PostRateId)
                     .ProjectTo<PostRateDto>(_mapper.ConfigurationProvider)

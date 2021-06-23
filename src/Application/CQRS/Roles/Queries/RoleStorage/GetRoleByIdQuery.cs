@@ -8,6 +8,7 @@ using Application.Identity.Entities;
 using Application.Identity.Interfaces.Storages;
 using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.CQRS.Roles.Queries.RoleStorage
 {
@@ -46,6 +47,7 @@ namespace Application.CQRS.Roles.Queries.RoleStorage
             {
                 return await _roleStorage
                            .GetAll()
+                           .AsNoTracking()
                            .Where(role => role.Id == request.RoleId)
                            .ProjectToSingleOrDefaultAsync<RoleDto>(_mapper.ConfigurationProvider, cancellationToken)
                            .ConfigureAwait(false)

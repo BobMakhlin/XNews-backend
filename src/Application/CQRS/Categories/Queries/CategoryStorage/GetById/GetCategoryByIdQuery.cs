@@ -9,6 +9,7 @@ using Application.Persistence.Interfaces;
 using AutoMapper;
 using Domain.Primary.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.CQRS.Categories.Queries.CategoryStorage.GetById
 {
@@ -30,7 +31,7 @@ namespace Application.CQRS.Categories.Queries.CategoryStorage.GetById
             private readonly IMapper _mapper;
 
             #endregion
-            
+
             #region Constructors
 
             public Handler(IXNewsDbContext context, IMapper mapper)
@@ -40,12 +41,13 @@ namespace Application.CQRS.Categories.Queries.CategoryStorage.GetById
             }
 
             #endregion
-            
+
             #region IRequestHandler<GetCategoryByIdQuery, CategoryDto>
 
             public async Task<CategoryDto> Handle(GetCategoryByIdQuery request, CancellationToken cancellationToken)
             {
                 return await _context.Category
+                           .AsNoTracking()
                            .Where(c => c.CategoryId == request.CategoryId)
                            .ProjectToSingleOrDefaultAsync<CategoryDto>(_mapper.ConfigurationProvider, cancellationToken)
                            .ConfigureAwait(false)

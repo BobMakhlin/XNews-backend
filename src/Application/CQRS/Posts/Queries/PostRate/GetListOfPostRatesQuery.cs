@@ -8,6 +8,7 @@ using Application.CQRS.PostRates.Models;
 using Application.Persistence.Interfaces;
 using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.CQRS.Posts.Queries.PostRate
 {
@@ -46,6 +47,7 @@ namespace Application.CQRS.Posts.Queries.PostRate
                 CancellationToken cancellationToken)
             {
                 List<PostRateDto> postRates = await _context.PostRate
+                    .AsNoTracking()
                     .Where(pr => pr.PostId == request.PostId)
                     .ProjectToListAsync<PostRateDto>(_mapper.ConfigurationProvider, cancellationToken)
                     .ConfigureAwait(false);

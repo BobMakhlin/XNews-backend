@@ -4,7 +4,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Persistence.Primary.DataAccess;
 using Persistence.Primary.Options;
-using Persistence.Primary.Seeders;
 
 namespace Persistence.Primary
 {
@@ -22,7 +21,6 @@ namespace Persistence.Primary
             
             services.AddScoped<IXNewsDbContext>(provider => provider.GetService<XNewsDbContext>());
             services.AddScoped<IXNewsDbContextExtended>(provider => provider.GetService<XNewsDbContext>());
-            services.AddScoped<IDbSeeder, XNewsDbSeeder>();
 
             return services;
         }

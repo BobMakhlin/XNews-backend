@@ -105,13 +105,5 @@ namespace Presentation.API
                 });
             });
         }
-        
-        private async Task SeedDatabaseAsync(IApplicationBuilder app)
-        {
-            using IServiceScope scope = app.ApplicationServices.CreateScope();
-            
-            IDbSeeder seeder = scope.ServiceProvider.GetRequiredService<IDbSeeder>();
-            await seeder.SeedAsync();
-        }
     }
 }

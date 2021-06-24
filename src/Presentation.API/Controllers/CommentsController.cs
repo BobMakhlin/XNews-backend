@@ -5,6 +5,7 @@ using Application.CQRS.CommentRates.Models;
 using Application.CQRS.Comments.Commands.CommentRate;
 using Application.CQRS.Comments.Commands.CommentStorage;
 using Application.CQRS.Comments.Queries.CommentRate;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.API.Requests.ControllerRequests;
 using Presentation.Common.ControllerAbstractions;
@@ -17,6 +18,7 @@ namespace Presentation.API.Controllers
     {
         #region CommentRate
 
+        [AllowAnonymous]
         [HttpGet("{id}/rates")]
         public async Task<ActionResult<IEnumerable<CommentRateDto>>> GetRatesOfCommentAsync([FromRoute] Guid id)
         {
@@ -24,6 +26,7 @@ namespace Presentation.API.Controllers
             return Ok(rates);
         }
         
+        [Authorize]
         [HttpPost("{id}/rates")]
         public async Task<IActionResult> AddRateToCommentAsync([FromRoute] Guid id,
             [FromBody] CommentsControllerRequests.AddRateToCommentRequest request)
@@ -37,6 +40,7 @@ namespace Presentation.API.Controllers
             return NoContent();
         }
 
+        [Authorize]
         [HttpDelete("{commentId}/rates/{userId}")]
         public async Task<IActionResult> RemoveRateOfCommentAsync([FromRoute] Guid commentId, [FromRoute] string userId)
         {
@@ -48,6 +52,7 @@ namespace Presentation.API.Controllers
 
         #region CommentStorage
 
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<Guid>> CreateCommentAsync([FromBody] CreateCommentCommand request)
         {
@@ -55,6 +60,7 @@ namespace Presentation.API.Controllers
             return Ok(createdCommentId);
         }
 
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCommentAsync([FromRoute] Guid id,
             [FromBody] UpdateCommentCommand request)
@@ -69,6 +75,7 @@ namespace Presentation.API.Controllers
             return NoContent();
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCommentAsync([FromRoute] Guid id)
         {

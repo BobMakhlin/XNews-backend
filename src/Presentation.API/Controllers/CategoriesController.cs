@@ -6,7 +6,9 @@ using Application.CQRS.Categories.Models;
 using Application.CQRS.Categories.Queries.CategoryStorage.GetAll;
 using Application.CQRS.Categories.Queries.CategoryStorage.GetById;
 using Application.Pagination.Common.Models.PagedList;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Presentation.API.Constants;
 using Presentation.Common.ControllerAbstractions;
 
 namespace Presentation.API.Controllers
@@ -17,28 +19,32 @@ namespace Presentation.API.Controllers
     {
         #region CategoryStorage
 
+        [AllowAnonymous]
         [HttpGet("list")]
-        public async Task<ActionResult<IEnumerable<CategoryDto>>> GetPagedListOfCategoriesAsync()
+        public async Task<ActionResult<IEnumerable<CategoryDto>>> GetListOfCategoriesAsync()
         {
             IEnumerable<CategoryDto> categories = await Mediator.Send(new GetListOfCategoriesQuery());
             return Ok(categories);
         }
 
+        [AllowAnonymous]
         [HttpGet("paged-list")]
-        public async Task<ActionResult<IPagedList<CategoryDto>>> GetListOfCategoriesAsync(
+        public async Task<ActionResult<IPagedList<CategoryDto>>> GetPagedListOfCategoriesAsync(
             [FromQuery] GetPagedListOfCategoriesQuery request)
         {
             IPagedList<CategoryDto> categories = await Mediator.Send(request);
             return Ok(categories);
         }
 
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<ActionResult<CategoryDto>> GetCategoryAsync([FromRoute] Guid id)
         {
             CategoryDto categoryDto = await Mediator.Send(new GetCategoryByIdQuery {CategoryId = id});
             return Ok(categoryDto);
         }
-
+        
+        [Authorize(Roles = Roles.Admin)]
         [HttpPost]
         public async Task<ActionResult<Guid>> PostCategoryAsync([FromBody] CreateCategoryCommand request)
         {
@@ -46,6 +52,7 @@ namespace Presentation.API.Controllers
             return Ok(createdCategoryId);
         }
 
+        [Authorize(Roles = Roles.Admin)]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCategoryAsync([FromRoute] Guid id, [FromBody] UpdateCategoryCommand request)
         {
@@ -59,6 +66,7 @@ namespace Presentation.API.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = Roles.Admin)]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCategoryAsync([FromRoute] Guid id)
         {

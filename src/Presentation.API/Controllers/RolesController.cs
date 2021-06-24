@@ -6,11 +6,14 @@ using Application.CQRS.Roles.Queries.RoleStorage;
 using Application.CQRS.Roles.Queries.RoleUser;
 using Application.CQRS.Users.Models;
 using Application.Pagination.Common.Models.PagedList;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Presentation.API.Constants;
 using Presentation.Common.ControllerAbstractions;
 
 namespace Presentation.API.Controllers
 {
+    [Authorize(Roles = Roles.Admin)]
     [ApiController]
     [Route("[controller]")]
     public class RolesController : MyBaseController

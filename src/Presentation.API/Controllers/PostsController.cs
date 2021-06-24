@@ -13,6 +13,7 @@ using Application.CQRS.Posts.Queries.PostComment;
 using Application.CQRS.Posts.Queries.PostRate;
 using Application.CQRS.Posts.Queries.PostStorage;
 using Application.Pagination.Common.Models.PagedList;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.API.Requests.Common;
 using Presentation.API.Requests.ControllerRequests;
@@ -26,6 +27,7 @@ namespace Presentation.API.Controllers
     {
         #region PostStorage
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IPagedList<PostDto>>> GetAllPostsAsync([FromQuery] GetPagedListOfPostsQuery request)
         {
@@ -33,6 +35,7 @@ namespace Presentation.API.Controllers
             return Ok(posts);
         }
 
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<ActionResult<PostDto>> GetPostAsync([FromRoute] Guid id)
         {
@@ -40,6 +43,7 @@ namespace Presentation.API.Controllers
             return Ok(post);
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<Guid>> CreatePostAsync([FromBody] CreatePostCommand request)
         {
@@ -47,6 +51,7 @@ namespace Presentation.API.Controllers
             return Ok(createdPostId);
         }
 
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdatePostAsync([FromRoute] Guid id, [FromBody] UpdatePostCommand request)
         {
@@ -60,6 +65,7 @@ namespace Presentation.API.Controllers
             return NoContent();
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePostAsync([FromRoute] Guid id)
         {
@@ -71,6 +77,7 @@ namespace Presentation.API.Controllers
 
         #region PostCategory
 
+        [AllowAnonymous]
         [HttpGet("{postId}/categories")]
         public async Task<ActionResult<IEnumerable<CategoryDto>>> GetCategoriesOfPostAsync([FromRoute] Guid postId)
         {
@@ -79,6 +86,7 @@ namespace Presentation.API.Controllers
             return Ok(categories);
         }
 
+        [Authorize]
         [HttpPost("{postId}/categories/{categoryId}")]
         public async Task<IActionResult> AddCategoryToPostAsync([FromRoute] Guid postId, [FromRoute] Guid categoryId)
         {
@@ -86,6 +94,7 @@ namespace Presentation.API.Controllers
             return NoContent();
         }
 
+        [Authorize]
         [HttpDelete("{postId}/categories/{categoryId}")]
         public async Task<IActionResult> DeleteCategoryOfPostAsync([FromRoute] Guid postId, [FromRoute] Guid categoryId)
         {
@@ -97,6 +106,7 @@ namespace Presentation.API.Controllers
 
         #region PostRate
 
+        [AllowAnonymous]
         [HttpGet("{postId}/rates")]
         public async Task<ActionResult<IEnumerable<PostRateDto>>> GetRatesOfPostAsync([FromRoute] Guid postId)
         {
@@ -104,6 +114,7 @@ namespace Presentation.API.Controllers
             return Ok(rates);
         }
 
+        [Authorize]
         [HttpPost("{id}/rates")]
         public async Task<IActionResult> AddRateToPostAsync([FromRoute] Guid id,
             [FromBody] PostsControllerRequests.AddRateToPostRequest request)
@@ -117,6 +128,7 @@ namespace Presentation.API.Controllers
             return NoContent();
         }
 
+        [Authorize]
         [HttpDelete("{postId}/rates/{userId}")]
         public async Task<IActionResult> RemoveRateOfPostAsync([FromRoute] Guid postId, [FromRoute] string userId)
         {
@@ -128,6 +140,7 @@ namespace Presentation.API.Controllers
 
         #region PostComment
 
+        [AllowAnonymous]
         [HttpGet("{id}/comments")]
         public async Task<ActionResult<IPagedList<CommentDto>>> GetCommentsOfPostAsync([FromRoute] Guid id,
             [FromQuery] PaginationRequest request)

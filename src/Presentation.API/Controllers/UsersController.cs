@@ -18,7 +18,9 @@ using Application.CQRS.Users.Queries.UserRole;
 using Application.CQRS.Users.Queries.UserStorage;
 using Application.Identity.Models;
 using Application.Pagination.Common.Models.PagedList;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Presentation.API.Constants;
 using Presentation.API.Requests.Common;
 using Presentation.API.Requests.ControllerRequests;
 using Presentation.Common.ControllerAbstractions;
@@ -31,6 +33,7 @@ namespace Presentation.API.Controllers
     {
         #region UserStorage
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IPagedList<UserDto>>> GetAllUsersAsync(
             [FromQuery] GetPagedListOfUsersQuery request)
@@ -39,6 +42,7 @@ namespace Presentation.API.Controllers
             return Ok(users);
         }
 
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<ActionResult<UserDto>> GetUserByIdAsync([FromRoute] string id)
         {
@@ -46,6 +50,7 @@ namespace Presentation.API.Controllers
             return Ok(user);
         }
 
+        [AllowAnonymous]
         [HttpPost("register")]
         public async Task<ActionResult<string>> PostUserAsync([FromBody] CreateUserCommand request)
         {
@@ -53,6 +58,7 @@ namespace Presentation.API.Controllers
             return Ok(userId);
         }
 
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUserAsync([FromRoute] string id, [FromBody] UpdateUserCommand request)
         {
@@ -66,6 +72,7 @@ namespace Presentation.API.Controllers
             return NoContent();
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUserAsync([FromRoute] string id)
         {
@@ -77,6 +84,7 @@ namespace Presentation.API.Controllers
 
         #region UserPost
 
+        [AllowAnonymous]
         [HttpGet("{id}/posts")]
         public async Task<ActionResult<IPagedList<PostDto>>> GetPostsOfUserAsync([FromRoute] string id,
             [FromQuery] PaginationRequest paginationRequest)
@@ -94,6 +102,7 @@ namespace Presentation.API.Controllers
 
         #region UserPostRate
 
+        [AllowAnonymous]
         [HttpGet("{id}/postRates")]
         public async Task<ActionResult<IPagedList<PostRateDto>>> GetPostRatesOfUserAsync([FromRoute] string id,
             [FromQuery] PaginationRequest paginationRequest)
@@ -111,6 +120,7 @@ namespace Presentation.API.Controllers
 
         #region UserComment
 
+        [AllowAnonymous]
         [HttpGet("{id}/comments")]
         public async Task<ActionResult<IPagedList<CommentDto>>> GetCommentsOfUserAsync([FromRoute] string id,
             [FromQuery] PaginationRequest paginationRequest)
@@ -128,6 +138,7 @@ namespace Presentation.API.Controllers
 
         #region UserCommentRate
 
+        [AllowAnonymous]
         [HttpGet("{id}/commentRates")]
         public async Task<ActionResult<IPagedList<CommentRateDto>>> GetCommentRatesOfUserAsync([FromRoute] string id,
             [FromQuery] PaginationRequest paginationRequest)
@@ -145,6 +156,7 @@ namespace Presentation.API.Controllers
 
         #region UserRole
 
+        [AllowAnonymous]
         [HttpGet("{id}/roles")]
         public async Task<ActionResult<IEnumerable<RoleDto>>> GetRolesOfUserAsync([FromRoute] string id)
         {
@@ -152,6 +164,7 @@ namespace Presentation.API.Controllers
             return Ok(rolesOfUser);
         }
 
+        [Authorize(Roles = Roles.Admin)]
         [HttpPost("{userId}/roles/{roleId}")]
         public async Task<IActionResult> AddRoleToUserAsync([FromRoute] string userId, [FromRoute] string roleId)
         {
@@ -159,6 +172,7 @@ namespace Presentation.API.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = Roles.Admin)]
         [HttpDelete("{userId}/roles/{roleId}")]
         public async Task<IActionResult> DeleteRoleOfUserAsync([FromRoute] string userId, [FromRoute] string roleId)
         {
@@ -170,6 +184,7 @@ namespace Presentation.API.Controllers
 
         #region UserPassword
 
+        [Authorize]
         [HttpPost("{id}/change-password")]
         public async Task<IActionResult> ChangeUserPasswordAsync([FromRoute] string id,
             [FromBody] UsersControllerRequests.ChangeUserPasswordRequest request)
@@ -187,18 +202,21 @@ namespace Presentation.API.Controllers
 
         #region UserAuthentication
 
+        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<ActionResult<AuthenticationResponse>> Login([FromBody] AuthenticateCommand request)
         {
             return await Mediator.Send(request);
         }
 
+        [AllowAnonymous]
         [HttpPost("refresh-session")]
         public async Task<ActionResult<AuthenticationResponse>> RefreshSession([FromBody] RefreshSessionCommand request)
         {
             return await Mediator.Send(request);
         }
 
+        [Authorize]
         [HttpPost("logout")]
         public async Task<IActionResult> RevokeToken([FromBody] RevokeTokenCommand request)
         {

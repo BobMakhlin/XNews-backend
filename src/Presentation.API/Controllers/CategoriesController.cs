@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Application.CQRS.Categories.Commands.CategoryStorage;
 using Application.CQRS.Categories.Models;
+using Application.CQRS.Categories.Queries.CategoryPost;
 using Application.CQRS.Categories.Queries.CategoryStorage.GetAll;
 using Application.CQRS.Categories.Queries.CategoryStorage.GetById;
+using Application.CQRS.Posts.Models;
 using Application.Pagination.Common.Models.PagedList;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -72,6 +74,20 @@ namespace Presentation.API.Controllers
         {
             await Mediator.Send(new DeleteCategoryCommand {CategoryId = id});
             return NoContent();
+        }
+
+        #endregion
+
+        #region CategoryPost
+
+        [AllowAnonymous]
+        [HttpGet("{categoryId}/posts")]
+        public async Task<ActionResult<IEnumerable<PostDto>>> GetPostsOfCategoryAsync([FromRoute] Guid categoryId)
+        {
+            IEnumerable<PostDto> posts =
+                await Mediator.Send(new GetListOfCategoryPostsQuery { CategoryId = categoryId });
+
+            return Ok(posts);
         }
 
         #endregion
